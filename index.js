@@ -520,16 +520,19 @@ document.onkeydown = function(evt) {
     evt = evt || window.event;
     console.log(evt.keyCode)
     let keyCode = evt.keyCode;
+    let selected = false;
     // Registers key selectors for A to J on multiple choice questions.
     if ((keyCode >= 48 && keyCode <= 57)) {
         selectAnswer(keyCode.toString() - 49)
+        selected = true;
+
     }
     // if (evt.keyCode == 38) {
         // loadNewQuestion('previous-question-load')
     // }
     // Moves to next question  using enter key for open ended questions
     let type = dataset.questions[currentQuestionIndex].type
-    if (((type == `single` || type == `multiple`) && evt.keyCode == 13)) {
+    if (((type == `single` || type == `multiple`) && evt.keyCode == 13 && selected) ) {
         loadNewQuestion('next-question-load')
     }
 };

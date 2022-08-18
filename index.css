@@ -24,7 +24,7 @@ div:focus {
     padding-left: 30px;
 }
 
-@media screen and (max-width: 1000px) {
+/*@media screen and (max-width: 1000px) {
     .wrapper {
         max-width: -webkit-calc(1000px - (30px));
         max-width: calc(1000px - (30px));
@@ -34,7 +34,7 @@ div:focus {
         margin-left: 3%;
         font-size: 10px;
     }
-}
+}*/
 
 .box {
     /* border: 0.5px solid gray; */
