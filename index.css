@@ -152,7 +152,7 @@ div[contenteditable] {
 .page-header-container {
     height: 50px;
     background: #fff;
-    position: relative;
+    position: fixed;
     margin-bottom: 3em;
 }
 
@@ -180,7 +180,7 @@ div[contenteditable] {
 
 .quiz-header-container {
     /* background-color: rgba(205, 234, 239, 0.9); */
-    position: relative;
+    position: fixed;
     margin-bottom: 3em;
     height: 80px;
     z-index: 2;
@@ -219,7 +219,7 @@ div[contenteditable] {
 .quiz-page-template-container {
     /* background-color: #f1f9fa; */
     padding: 0px;
-    overflow: hidden;
+    overflow: scroll;
     height: 100%;
 }
 
@@ -287,9 +287,9 @@ div[contenteditable] {
     width: 75%;
     position: relative;
     top: 0px;
-    max-width: 700px;
-    padding: 10px 30px 30px 30px;
-    margin-bottom: 3%;
+    max-width: 800px;
+    padding: 24px;
+    margin-bottom: 1%;
 }
 
 .move-container-up {
