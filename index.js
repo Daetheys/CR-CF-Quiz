@@ -1,51 +1,14 @@
-// Serve an object with this structure in order to generate a quiz page
-// The `correct` key is referential and should not be served
-const quiz = {
-    "name": "Psychology Quiz",
-    "questions": [{
-            "type": "single",
-            "question": "Which is not a step in the scientific method?",
-            "answers": ["Ask question", "Form hypothesis", "Replicate results", "Collect data", "Analysis"],
-            "entered": [],
-            "correct": "Replicate results"
-        },
-        {
-            "type": "single",
-            "question": "_____ explanations for aggressive behavior include genetic predisposition, high testosterone level and frontal lobe damage.",
-            "answers": ["Social", "Biological", "Cross-cultural", "Cognitive", "Psychoactive"],
-            "entered": [],
-            "correct": "Biological"
-        },
-        {
-            "type": "single",
-            "question": "Social identity refers to _____.",
-            "answers": ["Our membership in particular groups, which largely determines our everyday interactions", "Prejudices that are based on personal experiences that occur during development", "The drive for success that motivates people to form prejudices about their competitors", "All of the answers are correct."],
-            "entered": [],
-            "correct": "Replicate results"
-        },
-        {
-            "type": "multiple",
-            "question": "The belief that everyone is good and naturally altruistic is an example of which psychological perspective?",
-            "answers": ["Biological", "Cognitive", "Behavioral", "Evolutionary", "Humanistic"],
-            "entered": [],
-            "correct": "Humanistic"
-        },
-        {
-            "type": "short",
-            "question": "Please describe in two sentences or less what psychoanalysis is.",
-            "entered": [],
-            "answers": []
-        },
-        {
-            "type": "long",
-            "question": "In three paragraphs, describe Freud's theory of id, ego, and superego. Use examples as needed.",
-            "entered": [],
-            "answers": []
-        }
-    ]
+import {exampleDataset} from './dataset_example.js'
+import {dataset} from './dataset.js'
+$(document).ready(main);
+
+// global parameters
+let currentQuestionIndex = 0;
+let currentInstructionIndex = 0;
+
+function main  ()  {
+    init();
 }
-// Tracks index of question on quiz
-let currentQuestionIndex = 0
 
 // Shortcut for removing duplicates from arrays
 const uniq = (a) => {
@@ -59,16 +22,41 @@ const removeAllChildren = (parent) => {
 }
 
 // Initialization functions go here
-const init = () => {
+const init = async () => {
+    toggleDilemma()
+    toggleProgressBar()
+
     cr_ContinueButton()
-    ad_QuestionIteration()
-    loadQuestion(quiz.questions[0], true)
+    loadInstructions(dataset.instructions[0], true);
+
+    //if (currentInstructionIndex == dataset.instructions.length) {
+    //    //debugger;
+    //    toggleDilemma()
+    //    toggleProgressBar()
+    //    ad_QuestionIteration()
+    //    loadQuestion(dataset.questions[0], true)
+    //// }
 }
+
+const toggleProgressBar = () => {
+    let v = document.getElementById("progress").style.display == "none";
+    document.getElementById("progress").style.display = v ?  'block' : 'none'
+}
+
+const toggleDilemma = () => {
+    let v = document.getElementById("quiz-dilemma-container").style.display == "none";
+    document.getElementById("quiz-dilemma-container").style.display = v ?  'block' : 'none'
+}
+
+
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init) => {
+    ShowHideContinueButton(dataset.questions[currentQuestionIndex])
     updateProgessBarStatus()
-    cr_QuizQuestionText(question.question)
+    cr_QuizQuestionText(question.text)
+    cr_QuizQuestionTitle(question.title)
+    cr_QuizQuestionDilemma(question.dilemma)
     if (question.type == `multiple` || question.type == `single`) {
         loadMultipleChoiceQuestion(question)
         loadPreviousEnteredChoice(question.entered)
@@ -80,8 +68,23 @@ const loadQuestion = async (question, init) => {
     if (!init) {
         await MoveQuestionContainerMiddle()
     }
-    ShowHideContinueButton(quiz.questions[currentQuestionIndex])
 }
+
+// Loads a multiple choice quiz question
+const loadInstructions= async (inst, init) => {
+    //debugger;
+    ShowHideContinueButton(dataset.instructions[currentInstructionIndex])
+    let asHTML = true;
+    cr_QuizQuestionText(inst.text,  asHTML)
+    cr_QuizQuestionTitle(inst.title)
+
+    // Skips loading animation on initialization
+    if (!init) {
+        await MoveQuestionContainerMiddle()
+    }
+}
+
+
 
 // Creates elements for multiple choice questions (checkboxes & radios)
 const loadMultipleChoiceQuestion = (question) => {
@@ -92,7 +95,7 @@ const loadMultipleChoiceQuestion = (question) => {
         let quizQuestionDIV = document.createElement(`div`)
         quizQuestionDIV.className = `quiz-answer-text-container-single unselected-answer`
         // Assigns ID as ASCII values (A = 65, B = 66, etc.)
-        quizQuestionDIV.id = (i + 65).toString()
+        quizQuestionDIV.id = (i).toString()
         ad_QuizSelectAnswer(quizQuestionDIV)
         // Generate elements
         let quizQuestionPress = document.createElement(`li`)
@@ -101,7 +104,7 @@ const loadMultipleChoiceQuestion = (question) => {
         // Adding elements to quiz answers
         ed_QuizQuestionElements(question.type, quizQuestionPress, quizQuestionNumerator, quizQuestionDIV, quizQuestionText)
         // Convert ASCII code to text for multiple choice selection
-        quizQuestionNumerator.innerText = String.fromCharCode(i + 65)
+        quizQuestionNumerator.innerText = (i + 1).toString();
         quizQuestionText.innerText = question.answers[i]
         // Psuedoparent append
         quizQuestionDIV.append(quizQuestionPress, quizQuestionNumerator, quizQuestionText)
@@ -125,7 +128,7 @@ const loadTextFormQuestion = () => {
 
 // Saves short and long form objects to local object
 const SaveWrittenAnswers = () => {
-    quiz.questions[currentQuestionIndex].entered[0] = document.getElementById(`questionTextarea`).innerHTML
+    dataset.questions[currentQuestionIndex].entered[0] = document.getElementById(`questionTextarea`).innerHTML
 }
 
 
@@ -138,7 +141,7 @@ const loadPreviousEnteredChoice = (entered) => {
 
 // re-assigns text to short/long form questions
 const loadPreviousEnteredText = () => {
-    let entered = quiz.questions[currentQuestionIndex].entered
+    let entered = dataset.questions[currentQuestionIndex].entered
     if (entered.length > 0) {
         let answer = document.getElementById(`questionTextarea`)
         answer.innerHTML = entered[0]
@@ -194,18 +197,44 @@ const ed_QuizQuestionElements = (type, press, numerator, container, text) => {
         container.classList.add(`question-type-multiple`)
     }
     text.className = `quiz-answer-text-item`
-    press.innerText = `Press`
+    press.innerText = `Press `
 }
 
 // Assigns the question's text 
-const cr_QuizQuestionText = (question) => {
+const cr_QuizQuestionText = (question, asHTML=false) => {
     // Generating question text
     let quizQuestionTextDIV = document.getElementById(`quiz-question-text-container`)
     let quizQuestionTextSPAN = document.createElement(`span`)
     quizQuestionTextSPAN.className = `quiz-question-text-item`
-    quizQuestionTextSPAN.innerText = question
+    let text = question;
+    if (!asHTML) {
+        text = '<b>Story</b> <br>' + question;
+    }
+    // if (asHTML) {
+    quizQuestionTextSPAN.innerHTML= text;
+    // } else {
+        // quizQuestionTextSPAN.innerText = '<b>question
+    // }
     quizQuestionTextDIV.appendChild(quizQuestionTextSPAN)
 }
+
+// Assigns the question's text 
+const cr_QuizQuestionTitle = (title) => {
+    // Generating question text
+    let quizQuestionTitle = document.getElementById(`quiz-question-title`)
+    // let quizQuestionTextSPAN = document.createElement(`span`)
+    quizQuestionTitle.innerText = title
+}
+
+// Assigns the question's text 
+const cr_QuizQuestionDilemma = (question) => {
+    // Generating question text
+    let quizQuestionDilemma = document.getElementById(`quiz-question-dilemma`)
+    // let quizQuestionTextSPAN = document.createElement(`span`)
+    quizQuestionDilemma.innerHTML = '<b>Question</b><br>' +  question;
+}
+
+
 
 // Creates continue button
 const cr_ContinueButton = () => {
@@ -219,15 +248,20 @@ const cr_ContinueButton = () => {
     continueSPAN.id = `quiz-continue-text`
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
-    continueBUTTON.onclick = function() {
-        loadNewQuestion(`next-question-load`)
+    continueBUTTON.onclick = async function() {
+        let startQuestions = await loadNewInstruction(`next-question-load`);
+        //debugger;
+        if (startQuestions) {    
+            loadNewQuestion(`next-question-load`)
+        }
     }
+
     continueSPAN.innerHTML = `press ENTER`
     continueDIV.append(continueBUTTON, continueSPAN)
-    let parent = document.getElementById(`quiz-question-container`)
+    let parent = document.getElementById('quiz-main-page');//`quiz-question-container`)
     parent.append(continueDIV)
     // Discerns whether or not to show continue button, based on whether or not an answer has been input/selected
-    ShowHideContinueButton(quiz.questions[currentQuestionIndex])
+    ShowHideContinueButton(dataset.questions[currentQuestionIndex])
 }
 
 // Only shows a continue button if a question is selected
@@ -253,8 +287,12 @@ const ShowHideContinueButton = (question) => {
 
 // Function to load next question & possible answers in object
 const loadNewQuestion = async (adjustment) => {
+    if (currentQuestionIndex === 0) {
+        toggleProgressBar();
+        toggleDilemma();
+    }
     // Saves written answers before moving on to next question
-    let type = quiz.questions[currentQuestionIndex].type
+    let type = dataset.questions[currentQuestionIndex].type
     if (type == 'long' || type == 'short') {
         SaveWrittenAnswers()
     }
@@ -263,15 +301,37 @@ const loadNewQuestion = async (adjustment) => {
         await QuestionContainerLoad(adjustment)
         removeAllChildren(`quiz-answer-list`)
         removeAllChildren(`quiz-question-text-container`)
+        //
         // Displays previous questions. Does nothing if no questions to load.
         if (adjustment == `previous-question-load`) {
-            loadQuestion(quiz.questions[currentQuestionIndex])
+            loadQuestion(dataset.questions[currentQuestionIndex])
             // Displays next question. Does nothing if no questions to load.
-        } else if (adjustment == `next-question-load` && currentQuestionIndex <= quiz.questions.length) {
-            loadQuestion(quiz.questions[currentQuestionIndex])
+        } else if (adjustment == `next-question-load` && currentQuestionIndex <= dataset.questions.length) {
+            loadQuestion(dataset.questions[currentQuestionIndex])
         }
     }
 }
+
+// Function to load next question & possible answers in object
+const loadNewInstruction = async (adjustment) => {
+    // Saves written answers before moving on to next question
+    // Displays previous questions. Does nothing if no questions to load.
+    let proceed = canLoadNewInstruction(adjustment);
+    console.log(proceed);
+    if (proceed) {
+        removeAllChildren(`quiz-answer-list`)
+        removeAllChildren(`quiz-question-text-container`)
+        if (adjustment == `previous-question-load`) {
+            loadInstructions(dataset.instructions[currentInstructionIndex], false)
+            // Displays next question. Does nothing if no questions to load.
+        } else if (adjustment == `next-question-load` && currentInstructionIndex <= dataset.instructions.length) {
+            loadInstructions(dataset.instructions[currentInstructionIndex], false)
+        }
+    }
+    return !proceed
+}
+
+
 
 // Checks if we have reached the first or last question
 const canLoadNewQuestion = (adjustment) => {
@@ -282,12 +342,33 @@ const canLoadNewQuestion = (adjustment) => {
         currentQuestionIndex--
     }
     // Fail safe if we have reached last quesiton
-    if (currentQuestionIndex > quiz.questions.length - 1) {
+    if (currentQuestionIndex > dataset.questions.length - 1) {
         currentQuestionIndex--
         return false
         // Fail safe if trying to move before first question
     } else if (currentQuestionIndex < 0) {
         currentQuestionIndex++
+        return false
+    }
+    return true
+
+}
+
+// Checks if we have reached the first or last instruction
+const canLoadNewInstruction = (adjustment) => {
+    // In/de-crement based on if user is loading next or previous question
+    if (adjustment == `next-question-load`) {
+        currentInstructionIndex++
+    } else {
+        currentInstructionIndex--
+    }
+    // Fail safe if we have reached last quesiton
+    if (currentInstructionIndex > dataset.instructions.length - 1) {
+        currentInstructionIndex++
+        return false
+        // Fail safe if trying to move before first question
+    } else if (currentInstructionIndex < 0) {
+        currentInstructionIndex++
         return false
     }
     return true
@@ -312,6 +393,7 @@ const QuestionContainerLoad = (adjustment) => {
 // key indicates the id of the given answer, invoking previous will prevent the function from editing the local answered questions object
 const selectAnswer = (key, previous) => {
     let answer = document.getElementById(key)
+    console.log(answer);
     if (answer) {
         // If only one answer can be given, unselect all answers before reselecting new answer
         if (answer.classList.contains(`question-type-single`)) {
@@ -337,23 +419,23 @@ const selectAnswer = (key, previous) => {
         }
     }
     // Triggers a check to see if we should display continue button
-    ShowHideContinueButton(quiz.questions[currentQuestionIndex])
+    ShowHideContinueButton(dataset.questions[currentQuestionIndex])
 }
 
 // Indicate previous is true in order to skip storing answers in the local object
 const storeAnswers = (add, key) => {
     // For adding user's answers to the local object
     if (add) {
-        if (quiz.questions[currentQuestionIndex].type == `single`) {
-            quiz.questions[currentQuestionIndex].entered.length = 0
+        if (dataset.questions[currentQuestionIndex].type == `single`) {
+            dataset.questions[currentQuestionIndex].entered.length = 0
         }
-        quiz.questions[currentQuestionIndex].entered.push(key)
+        dataset.questions[currentQuestionIndex].entered.push(key)
         // For removing user's answers from the local object
     } else {
-        quiz.questions[currentQuestionIndex].entered = quiz.questions[currentQuestionIndex].entered.filter(item => item !== key)
+        dataset.questions[currentQuestionIndex].entered = dataset.questions[currentQuestionIndex].entered.filter(item => item !== key)
     }
     // Ensures there are no duplicate answers in array
-    quiz.questions[currentQuestionIndex].entered = uniq(quiz.questions[currentQuestionIndex].entered)
+    dataset.questions[currentQuestionIndex].entered = uniq(dataset.questions[currentQuestionIndex].entered)
 }
 
 // Changes answer button appearance to show as selected
@@ -395,7 +477,7 @@ const updateProgessBarStatus = () => {
     let progress = document.getElementById('quiz-progress-bar')
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
-    let value = Math.floor((calculateQuizProgress(quiz.questions) / quiz.questions.length) * 100)
+    let value = Math.floor((calculateQuizProgress(dataset.questions) / dataset.questions.length) * 100)
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
     progress.style.width = value + `%`
@@ -423,32 +505,31 @@ const ad_QuizSelectAnswer = (answer) => {
 
 // Adds iteration capabilities to previous & next buttons 
 const ad_QuestionIteration = () => {
-    let prev = document.getElementById(`previous-question-load`)
-    let next = document.getElementById(`next-question-load`)
-    prev.onclick = () => {
-        loadNewQuestion(prev.id)
-    }
-    next.onclick = () => {
-        loadNewQuestion(next.id)
-    }
+//    let prev = document.getElementById(`previous-question-load`)
+//    let next = document.getElementById(`next-question-load`)
+//    prev.onclick = () => {
+//        loadNewQuestion(prev.id)
+//    }
+//    next.onclick = () => {
+//        loadNewQuestion(next.id)
+//    }
 }
 
 // Listener for key presses for quiz interaction.
 document.onkeydown = function(evt) {
     evt = evt || window.event;
-    // console.log(evt.keyCode)
+    console.log(evt.keyCode)
+    let keyCode = evt.keyCode;
     // Registers key selectors for A to J on multiple choice questions.
-    if (evt.keyCode >= 65 && evt.keyCode < 90 || evt.keyCode == 8 || evt.keyCode == 46) {
-        selectAnswer(evt.keyCode.toString())
+    if ((keyCode >= 48 && keyCode <= 57)) {
+        selectAnswer(keyCode.toString() - 49)
     }
-    if (evt.keyCode == 38) {
-        loadNewQuestion('previous-question-load')
-    }
-    // Moves to next question on down arrow tap or enter. Disables iteration using enter key for open ended questions
-    let type = quiz.questions[currentQuestionIndex].type
-    if (evt.keyCode == 40 || ((type == `single` || type == `multiple`) && evt.keyCode == 13)) {
+    // if (evt.keyCode == 38) {
+        // loadNewQuestion('previous-question-load')
+    // }
+    // Moves to next question  using enter key for open ended questions
+    let type = dataset.questions[currentQuestionIndex].type
+    if (((type == `single` || type == `multiple`) && evt.keyCode == 13)) {
         loadNewQuestion('next-question-load')
     }
 };
-
-init()
