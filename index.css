@@ -24,8 +24,8 @@ div:focus {
     padding-left: 30px;
 }
 
-/*@media screen and (max-width: 1000px) {
-    .wrapper {
+@media screen and (max-width: 1000px) {
+    /*.wrapper {
         max-width: -webkit-calc(1000px - (30px));
         max-width: calc(1000px - (30px));
         padding-right: 15px;
@@ -33,8 +33,12 @@ div:focus {
         margin-right: 3%;
         margin-left: 3%;
         font-size: 10px;
+    }*/
+    
+    .question-answer-text-container-single {
+        display: flex !important;
     }
-}*/
+}
 
 .box {
     /* border: 0.5px solid gray; */
@@ -42,17 +46,19 @@ div:focus {
     background-color: white;
     box-shadow: rgb(234, 235, 236) .5px 2px 4px .5px;
     margin: auto;
-    margin-top: 3%;
+    margin-top: 8%;
 }
-h1.border-bottom {
+h1.bottom-bar {
     color: #32AE97;
     font-weight: 700;
-    font-variant: small-caps;
-    border-bottom: 1.5px dotted #32AE97;
-    width: 100%;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    margin-bottom: 1em;
+    /* font-variant: small-caps; */
+    /* border-bottom: 1.5px dotted #32AE97; */
+    /* width: 100%; */
+    /* padding-top: 0.1em; */
+    /* padding-bottom: 0.5em; */
+    /* margin-bottom: .5em; */
+    /* margin-top: .5em; */
+    margin-top: 0px;
     font-size: 30px;
     /*padding-bottom: 1.5em;*/
     /*letter-spacing: +0.025em;*/
@@ -136,7 +142,7 @@ div[contenteditable] {
     /* color: white !important; */
     font-weight: bolder;
     transition: linear 200ms;
-    box-shadow: #4FB9A6 0px 0px 0px 1px inset;
+    /* box-shadow: #4FB9A6 0px 0px 0px 1px inset; */
 }
 
 .unselected-answer {
@@ -234,6 +240,28 @@ div[contenteditable] {
     border-radius: .3rem;
 }
 
+.quiz-question-dilemma-container {
+    border-left-color: orange;
+    border-left-width: 5px;
+    border-radius: 0;
+    border-left-style: solid;
+}
+
+.quiz-question-dilemma-container  b {
+    color: orange;
+}
+
+.quiz-question-story-container{
+    border-left-color: rgb(116, 116, 228); 
+    border-left-width: 5px;
+    border-radius: 0;
+    border-left-style: solid;
+}
+
+.quiz-question-story-container b{
+    color: rgb(116, 116, 228); 
+}
+
 .quiz-question-text-item {
     max-width: 100%;
     font-size: 14px;
@@ -241,6 +269,10 @@ div[contenteditable] {
     color: rgba(48, 48, 48, 0.671);
     font-weight: normal;
     margin: 0px;
+}
+
+.quiz-answer-text-item {
+    font-size: 17px;
 }
 
 .quiz-answer-list {
@@ -262,8 +294,9 @@ div[contenteditable] {
     min-height: 40px;
     flex-grow: 1;
     align-items: center;
-    display: flex;
-    padding: 4px 12px 4px;
+    /* display: flex; */
+    display: inline-table;
+    padding: 4px 18px 4px;
     margin-top: 10px;
 }
 
@@ -277,7 +310,10 @@ div[contenteditable] {
 }
 
 .quiz-answer-text-container-single:hover .numerator-radio {
-    border-radius: 0 50% 50% 0;
+    /* border-radius: 0 50% 50% 0; */
+    background-color: #4FB9A6;
+    color: white;
+
 }
 
 /* Added a "dynamic" width as a catch-all until a cleaner solution is implented for long questions/answers */
@@ -318,16 +354,17 @@ div[contenteditable] {
     width: 28px;
     height: 28px;
     min-width: 22px;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 16px;
     font-family: sans-serif;
     /* border: 1px solid #4FB9A6; */
     font-weight: bold;
     display: flex;
-    align-self: flex-start;
+    /* align-self: flex; */
     align-items: center;
     box-shadow: transparent 0px 0px 0px 1px;
-    margin: 8px;
+    margin: auto;
+    margin-bottom: 8px;
     -webkit-box-align: center;
     justify-content: center;
 }
@@ -366,12 +403,15 @@ div[contenteditable] {
 .press-key-label {
     display: none;
     width: 55px;
-    border-right: 0px;
-    padding-left: 11px;
+    border-radius: .2rem;
+    /* border-right: 0px; */
+    /* padding-left: 11px; */
     position: absolute;
-    left: -52px;
-    z-index: 1;
-    border-right: 0px;
+    top: -42px;
+    /* text-align: center; */
+    padding: 8px;
+    /* z-index: 1; */
+    /* border-right: 0px; */
 }
 
 .question-iteration-container {
@@ -457,7 +497,7 @@ div[contenteditable] {
     background-color: #4FB9A6;
     color: white;
     outline: none;
-    margin: 0px;
+    margin-top: 25px;
     padding: 6px 14px;
     border-color: transparent;
     border-radius: 5px;

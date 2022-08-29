@@ -2,12 +2,33 @@ import {exampleDataset} from './dataset_example.js'
 import {dataset} from './dataset.js'
 $(document).ready(main);
 
-// global parameters
+//global parameters 
+const timeBetweenQuestions = 0;
+
+// global variables
 let currentQuestionIndex = 0;
 let currentInstructionIndex = 0;
+let continueClickable = true;
+let debug = 1;
+let savedState = 0;
 
 function main  ()  {
     init();
+}
+
+const saveState = () => {
+    localStorage['savedState'] = 1
+    localStorage['currentQuestionIndex'] = currentQuestionIndex
+    localStorage['currentInstructionIndex'] = currentInstructionIndex
+}
+
+const loadState = () => {
+    if (!localStorage['savedState'])
+        return
+
+    localStorage['savedState'] = 1;
+    currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
+    currentInstructionIndex =  parseInt(localStorage['currentInstructionIndex'])
 }
 
 // Shortcut for removing duplicates from arrays
@@ -23,11 +44,17 @@ const removeAllChildren = (parent) => {
 
 // Initialization functions go here
 const init = async () => {
+    if (!debug)
+        loadState()
+
     toggleDilemma()
     toggleProgressBar()
 
     cr_ContinueButton()
-    loadInstructions(dataset.instructions[0], true);
+    
+    debugger;
+    if (currentInstructionIndex < dataset.instructions.length)
+        loadInstructions(dataset.instructions[currentInstructionIndex], true);
 
     //if (currentInstructionIndex == dataset.instructions.length) {
     //    //debugger;
@@ -52,6 +79,7 @@ const toggleDilemma = () => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init) => {
+    saveState()
     ShowHideContinueButton(dataset.questions[currentQuestionIndex])
     updateProgessBarStatus()
     cr_QuizQuestionText(question.text)
@@ -73,6 +101,7 @@ const loadQuestion = async (question, init) => {
 // Loads a multiple choice quiz question
 const loadInstructions= async (inst, init) => {
     //debugger;
+    saveState()
     ShowHideContinueButton(dataset.instructions[currentInstructionIndex])
     let asHTML = true;
     cr_QuizQuestionText(inst.text,  asHTML)
@@ -102,7 +131,7 @@ const loadMultipleChoiceQuestion = (question) => {
         let quizQuestionNumerator = document.createElement(`li`)
         let quizQuestionText = document.createElement(`li`)
         // Adding elements to quiz answers
-        ed_QuizQuestionElements(question.type, quizQuestionPress, quizQuestionNumerator, quizQuestionDIV, quizQuestionText)
+        ed_QuizQuestionElements(question.type, quizQuestionPress, quizQuestionNumerator, quizQuestionDIV, quizQuestionText, (i+1).toString())
         // Convert ASCII code to text for multiple choice selection
         quizQuestionNumerator.innerText = (i + 1).toString();
         quizQuestionText.innerText = question.answers[i]
@@ -183,21 +212,21 @@ const MoveQuestionContainerMiddle = () => {
 }
 
 // Adds class names to quiz question based on which type of which it is
-const ed_QuizQuestionElements = (type, press, numerator, container, text) => {
+const ed_QuizQuestionElements = (type, press, numerator, container, text, n) => {
     // Append classes for different types of questions
     if (type == `single`) {
         // Radio button classes
-        press.className = `press-key-label press-label-radio answer-key-numerator unselected-answer-button`
+        // press.className = `press-key-label press-label-radio answer-key-numerator unselected-answer-button`
         numerator.className = `answer-key-numerator numerator-radio unselected-answer-button`
         container.classList.add(`question-type-single`)
     } else if (type == `multiple`) {
         // Checkbox classes
-        press.className = `press-key-label press-label-checkbox answer-key-numerator unselected-answer-button`
+        // press.className = `press-key-label press-label-checkbox answer-key-numerator unselected-answer-button`
         numerator.className = `answer-key-numerator numerator-checkbox unselected-answer-button`
         container.classList.add(`question-type-multiple`)
     }
     text.className = `quiz-answer-text-item`
-    press.innerText = `Press `
+    // press.innerText = `Press ` + n
 }
 
 // Assigns the question's text 
@@ -249,11 +278,17 @@ const cr_ContinueButton = () => {
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
     continueBUTTON.onclick = async function() {
+        if (!continueClickable)
+            return;
+
+        continueClickable = false;
         let startQuestions = await loadNewInstruction(`next-question-load`);
         //debugger;
         if (startQuestions) {    
             loadNewQuestion(`next-question-load`)
         }
+        
+        setTimeout(() => {continueClickable = true}, timeBetweenQuestions);
     }
 
     continueSPAN.innerHTML = `press ENTER`
@@ -482,7 +517,7 @@ const updateProgessBarStatus = () => {
     progress.setAttribute('aria-valuenow', value)
     progress.style.width = value + `%`
     // Updates progress bar text
-    text.innerText = value + '% complete'
+    text.innerText = value + '% complete (item ' + (calculateQuizProgress(dataset.questions)+1) + ')'
 }
 
 // Finds quiz progress by comparing num of questions answers to total number of questions
@@ -520,19 +555,18 @@ document.onkeydown = function(evt) {
     evt = evt || window.event;
     console.log(evt.keyCode)
     let keyCode = evt.keyCode;
-    let selected = false;
+    let selected = document.getElementsByClassName('selected-answer-button').length > 0;
     // Registers key selectors for A to J on multiple choice questions.
     if ((keyCode >= 48 && keyCode <= 57)) {
         selectAnswer(keyCode.toString() - 49)
-        selected = true;
-
     }
     // if (evt.keyCode == 38) {
         // loadNewQuestion('previous-question-load')
     // }
     // Moves to next question  using enter key for open ended questions
     let type = dataset.questions[currentQuestionIndex].type
-    if (((type == `single` || type == `multiple`) && evt.keyCode == 13 && selected) ) {
-        loadNewQuestion('next-question-load')
+    if (((type == `single` || type == `multiple`) && keyCode == 13 && selected) ) {
+        // loadNewQuestion('next-question-load')
+        $('.quiz-continue-button')[0].click()
     }
 };
