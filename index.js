@@ -52,7 +52,7 @@ const init = async () => {
 
     cr_ContinueButton()
     
-    debugger;
+    // debugger;
     if (currentInstructionIndex < dataset.instructions.length)
         loadInstructions(dataset.instructions[currentInstructionIndex], true);
 
