@@ -6,6 +6,12 @@ export const dataset = {
       text: "You are going to be presented with different moral dilemmas. At the end of each dilemma, you'll have to give a moral rate to an action given the context. The scale is from 1 to 7 where 1 is labeled <b>Forbidden</b>, 4 is labeled <b>Permissible</b>, and 7 is labeled <b>Obligatory</b>.",
       type: "short",
     },
+    // {
+      // title: "Instructions",
+      // text: "Good luck!",
+      // type: "short",
+    // },
+
   ],
   questions: [
     {
@@ -22,12 +28,18 @@ export const dataset = {
       dilemma: " Flipping the switch is\u2026",
       title: "Control",
       text: " Ben sees that an empty runaway boxcar is headed down a track.  There is nobody on the track. There is one person working on a side track. If Ben flips the switch, the boxcar will turn onto the side track and hit the one person. If Ben does not flip the switch, the boxcar will continue on the track, and nobody will be hit.",
-      answers: ["Forbidden", "", "", "Permissible", "", "", "Obligatory"],
-      // answers: ["Yes", "No"],
+      // answers: ["Forbidden", "", "", "Permissible", "", "", "Obligatory"],
+      answers: ["Yes", "No"],
       correct: "",
       entered: [],
       type: "single",
+      // type: "yes_no",
       id: 2,
+      additional: {
+        dilemma: "Why?",
+        entered: [],
+        type: "long",
+      }
     },
     {
       dilemma: "  Pushing the one visitor is\u2026  ",

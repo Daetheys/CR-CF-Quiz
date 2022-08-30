@@ -8,9 +8,77 @@ body {
     color: #4FB9A6
 }
 
+.red {
+    --color: 212, 101, 101;
+}
+
+.green {
+    --color: 79, 185, 166;
+}
+
 div:focus {
     outline: 0;
 }
+
+/**
+Google like 
+*/
+.input-contain {
+    position: relative;
+}
+input {
+    height: 5rem;
+    width: 100%;
+    border: 2px solid black;
+    border-radius: .2rem;
+}
+
+input:focus{
+    outline: none;
+    border-color:  orange;
+}
+
+input:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
+    background-color: white;
+    font-size: 1.1rem;
+    color: black;
+    transform: translate(0, -170%);
+}
+input:focus + .placeholder-text .text{
+    border-color:  orange;
+    color:  orange;
+}
+.placeholder-text{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 3px solid transparent;
+    background-color: transparent;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+.text{
+    font-size: 1.1rem;
+    padding: 0 0.5rem;
+    background-color: transparent;
+    transform: translate(0);
+    color: black;
+    transition: transform 0.15s ease-out, font-size 0.15s ease-out, background-color 0.2s ease-out, color 0.15s ease-out;
+}
+input, .placeholder-text{
+    font-size: 1.1rem;
+    padding: 0 1.2rem;
+}
+
+@media (max-width: 40rem) {
+    input{
+        width: 70vw;
+    }
+}
+
 /**
  * Wrapper
  */
@@ -48,6 +116,7 @@ div:focus {
     margin: auto;
     margin-top: 8%;
 }
+
 h1.bottom-bar {
     color: #32AE97;
     font-weight: 700;
@@ -142,7 +211,8 @@ div[contenteditable] {
     /* color: white !important; */
     font-weight: bolder;
     transition: linear 200ms;
-    /* box-shadow: #4FB9A6 0px 0px 0px 1px inset; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 12px 0px;
+    background-color: rgba(var(--color), .3) !important;
 }
 
 .unselected-answer {
@@ -264,7 +334,7 @@ div[contenteditable] {
 
 .quiz-question-text-item {
     max-width: 100%;
-    font-size: 14px;
+    font-size: 20px;
     line-height: 32px;
     color: rgba(48, 48, 48, 0.671);
     font-weight: normal;
@@ -272,12 +342,15 @@ div[contenteditable] {
 }
 
 .quiz-answer-text-item {
-    font-size: 17px;
+    font-size: 25px;
+    color: rgba(var(--color), 1) !important;
+    text-align: center;
 }
 
 .quiz-answer-list {
     list-style-type: none;
     padding-left: 0px;
+    text-align: center;
 }
 
 .quiz-answer-text-container {
@@ -285,7 +358,7 @@ div[contenteditable] {
 }
 
 .quiz-answer-text-container-single {
-    color: #4FB9A6;
+    /* color: #4FB9A6; */
     opacity: 1;
     will-change: opacity;
     height: auto;
@@ -311,10 +384,17 @@ div[contenteditable] {
 
 .quiz-answer-text-container-single:hover .numerator-radio {
     /* border-radius: 0 50% 50% 0; */
-    background-color: #4FB9A6;
+    background-color: rgba(var(--color), 1); 
     color: white;
 
 }
+
+.quiz-answer-text-container-single .numerator-radio {
+    /* border-radius: 0 50% 50% 0; */
+    background-color: #FAFAFA; 
+    color: white;
+}
+
 
 /* Added a "dynamic" width as a catch-all until a cleaner solution is implented for long questions/answers */
 .quiz-question-container {
@@ -323,7 +403,7 @@ div[contenteditable] {
     width: 75%;
     position: relative;
     top: 0px;
-    max-width: 800px;
+    max-width: 1000px;
     padding: 24px;
     margin-bottom: 1%;
 }
@@ -351,10 +431,10 @@ div[contenteditable] {
 
 .answer-key-numerator {
     position: relative;
-    width: 28px;
-    height: 28px;
+    width: 38px;
+    height: 38px;
     min-width: 22px;
-    font-size: 20px;
+    font-size: 25px;
     line-height: 16px;
     font-family: sans-serif;
     /* border: 1px solid #4FB9A6; */
@@ -375,7 +455,7 @@ div[contenteditable] {
     border: 0px;
     border-bottom: 1px solid rgba(88, 176, 181, 0.5);
     border-radius: 0px;
-    font-size: 30px;
+    font-size: 25px;
     color: rgba(121, 193, 207, 0.6);
     padding-left: 0px;
 }
@@ -450,7 +530,7 @@ div[contenteditable] {
 }
 
 .progress-bar-text {
-    font-size: 14px;
+    font-size: 20px;
     color: #4FB9A6;
 }
 
@@ -474,13 +554,13 @@ div[contenteditable] {
 }
 
 .unselected-answer-button {
-    background-color: rgba(235, 233, 233, 0.603);
-    color: #5fb6a4;
+    background-color: rgba(235, 233, 233, 0.603) !important;
+    color: rgba(var(--color), 1) !important;
 }
 
 .selected-answer-button {
-    color: rgba(241, 249, 250, 1);
-    background-color: #4FB9A6;
+    color: rgba(241, 249, 250, 1) !important;
+    background-color: rgba(var(--color), 1) !important;
     /* font-size: 25px; */
     /* width: 32px; */
     /* height: 32px; */
@@ -502,7 +582,7 @@ div[contenteditable] {
     border-color: transparent;
     border-radius: 5px;
     font-family: inherit;
-    font-size: inherit;
+    font-size: 25px;
     line-height: inherit;
 }
 
