@@ -238,7 +238,7 @@ const appendTitle = (title) => {
 }
 
 // Assigns the question's text 
-const appendDilemma = (question) => {
+const appendDilemma = (question, i) => {
     // Generating question text
     let quizQuestionDilemma = document.createElement('div')
     let quizQuestionDilemmaDIV = document.createElement('div')
@@ -248,7 +248,7 @@ const appendDilemma = (question) => {
     quizQuestionDilemma.id = `quiz-question-dilemma`
     quizQuestionDilemma.classList.add(`quiz-question-text-item`)
     // let quizQuestionTextSPAN = document.createElement(`span`)
-    quizQuestionDilemma.innerHTML = '<b>Question</b><br>' + question;
+    quizQuestionDilemma.innerHTML = `<b>Question ${i}</b><br>` + question;
     
     quizQuestionDilemmaDIV.appendChild(quizQuestionDilemma)
     document.getElementById('quiz-question-container').appendChild(quizQuestionDilemmaDIV)
@@ -262,7 +262,7 @@ const loadQuestion = async (question, init, additional=false) => {
         appendScenario(question.text)
         updateProgessBarStatus()
     }
-    appendDilemma(question.dilemma)
+    appendDilemma(question.dilemma, additional+1)
     if (question.type == `multiple` || question.type == `single`) {
         if (question.answers.length <= 2) {
             loadBinaryChoiceQuestion(question)
@@ -404,6 +404,8 @@ const loadBinaryChoiceQuestion = (question) => {
     for (let i = 0; i < question.answers.length; i++) {
         let quizQuestionDIV = document.createElement(`div`)
         quizQuestionDIV.className = `quiz-answer-text-container-single unselected-answer`
+        quizQuestionDIV.style.width = '45%'
+
         // Assigns ID as ASCII values (A = 65, B = 66, etc.)
         quizQuestionDIV.id = String.fromCharCode(i + 65);
         quizQuestionDIV.onclick = () => {

@@ -25,7 +25,7 @@ export const dataset = {
       id: 1,
     },
     {
-      dilemma: " Flipping the switch is\u2026",
+      dilemma: "Is flipping the switch the right thing to do?",
       title: "Control",
       text: " Ben sees that an empty runaway boxcar is headed down a track.  There is nobody on the track. There is one person working on a side track. If Ben flips the switch, the boxcar will turn onto the side track and hit the one person. If Ben does not flip the switch, the boxcar will continue on the track, and nobody will be hit.",
       // answers: ["Forbidden", "", "", "Permissible", "", "", "Obligatory"],
