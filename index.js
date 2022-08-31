@@ -197,7 +197,7 @@ const appendInfo = (title, text, variables, asHTML = false, asbox = true) => {
         quizQuestionIconSPAN.style.position = 'relative';
         quizQuestionIconSPAN.style.top = '4';
         // quizQuestionIconSPAN.style.lineHeight = '-5px';
-        quizQuestionIconSPAN.innerText = '🛈'    
+        quizQuestionIconSPAN.innerHTML = '&#128712'    
         quizQuestionTextDIV.appendChild(quizQuestionIconSPAN)
 
     }
