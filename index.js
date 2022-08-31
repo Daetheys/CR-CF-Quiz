@@ -95,53 +95,6 @@ const loadState = () => {
     currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
 }
 
-const loadTextFormQuestion = () => {
-    // Generating answer elements
-    // let quizAnswersUL = document.getElementById(`quiz-answer-list`)
-    // <div class="input-contain">
-    //<input type="text" id="fname" name="fname" autocomplete="off" value="" aria-labelledby="placeholder-fname">
-    //<label class="placeholder-text" for="fname" id="placeholder-fname">
-    // <div class="text">First Name</div>
-    //label>
-    //</div>
-    let firstdiv = document.createElement(`div`);
-    firstdiv.className = "input-contain"
-    let seconddiv = document.createElement(`div`);
-    seconddiv.className = "text"
-    seconddiv.innerText = 'Answer here...'
-
-    let input = document.createElement(`input`);
-    input.id = 'fname'
-    input.name = 'fname'
-    input.autocomplete = 'off'
-    input.type = 'text'
-    input.setAttribute('value', "")
-    // i
-    input.setAttribute('aria-labelledby', 'placeholder-fname')
-
-    let label = document.createElement('label')
-    label.className = 'placeholder-text'
-    label.setAttribute('for', 'fname')
-    label.id = 'placeholder-fname'
-    
-    label.appendChild(seconddiv)
-    firstdiv.appendChild(input)
-    firstdiv.appendChild(label)
-
-    input.addEventListener("keyup", () => {
-        input.setAttribute("value", input.value);
-        // saveWrittenAnswers();
-    })
-    //let questionTextarea = document.createElement(`div`);
-    //questionTextarea.contentEditable = true
-    //questionTextarea.className = `form-control question-text-form answer-typed-input-form`;
-    //questionTextarea.setAttribute(`id`, `questionTextarea`);
-    //questionTextarea.setAttribute(`data-text`, `Enter answer here...`)
-    //questionTextarea.onkeydown = saveWrittenAnswers;
-    // questionTextarea.innerHTML = ``
-    document.getElementById('quiz-question-container').appendChild(firstdiv)
-}
-
 /*----------------------------------------------------------------------------------------------- */
 /* Instruction management
 /*----------------------------------------------------------------------------------------------- */
@@ -199,13 +152,13 @@ const canLoadNewInstruction = (adjustment) => {
 /*----------------------------------------------------------------------------------------------- */
 /* Question management
 /*----------------------------------------------------------------------------------------------- */
-    
+
 // Appends the scenario
 const appendScenario = (question, asHTML = false) => {
     // Generating question text
     let i = document.getElementById('quiz-question-container').childNodes.length
     let quizQuestionTextDIV = document.createElement('div')
-    quizQuestionTextDIV.id = `quiz-question-text-container-` + i 
+    quizQuestionTextDIV.id = `quiz-question-text-container-` + i
     quizQuestionTextDIV.className = 'quiz-question-text-container quiz-question-story-container'
     let quizQuestionTextSPAN = document.createElement(`span`)
     quizQuestionTextSPAN.className = `quiz-question-text-item`
@@ -219,7 +172,7 @@ const appendScenario = (question, asHTML = false) => {
     // quizQuestionTextSPAN.innerText = '<b>question
     // }
     quizQuestionTextDIV.appendChild(quizQuestionTextSPAN)
-    
+
     let panel = document.getElementById('quiz-question-container')
     panel.appendChild(quizQuestionTextDIV)
 }
@@ -232,7 +185,7 @@ const appendTitle = (title) => {
     quizQuestionTitle.className = 'bottom-bar'
     // let quizQuestionTextSPAN = ocument.createElement(`span`)
     quizQuestionTitle.innerText = title
-    
+
     let panel = document.getElementById('quiz-question-container')
     panel.appendChild(quizQuestionTitle)
 }
@@ -249,20 +202,80 @@ const appendDilemma = (question, i) => {
     quizQuestionDilemma.classList.add(`quiz-question-text-item`)
     // let quizQuestionTextSPAN = document.createElement(`span`)
     quizQuestionDilemma.innerHTML = `<b>Question ${i}</b><br>` + question;
-    
+
     quizQuestionDilemmaDIV.appendChild(quizQuestionDilemma)
+
+    if (i > 1) {
+        quizQuestionDilemmaDIV.disabled = true;
+        quizQuestionDilemmaDIV.classList.add('opacityblur')
+    }
+
     document.getElementById('quiz-question-container').appendChild(quizQuestionDilemmaDIV)
 }
 
+const appendTextFormQuestion = (additional) => {
+    // Generating answer elements
+    // let quizAnswersUL = document.getElementById(`quiz-answer-list`)
+    // <div class="input-contain">
+    //<input type="text" id="fname" name="fname" autocomplete="off" value="" aria-labelledby="placeholder-fname">
+    //<label class="placeholder-text" for="fname" id="placeholder-fname">
+    // <div class="text">First Name</div>
+    //label>
+    //</div>
+    let firstdiv = document.createElement(`div`);
+    firstdiv.className = "input-contain"
+    let seconddiv = document.createElement(`div`);
+    seconddiv.className = "text"
+    seconddiv.innerText = 'Answer here...'
+
+    let input = document.createElement(`input`);
+    input.id = 'fname'
+    input.name = 'fname'
+    input.autocomplete = 'off'
+    input.type = 'text'
+    input.setAttribute('value', "")
+    // i
+    input.setAttribute('aria-labelledby', 'placeholder-fname')
+
+    let label = document.createElement('label')
+    label.className = 'placeholder-text'
+    label.setAttribute('for', 'fname')
+    label.id = 'placeholder-fname'
+
+    label.appendChild(seconddiv)
+    firstdiv.appendChild(input)
+    firstdiv.appendChild(label)
+
+    input.addEventListener("keyup", () => {
+        input.setAttribute("value", input.value);
+        // saveWrittenAnswers();
+    })
+
+    if (additional) {
+        input.disabled = true;
+        firstdiv.classList.add('opacityblur')
+
+    }
+    //let questionTextarea = document.createElement(`div`);
+    //questionTextarea.contentEditable = true
+    //questionTextarea.className = `form-control question-text-form answer-typed-input-form`;
+    //questionTextarea.setAttribute(`id`, `questionTextarea`);
+    //questionTextarea.setAttribute(`data-text`, `Enter answer here...`)
+    //questionTextarea.onkeydown = saveWrittenAnswers;
+    // questionTextarea.innerHTML = ``
+    document.getElementById('quiz-question-container').appendChild(firstdiv)
+}
+
+
 // Loads a multiple choice quiz question
-const loadQuestion = async (question, init, additional=false) => {
+const loadQuestion = async (question, init, additional = false) => {
     if (!additional) {
         saveState()
         appendTitle(question.title)
         appendScenario(question.text)
         updateProgessBarStatus()
     }
-    appendDilemma(question.dilemma, additional+1)
+    appendDilemma(question.dilemma, additional + 1)
     if (question.type == `multiple` || question.type == `single`) {
         if (question.answers.length <= 2) {
             loadBinaryChoiceQuestion(question)
@@ -271,7 +284,7 @@ const loadQuestion = async (question, init, additional=false) => {
         }
         loadPreviousEnteredChoice(question.entered)
     } else if (question.type == `short` || question.type == `long`) {
-        loadTextFormQuestion()
+        appendTextFormQuestion(additional)
         loadPreviousEnteredText(question.entered)
     }
 
@@ -302,8 +315,8 @@ const loadNewQuestion = async (adjustment) => {
         //
         // Displays previous questions. Does nothing if no questions to load.
         // if (adjustment == `previous-question-load`) {
-            // loadQuestion(dataset.questions[currentQuestionIndex])
-            // Displays next question. Does nothing if no questions to load.
+        // loadQuestion(dataset.questions[currentQuestionIndex])
+        // Displays next question. Does nothing if no questions to load.
         if (adjustment == `next-question-load` && currentQuestionIndex <= dataset.questions.length) {
             loadQuestion(dataset.questions[currentQuestionIndex])
             if ("additional" in dataset.questions[currentQuestionIndex])
@@ -360,7 +373,7 @@ const appendAnswersList = () => {
     let quizAnswersUL = document.createElement(`ul`)
     quizAnswersUL.id = `quiz-answer-list`
     quizAnswersUL.className = `quiz-answer-list`
-    
+
     quizAnswersDIV.appendChild(quizAnswersUL)
     document.getElementById('quiz-question-container').appendChild(quizAnswersDIV)
     return quizAnswersUL
@@ -369,7 +382,7 @@ const appendAnswersList = () => {
 // Creates elements for multiple choice questions (checkboxes & radios)
 const loadMultipleChoiceQuestion = (question) => {
     // Generating answer elements
-    let quizAnswersUL = appendAnswersList() 
+    let quizAnswersUL = appendAnswersList()
     // questionHTML.id
     for (let i = 0; i < question.answers.length; i++) {
         let quizQuestionDIV = document.createElement(`div`)
@@ -397,7 +410,7 @@ const loadMultipleChoiceQuestion = (question) => {
 
 // Creates elements for binary choice questions
 const loadBinaryChoiceQuestion = (question) => {
-    let quizAnswersUL = appendAnswersList() 
+    let quizAnswersUL = appendAnswersList()
     let signs = ['✔', '✘']
 
     // questionHTML.id
@@ -408,8 +421,10 @@ const loadBinaryChoiceQuestion = (question) => {
 
         // Assigns ID as ASCII values (A = 65, B = 66, etc.)
         quizQuestionDIV.id = String.fromCharCode(i + 65);
+
         quizQuestionDIV.onclick = () => {
-            selectAnswer(quizQuestionDIV.id,  false, ['green', 'red'][+(i==1)])
+            selectAnswer(quizQuestionDIV.id, false, ['green', 'red'][+(i == 1)])
+            removeOpacityBlur()
         }
 
         // Generate elements
@@ -475,7 +490,7 @@ const selectAnswer = (key, previous, color) => {
         }
         // If answer is not yet selected, select it
         if (answer.classList.contains(`unselected-answer`)) {
-            answer.classList.add(`selected-answer`) 
+            answer.classList.add(`selected-answer`)
             if (color) {
                 answer.classList.add(color);
             }
@@ -616,19 +631,19 @@ const showHideContinueButton = (question) => {
         document.getElementById(`quiz-continue-text`).style.display = `none`
     } else {
         try {
-        let show = document.getElementById(`quiz-answer-list`).children
-        let buttonContainer = document.getElementById(`quiz-continue-button-container`)
-        document.getElementById(`quiz-continue-text`).style.display = `initial`
-        // Checks if an answer has been selected. If so, shows continue button
-        for (let i = 0; i < show.length; i++) {
-            if (show[i].classList.contains(`selected-answer`)) {
-                buttonContainer.style.display = `initial`
-                return
+            let show = document.getElementById(`quiz-answer-list`).children
+            let buttonContainer = document.getElementById(`quiz-continue-button-container`)
+            document.getElementById(`quiz-continue-text`).style.display = `initial`
+            // Checks if an answer has been selected. If so, shows continue button
+            for (let i = 0; i < show.length; i++) {
+                if (show[i].classList.contains(`selected-answer`)) {
+                    buttonContainer.style.display = `initial`
+                    return
+                }
             }
-        }
-        // If no answer is selected, don't display button
-        buttonContainer.style.display = `none`
-    }catch {}
+            // If no answer is selected, don't display button
+            buttonContainer.style.display = `none`
+        } catch { }
     }
 }
 
@@ -642,7 +657,7 @@ const updateProgessBarStatus = () => {
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
     let value = Math.floor((calculateQuizProgress(dataset.questions) / dataset.questions.length) * 100)
-    
+
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
     progress.style.width = value + `%`
@@ -678,7 +693,7 @@ const ad_QuestionIteration = () => {
 /*----------------------------------------------------------------------------------------------- */
 /* listeners functions
 /*----------------------------------------------------------------------------------------------- */
-    
+
 // Listener for key presses for quiz interaction.
 document.onkeydown = function (evt) {
     evt = evt || window.event;
@@ -725,5 +740,15 @@ const uniq = (a) => {
 const removeAllChildren = (parent) => {
     let node = document.getElementById(parent)
     node.innerHTML = ``
+}
+
+// Accepts a parent id to remove all children
+const removeOpacityBlur = () => {
+    let node = document.getElementsByTagName('*')
+    // debugger
+    Array.from(node).map(element => {
+        element.disabled = false;
+        element.classList.remove('opacityblur')
+    });
 }
 
