@@ -9,11 +9,13 @@ $(document).ready(main);
 const timeBetweenQuestions = 0;
 
 // global variables
-let currentQuestionIndex = 0;
+let currentQuestionIndex = 31;
 let currentInstructionIndex = 0;
 let continueClickable = true;
 let debug = 1;
 let savedState = 0;
+let state = 'instructions';
+let reset = new URLSearchParams(window.location.search).get('reset')
 
 function main() {
     init();
@@ -21,14 +23,29 @@ function main() {
 
 // Initialization functions go here
 const init = async () => {
-    if (!debug)
-        loadState()
+    if (reset) {
+        saveState();
+        window.location = window.location.href.split("?")[0];
+    }
     toggleProgressBar()
+    loadState()
+
+    if (state == 'end') {
+        loadEndPanel()
+        return
+    }
     cr_ContinueButton()
 
     // debugger;
-    if (currentInstructionIndex < dataset.instructions.length)
-        loadInstructions(dataset.instructions[currentInstructionIndex], true);
+    loadInstructions(dataset.instructions[currentInstructionIndex], true);
+}
+
+const loadEndPanel = async () => {
+    await moveQuestionContainer('up', 'down')
+    await moveQuestionContainerMiddle()
+    removeAllChildren('quiz-question-container')
+    appendTitle('END')
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>!', [], true)
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -84,9 +101,10 @@ const storeAnswers = (add, key) => {
 /* ------------------------------------------------------------------------------------------ */
 const saveState = () => {
     localStorage['savedState'] = 1
+    localStorage['state'] = state
     localStorage['currentQuestionIndex'] = currentQuestionIndex
     localStorage['currentInstructionIndex'] = currentInstructionIndex
-    localStorage['answers'] = JSON.stringify(dataset.questions); 
+    localStorage['answers'] = JSON.stringify(dataset.questions)
 }
 
 const loadState = () => {
@@ -95,6 +113,8 @@ const loadState = () => {
 
     localStorage['savedState'] = 1;
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
+    state = localStorage['state']=='end' ? 'end' : 'instructions';
+
     if (localStorage['answers'] != undefined && localStorage['answers'].length > 0)
         dataset.questions = JSON.parse(localStorage['answers']);
     // currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
@@ -112,7 +132,7 @@ const loadInstructions = async (inst, init) => {
     appendInfo('', inst.text[0], [], asHTML)
     appendInfo('', inst.text[1], [currentQuestionIndex,], asHTML)
 
-    
+
     // appendScenario(`You've completed ${currentQuestionIndex} items so far.`, asHTML)
     showHideContinueButton(dataset.instructions[currentInstructionIndex])
 
@@ -121,41 +141,20 @@ const loadInstructions = async (inst, init) => {
 }
 
 // Function to load next question & possible answers in object
-const loadNewInstruction = async (adjustment) => {
+const loadNewInstruction = async () => {
     // Saves written answers before moving on to next question
     // Displays previous questions. Does nothing if no questions to load.
-    let proceed = canLoadNewInstruction(adjustment);
-    if (proceed) {
-        removeAllChildren(`quiz-answer-list`)
-        removeAllChildren(`quiz-question-text-container`)
-        if (adjustment == `previous-question-load`) {
-            loadInstructions(dataset.instructions[currentInstructionIndex], false)
-            // Displays next question. Does nothing if no questions to load.
-        } else if (adjustment == `next-question-load` && currentInstructionIndex <= dataset.instructions.length) {
-            loadInstructions(dataset.instructions[currentInstructionIndex], false)
-        }
+    let canLoad = canLoadNewInstruction();
+    // console.log('Proceed:' + proceed)
+    if (canLoad) {
+        loadInstructions(dataset.instructions[currentInstructionIndex], false)
     }
-    return !proceed
+    return !canLoad
 }
 
 // Checks if we have reached the first or last instruction
-const canLoadNewInstruction = (adjustment) => {
-    // In/de-crement based on if user is loading next or previous question
-    if (adjustment == `next-question-load`) {
-        currentInstructionIndex++
-    } else {
-        currentInstructionIndex--
-    }
-    // Fail safe if we have reached last quesiton
-    if (currentInstructionIndex > dataset.instructions.length - 1) {
-        currentInstructionIndex++
-        return false
-        // Fail safe if trying to move before first question
-    } else if (currentInstructionIndex < 0) {
-        currentInstructionIndex++
-        return false
-    }
-    return true
+const canLoadNewInstruction = () => {
+    return currentInstructionIndex < dataset.instructions.length
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -179,7 +178,7 @@ const appendInfo = (title, text, variables, asHTML = false) => {
         });
     }
 
-    if (!asHTML) {
+    if (asHTML && title) {
         text = '<b>' + title + '</b> <br>' + text;
     }
     // if (asHTML) {
@@ -310,7 +309,6 @@ const appendTextFormQuestion = (question, additional) => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init, additional = false) => {
-    debugger;
     if (!progressBarIsVisible()) {
         toggleProgressBar()
         updateProgessBarStatus()
@@ -343,48 +341,33 @@ const loadQuestion = async (question, init, additional = false) => {
 
 // Function to load next question & possible answers in object
 const loadNewQuestion = async (adjustment) => {
-    // Saves written answers before moving on to next question
-    let type = dataset.questions[currentQuestionIndex].type
-    if (type == 'long' || type == 'short') {
-        saveWrittenAnswers()
-    }
     // Removes previous question & answers
-    if (canLoadNewQuestion(adjustment)) {
+    let canLoad = canLoadNewQuestion()
+    if (canLoad) {
         await questionContainerLoad(adjustment)
-        // removeAllChildren(`quiz-answer-list`)
-        // removeAllChildren(`quiz-question-text-container`)
         removeAllChildren(`quiz-question-container`)
-        //
-        // Displays previous questions. Does nothing if no questions to load.
-        // if (adjustment == `previous-question-load`) {
-        // loadQuestion(dataset.questions[currentQuestionIndex])
-        // Displays next question. Does nothing if no questions to load.
-        if (adjustment == `next-question-load` && currentQuestionIndex <= dataset.questions.length) {
+        if (adjustment == `next-question-load`) {
             loadQuestion(dataset.questions[currentQuestionIndex])
             if ("additional" in dataset.questions[currentQuestionIndex])
                 loadQuestion(dataset.questions[currentQuestionIndex].additional, false, true)
 
         }
     }
+    return !canLoad;
 }
+
 // Checks if we have reached the first or last question
-const canLoadNewQuestion = (adjustment) => {
-    // In/de-crement based on if user is loading next or previous question
-    if (adjustment == `next-question-load`) {
-        currentQuestionIndex++
-    } else {
-        currentQuestionIndex--
-    }
+const canLoadNewQuestion = () => {
     // Fail safe if we have reached last quesiton
-    if (currentQuestionIndex > dataset.questions.length - 1) {
-        currentQuestionIndex--
-        return false
-        // Fail safe if trying to move before first question
-    } else if (currentQuestionIndex < 0) {
-        currentQuestionIndex++
-        return false
-    }
-    return true
+    // if (currentQuestionIndex < (dataset.questions.length)) {
+    //     currentQuestionIndex++
+    //     return true 
+    //     // Fail safe if trying to move before first question
+    // } else if (currentQuestionIndex < 0) {
+    //     currentQuestionIndex++
+    //     return true 
+    // // }
+    return currentQuestionIndex < dataset.questions.length
 
 }
 
@@ -525,6 +508,7 @@ const ed_QuizQuestionElements = (type, press, numerator, container, text, n, col
 // key indicates the id of the given answer, invoking previous will prevent the function from editing the local answered questions object
 const selectAnswer = (key, previous, color, question) => {
     let answer = document.getElementById(key)
+    debugger;
     if (answer) {
         // If only one answer can be given, unselect all answers before reselecting new answer
         if (answer.classList.contains(`question-type-single`)) {
@@ -540,7 +524,7 @@ const selectAnswer = (key, previous, color, question) => {
             indicateSelectedAnswer(answer, color)
             saveAnswer(answer.textContent, question)
             // if (!previous) {
-                // storeAnswers(true, key)
+            // storeAnswers(true, key)
             // }
             // If answer is already selected, unselect it
         } else if (answer.classList.contains(`selected-answer`)) {
@@ -549,7 +533,7 @@ const selectAnswer = (key, previous, color, question) => {
             // Unhighlight selected answer buttons
             unselectAnswerButton(answer.children)
             // if (!previous) {
-                // storeAnswers(false, key)
+            // storeAnswers(false, key)
             // }
         }
     }
@@ -649,12 +633,27 @@ const cr_ContinueButton = () => {
         if (!continueClickable)
             return;
 
+        if (state == 'instructions') 
+            currentInstructionIndex++
+        
+        if (state == 'questions')
+            currentQuestionIndex++
+        
         continueClickable = false;
-        let startQuestions = await loadNewInstruction(`next-question-load`);
-        //debugger;
+        let startQuestions = await loadNewInstruction();
+        
         if (startQuestions) {
-            loadNewQuestion(`next-question-load`)
+            debugger;
+            state = 'questions'
+            let end = await loadNewQuestion(`next-question-load`)
+            if (end) {
+                state = 'end';
+                saveState()
+            }
         }
+        
+        if (state == 'end')
+            await loadEndPanel();
 
         setTimeout(() => { continueClickable = true }, timeBetweenQuestions);
     }
@@ -705,7 +704,8 @@ const updateProgessBarStatus = () => {
     progress.setAttribute('aria-valuenow', value)
     progress.style.width = value + `%`
     // Updates progress bar text
-    text.innerText = value + '% complete (item ' + (calculateQuizProgress(dataset.questions) + 1) + ')'
+    // text.innerText = value + '% complete (item ' + (calculateQuizProgress(dataset.questions) + 1) + ')'
+    text.innerText = value + '% complete (item ' + (currentQuestionIndex+1) + ')'
 }
 
 // Finds quiz progress by comparing num of questions answers to total number of questions
