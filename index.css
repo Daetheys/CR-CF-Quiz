@@ -18,7 +18,8 @@ body {
 
 .opacityblur {
     opacity: 0.6;
-    filter: blur(3px);
+    filter: blur(3px) grayscale(1);
+    
 }
 
 div:focus {
