@@ -12,6 +12,11 @@ a {
     color: #4FB9A6;
 }
 
+a:hover {
+    font-weight: bolder;
+    cursor: pointer;
+}
+
 .red {
     --color: 212, 101, 101;
 }

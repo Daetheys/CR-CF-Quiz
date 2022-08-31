@@ -113,7 +113,7 @@ const loadState = () => {
 
     localStorage['savedState'] = 1;
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
-    state = localStorage['state']=='end' ? 'end' : 'instructions';
+    state = localStorage['state'] == 'end' ? 'end' : 'instructions';
 
     if (localStorage['answers'] != undefined && localStorage['answers'].length > 0)
         dataset.questions = JSON.parse(localStorage['answers']);
@@ -633,15 +633,15 @@ const cr_ContinueButton = () => {
         if (!continueClickable)
             return;
 
-        if (state == 'instructions') 
+        if (state == 'instructions')
             currentInstructionIndex++
-        
+
         if (state == 'questions')
             currentQuestionIndex++
-        
+
         continueClickable = false;
         let startQuestions = await loadNewInstruction();
-        
+
         if (startQuestions) {
             debugger;
             state = 'questions'
@@ -651,7 +651,7 @@ const cr_ContinueButton = () => {
                 saveState()
             }
         }
-        
+
         if (state == 'end')
             await loadEndPanel();
 
@@ -705,7 +705,7 @@ const updateProgessBarStatus = () => {
     progress.style.width = value + `%`
     // Updates progress bar text
     // text.innerText = value + '% complete (item ' + (calculateQuizProgress(dataset.questions) + 1) + ')'
-    text.innerText = value + '% complete (item ' + (currentQuestionIndex+1) + ')'
+    text.innerText = value + '% complete (item ' + (currentQuestionIndex + 1) + ')'
 }
 
 // Finds quiz progress by comparing num of questions answers to total number of questions
@@ -799,3 +799,8 @@ const removeOpacityBlur = () => {
     });
 }
 
+window.addURLParameters = (name, value) => {
+    var searchParams = new URLSearchParams(window.location.search)
+    searchParams.set(name, value)
+    window.location.search = searchParams.toString()
+}

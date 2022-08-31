@@ -5,7 +5,7 @@ export const dataset = {
 			title: "Instructions",
 			text: [
 				"You are going to be presented with different moral dilemmas. For each scenario, you'll have to answer a first question by emiting a moral judgment (more precisely by answering <b>Yes</b>/<b>No</b>). Secondly, you'll have to explain <b>why</b> you've choosen <b>Yes</b> or <b>No</b>", 
-				`You've completed <variable1> item(s) so far. <a href="/?reset=true"> Reset data?</a>`],
+				`You've completed <variable1> item(s) so far. <a onclick="addURLParameters('reset', 1)"> Reset data?</a>`],
 			type: "short",
 		},
 		// {
