@@ -17,7 +17,7 @@ export const dataset = {
 	],
 	questions: [
 		{
-			"dilemma": " Is accelerating quickly the right thing to do?",
+			"dilemma": " Is<b> accelerating quickly </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -36,7 +36,7 @@ export const dataset = {
 			"id": 1
 		},
 		{
-			"dilemma": " Is flipping the switch the right thing to do?",
+			"dilemma": " Is<b> flipping the switch </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -55,7 +55,7 @@ export const dataset = {
 			"id": 2
 		},
 		{
-			"dilemma": " Is pushing the one visitor the right thing to do?",
+			"dilemma": " Is<b> pushing the one visitor </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -74,7 +74,7 @@ export const dataset = {
 			"id": 3
 		},
 		{
-			"dilemma": " Is pulling the supply line the right thing to do?",
+			"dilemma": " Is<b> pulling the supply line </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -93,7 +93,7 @@ export const dataset = {
 			"id": 4
 		},
 		{
-			"dilemma": " Is flipping the switch the right thing to do?",
+			"dilemma": " Is<b> flipping the switch </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -112,7 +112,7 @@ export const dataset = {
 			"id": 5
 		},
 		{
-			"dilemma": " Is flipping the switch the right thing to do?",
+			"dilemma": " Is<b> flipping the switch </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -131,7 +131,7 @@ export const dataset = {
 			"id": 6
 		},
 		{
-			"dilemma": " Is pushing the person the right thing to do?",
+			"dilemma": " Is<b> pushing the person </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -150,7 +150,7 @@ export const dataset = {
 			"id": 7
 		},
 		{
-			"dilemma": " Is not warning the one person the right thing to do?",
+			"dilemma": " Is<b> not warning the one person </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -169,7 +169,7 @@ export const dataset = {
 			"id": 8
 		},
 		{
-			"dilemma": " Is poisoning the one the right thing to do?",
+			"dilemma": " Is<b> poisoning the one </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -188,7 +188,7 @@ export const dataset = {
 			"id": 9
 		},
 		{
-			"dilemma": " Is not providing the antidote to the one the right thing to do?",
+			"dilemma": " Is<b> not providing the antidote to the one </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -207,7 +207,7 @@ export const dataset = {
 			"id": 10
 		},
 		{
-			"dilemma": " Is accelerating quickly the right thing to do?",
+			"dilemma": " Is<b> accelerating quickly </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -226,7 +226,7 @@ export const dataset = {
 			"id": 11
 		},
 		{
-			"dilemma": " Is accelerating quickly the right thing to do?",
+			"dilemma": " Is<b> accelerating quickly </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -245,7 +245,7 @@ export const dataset = {
 			"id": 12
 		},
 		{
-			"dilemma": " Is pushing the one passenger the right thing to do?",
+			"dilemma": " Is<b> pushing the one passenger </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -264,7 +264,7 @@ export const dataset = {
 			"id": 13
 		},
 		{
-			"dilemma": " Is not stopping the machine the right thing to do?",
+			"dilemma": " Is<b> not stopping the machine </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -283,7 +283,7 @@ export const dataset = {
 			"id": 14
 		},
 		{
-			"dilemma": " Is not stopping the machine the right thing to do?",
+			"dilemma": " Is<b> not stopping the machine </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -302,7 +302,7 @@ export const dataset = {
 			"id": 15
 		},
 		{
-			"dilemma": " Is breaking open the window the right thing to do?",
+			"dilemma": " Is<b> breaking open the window </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -321,7 +321,7 @@ export const dataset = {
 			"id": 16
 		},
 		{
-			"dilemma": " Is swinging the burning debris the right thing to do?",
+			"dilemma": " Is<b> swinging the burning debris </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -340,7 +340,7 @@ export const dataset = {
 			"id": 17
 		},
 		{
-			"dilemma": " Is breaking open the window the right thing to do?",
+			"dilemma": " Is<b> breaking open the window </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -359,7 +359,7 @@ export const dataset = {
 			"id": 18
 		},
 		{
-			"dilemma": " Is pushing the man the right thing to do?",
+			"dilemma": " Is<b> pushing the man </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -378,7 +378,7 @@ export const dataset = {
 			"id": 19
 		},
 		{
-			"dilemma": " Is firing the missile the right thing to do?",
+			"dilemma": " Is<b> firing the missile </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -397,7 +397,7 @@ export const dataset = {
 			"id": 20
 		},
 		{
-			"dilemma": " Is not firing the missile the right thing to do?",
+			"dilemma": " Is<b> not firing the missile </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -416,7 +416,7 @@ export const dataset = {
 			"id": 21
 		},
 		{
-			"dilemma": " Is not pulling the lever the right thing to do?",
+			"dilemma": " Is<b> not pulling the lever </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -435,7 +435,7 @@ export const dataset = {
 			"id": 22
 		},
 		{
-			"dilemma": " Is not pulling the lever the right thing to do?",
+			"dilemma": " Is<b> not pulling the lever </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -454,7 +454,7 @@ export const dataset = {
 			"id": 23
 		},
 		{
-			"dilemma": " Is pulling the lever the right thing to do?",
+			"dilemma": " Is<b> pulling the lever </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -473,7 +473,7 @@ export const dataset = {
 			"id": 24
 		},
 		{
-			"dilemma": " Is taking the narrow channel the right thing to do?",
+			"dilemma": " Is<b> taking the narrow channel </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -492,7 +492,7 @@ export const dataset = {
 			"id": 25
 		},
 		{
-			"dilemma": " Is continuing to speed towards the five swimmers the right thing to do?",
+			"dilemma": " Is<b> continuing to speed towards the five swimmers </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -511,7 +511,7 @@ export const dataset = {
 			"id": 26
 		},
 		{
-			"dilemma": " Is continuing to drive the right thing to do?",
+			"dilemma": " Is<b> continuing to drive </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -530,7 +530,7 @@ export const dataset = {
 			"id": 27
 		},
 		{
-			"dilemma": " Is continuing to drive the right thing to do?",
+			"dilemma": " Is<b> continuing to drive </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -549,7 +549,7 @@ export const dataset = {
 			"id": 28
 		},
 		{
-			"dilemma": " Is using the dynamite the right thing to do?",
+			"dilemma": " Is<b> using the dynamite </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -568,7 +568,7 @@ export const dataset = {
 			"id": 29
 		},
 		{
-			"dilemma": " Is using the sledgehammer the right thing to do?",
+			"dilemma": " Is<b> using the sledgehammer </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -587,7 +587,7 @@ export const dataset = {
 			"id": 30
 		},
 		{
-			"dilemma": " Is not moving toward the one swimmer the right thing to do?",
+			"dilemma": " Is<b> not moving toward the one swimmer </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
@@ -606,7 +606,7 @@ export const dataset = {
 			"id": 31
 		},
 		{
-			"dilemma": " Is not moving toward the one swimmer the right thing to do?",
+			"dilemma": " Is<b> not moving toward the one swimmer </b>the right thing to do?",
 			"additional": {
 				"type": "long",
 				"entered": [],
