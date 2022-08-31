@@ -12,7 +12,7 @@ const timeBetweenQuestions = 0;
 let currentQuestionIndex = 0;
 let currentInstructionIndex = 0;
 let continueClickable = true;
-let debug = 0;
+let debug = 1;
 let savedState = 0;
 
 function main() {
