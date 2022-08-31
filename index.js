@@ -714,7 +714,7 @@ const updateProgessBarStatus = () => {
     let progress = document.getElementById('quiz-progress-bar')
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
-    let value = Math.floor((calculateQuizProgress(dataset.questions) / dataset.questions.length) * 100)
+    let value = Math.floor((currentQuestionIndex / dataset.questions.length) * 100)
 
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
