@@ -19,7 +19,7 @@ def main():
                     "entered": [],
                     "type": "long"
                 },
-                "title": "Boat",
+                "oldTitle": q['title'],
                 "entered": [],
                 "correct": "",
                 "title": title,

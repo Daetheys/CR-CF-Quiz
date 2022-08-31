@@ -129,7 +129,7 @@ const loadInstructions = async (inst, init) => {
     saveState()
     appendTitle(inst.title)
     let asHTML = true;
-    appendInfo('', inst.text[0], [], asHTML)
+    appendInfo('', inst.text[0], [], asHTML, false)
     appendInfo('', inst.text[1], [currentQuestionIndex,], asHTML)
 
 
@@ -162,7 +162,7 @@ const canLoadNewInstruction = () => {
 /*----------------------------------------------------------------------------------------------- */
 
 // Appends the scenario
-const appendInfo = (title, text, variables, asHTML = false) => {
+const appendInfo = (title, text, variables, asHTML = false, asbox = true) => {
     // Generating question text
     let quizQuestionTextDIV = document.createElement('div')
     quizQuestionTextDIV.className = 'quiz-question-text-container quiz-question-info-container green'
@@ -186,8 +186,23 @@ const appendInfo = (title, text, variables, asHTML = false) => {
     // } else {
     // quizQuestionTextSPAN.innerText = '<b>question
     // }
-    quizQuestionTextDIV.appendChild(quizQuestionTextSPAN)
+    if (!asbox) {
+        quizQuestionTextDIV.style.border = 0;
+        quizQuestionTextDIV.style.backgroundColor = 'white';
+    } else {
+        let quizQuestionIconSPAN = document.createElement(`span`)
+        quizQuestionIconSPAN.style.alignSelf = 'right';
+        quizQuestionIconSPAN.style.fontSize = '30px';
+        quizQuestionIconSPAN.style.marginRight = '1.5%';
+        quizQuestionIconSPAN.style.position = 'relative';
+        quizQuestionIconSPAN.style.top = '4';
+        // quizQuestionIconSPAN.style.lineHeight = '-5px';
+        quizQuestionIconSPAN.innerText = '🛈'    
+        quizQuestionTextDIV.appendChild(quizQuestionIconSPAN)
 
+    }
+
+    quizQuestionTextDIV.appendChild(quizQuestionTextSPAN)
     let panel = document.getElementById('quiz-question-container')
     panel.appendChild(quizQuestionTextDIV)
 }
