@@ -35,7 +35,7 @@ Google like
 input {
     height: 5rem;
     width: 100%;
-    border: 2px solid black;
+    border: 2px solid gray;
     border-radius: .2rem;
 }
 
@@ -47,7 +47,7 @@ input:focus{
 input:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
     background-color: white;
     font-size: 1.1rem;
-    color: black;
+    color: gray;
     transform: translate(0, -170%);
 }
 input:focus + .placeholder-text .text{
@@ -71,7 +71,7 @@ input:focus + .placeholder-text .text{
     padding: 0 0.5rem;
     background-color: transparent;
     transform: translate(0);
-    color: black;
+    color: gray;
     transition: transform 0.15s ease-out, font-size 0.15s ease-out, background-color 0.2s ease-out, color 0.15s ease-out;
 }
 input, .placeholder-text{
