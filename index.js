@@ -309,6 +309,7 @@ const appendTextFormQuestion = (question, additional) => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init, additional = false) => {
+    debugger;
     if (!progressBarIsVisible()) {
         toggleProgressBar()
         updateProgessBarStatus()
