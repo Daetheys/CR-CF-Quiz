@@ -95,7 +95,7 @@ const loadState = () => {
 
     localStorage['savedState'] = 1;
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
-    if (localStorage['answers'].length > 0)
+    if (localStorage['answers'] != undefined && localStorage['answers'].length > 0)
         dataset.questions = JSON.parse(localStorage['answers']);
     // currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
 }
