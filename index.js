@@ -12,7 +12,7 @@ const timeBetweenQuestions = 0;
 let currentQuestionIndex = 0;
 let currentInstructionIndex = 0;
 let continueClickable = true;
-let debug = 1;
+let debug = 0;
 let savedState = 0;
 
 function main() {
@@ -23,10 +23,7 @@ function main() {
 const init = async () => {
     if (!debug)
         loadState()
-
-    // toggleDilemma()
     toggleProgressBar()
-
     cr_ContinueButton()
 
     // debugger;
@@ -40,6 +37,11 @@ const init = async () => {
 // Save
 const saveWrittenAnswers = () => {
     dataset.questions[currentQuestionIndex].entered[0] = document.getElementById(`questionTextarea`).innerHTML
+}
+
+const saveAnswer = (txt, question) => {
+    // question.entered = question.entered.join(",")
+    question.entered.push(txt)
 }
 
 // Assigns answered question attributes to elements that have been entered by user previously
@@ -84,6 +86,7 @@ const saveState = () => {
     localStorage['savedState'] = 1
     localStorage['currentQuestionIndex'] = currentQuestionIndex
     localStorage['currentInstructionIndex'] = currentInstructionIndex
+    localStorage['answers'] = JSON.stringify(dataset.questions); 
 }
 
 const loadState = () => {
@@ -92,7 +95,8 @@ const loadState = () => {
 
     localStorage['savedState'] = 1;
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
-    currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
+    dataset.questions = JSON.parse(localStorage['answers']);
+    // currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -104,7 +108,11 @@ const loadInstructions = async (inst, init) => {
     saveState()
     appendTitle(inst.title)
     let asHTML = true;
-    appendScenario(inst.text, asHTML)
+    appendInfo('', inst.text[0], [], asHTML)
+    appendInfo('', inst.text[1], [currentQuestionIndex,], asHTML)
+
+    
+    // appendScenario(`You've completed ${currentQuestionIndex} items so far.`, asHTML)
     showHideContinueButton(dataset.instructions[currentInstructionIndex])
 
     // Skips loading animation on initialization
@@ -152,6 +160,37 @@ const canLoadNewInstruction = (adjustment) => {
 /*----------------------------------------------------------------------------------------------- */
 /* Question management
 /*----------------------------------------------------------------------------------------------- */
+
+// Appends the scenario
+const appendInfo = (title, text, variables, asHTML = false) => {
+    // Generating question text
+    let quizQuestionTextDIV = document.createElement('div')
+    quizQuestionTextDIV.className = 'quiz-question-text-container quiz-question-info-container green'
+    let quizQuestionTextSPAN = document.createElement(`span`)
+    quizQuestionTextSPAN.className = `quiz-question-text-item`
+
+    let i = 1;
+    if (variables.length > 0) {
+        variables.forEach(element => {
+            text = text.replace('<variable' + i + '>', '<b>' + element + '</b>')
+            i++
+
+        });
+    }
+
+    if (!asHTML) {
+        text = '<b>' + title + '</b> <br>' + text;
+    }
+    // if (asHTML) {
+    quizQuestionTextSPAN.innerHTML = text;
+    // } else {
+    // quizQuestionTextSPAN.innerText = '<b>question
+    // }
+    quizQuestionTextDIV.appendChild(quizQuestionTextSPAN)
+
+    let panel = document.getElementById('quiz-question-container')
+    panel.appendChild(quizQuestionTextDIV)
+}
 
 // Appends the scenario
 const appendScenario = (question, asHTML = false) => {
@@ -213,7 +252,7 @@ const appendDilemma = (question, i) => {
     document.getElementById('quiz-question-container').appendChild(quizQuestionDilemmaDIV)
 }
 
-const appendTextFormQuestion = (additional) => {
+const appendTextFormQuestion = (question, additional) => {
     // Generating answer elements
     // let quizAnswersUL = document.getElementById(`quiz-answer-list`)
     // <div class="input-contain">
@@ -248,7 +287,7 @@ const appendTextFormQuestion = (additional) => {
 
     input.addEventListener("keyup", () => {
         input.setAttribute("value", input.value);
-        // saveWrittenAnswers();
+        saveAnswer(input.value, question)
     })
 
     if (additional) {
@@ -269,6 +308,10 @@ const appendTextFormQuestion = (additional) => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init, additional = false) => {
+    if (!progressBarIsVisible()) {
+        toggleProgressBar()
+        updateProgessBarStatus()
+    }
     if (!additional) {
         saveState()
         appendTitle(question.title)
@@ -284,7 +327,7 @@ const loadQuestion = async (question, init, additional = false) => {
         }
         loadPreviousEnteredChoice(question.entered)
     } else if (question.type == `short` || question.type == `long`) {
-        appendTextFormQuestion(additional)
+        appendTextFormQuestion(question, additional)
         loadPreviousEnteredText(question.entered)
     }
 
@@ -297,10 +340,6 @@ const loadQuestion = async (question, init, additional = false) => {
 
 // Function to load next question & possible answers in object
 const loadNewQuestion = async (adjustment) => {
-    if (currentQuestionIndex === 0) {
-        toggleProgressBar();
-        // toggleDilemma();
-    }
     // Saves written answers before moving on to next question
     let type = dataset.questions[currentQuestionIndex].type
     if (type == 'long' || type == 'short') {
@@ -390,7 +429,7 @@ const loadMultipleChoiceQuestion = (question) => {
         // Assigns ID as ASCII values (A = 65, B = 66, etc.)
         quizQuestionDIV.id = (i).toString()
         quizQuestionDIV.onclick = () => {
-            selectAnswer(quizQuestionDIV.id, false, 'green')
+            selectAnswer(quizQuestionDIV.id, false, 'green', question)
         }
         // Generate elements
         let quizQuestionPress = document.createElement(`li`)
@@ -423,7 +462,7 @@ const loadBinaryChoiceQuestion = (question) => {
         quizQuestionDIV.id = String.fromCharCode(i + 65);
 
         quizQuestionDIV.onclick = () => {
-            selectAnswer(quizQuestionDIV.id, false, ['green', 'red'][+(i == 1)])
+            selectAnswer(quizQuestionDIV.id, false, ['green', 'red'][+(i == 1)], question)
             removeOpacityBlur()
         }
 
@@ -481,7 +520,7 @@ const ed_QuizQuestionElements = (type, press, numerator, container, text, n, col
 
 // Highlights and unhighlights given answers when a keytap is pressed 
 // key indicates the id of the given answer, invoking previous will prevent the function from editing the local answered questions object
-const selectAnswer = (key, previous, color) => {
+const selectAnswer = (key, previous, color, question) => {
     let answer = document.getElementById(key)
     if (answer) {
         // If only one answer can be given, unselect all answers before reselecting new answer
@@ -496,18 +535,19 @@ const selectAnswer = (key, previous, color) => {
             }
             answer.classList.remove(`unselected-answer`)
             indicateSelectedAnswer(answer, color)
-            if (!previous) {
-                storeAnswers(true, key)
-            }
+            saveAnswer(answer.textContent, question)
+            // if (!previous) {
+                // storeAnswers(true, key)
+            // }
             // If answer is already selected, unselect it
         } else if (answer.classList.contains(`selected-answer`)) {
             answer.classList.add(`unselected-answer`)
             answer.classList.remove(`selected-answer`)
             // Unhighlight selected answer buttons
             unselectAnswerButton(answer.children)
-            if (!previous) {
-                storeAnswers(false, key)
-            }
+            // if (!previous) {
+                // storeAnswers(false, key)
+            // }
         }
     }
     // Triggers a check to see if we should display continue button
@@ -721,6 +761,10 @@ document.onkeydown = function (evt) {
 const toggleProgressBar = () => {
     let v = document.getElementById("progress").style.display == "none";
     document.getElementById("progress").style.display = v ? 'block' : 'none'
+}
+
+const progressBarIsVisible = () => {
+    return document.getElementById("progress").style.display == 'block'
 }
 
 const toggleDilemma = () => {

@@ -3,7 +3,7 @@ export const dataset = {
 	instructions: [
 		{
 			title: "Instructions",
-			text: "You are going to be presented with different moral dilemmas. At the end of each dilemma, you'll have to give a moral rate to an action given the context. The scale is from 1 to 7 where 1 is labeled <b>Forbidden</b>, 4 is labeled <b>Permissible</b>, and 7 is labeled <b>Obligatory</b>.",
+			text: ["You are going to be presented with different moral dilemmas. For each scenario, you'll have to answer a first question by emiting a moral judgment (more precisely by answering <b>Yes</b>/<b>No</b>). Secondly, you'll have to explain <b>why</b> you've choosen <b>Yes</b> or <b>No</b>", `You've already completed <variable1> items so far.`],
 			type: "short",
 		},
 		// {

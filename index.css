@@ -334,6 +334,17 @@ div[contenteditable] {
     border-left-style: solid;
 }
 
+.quiz-question-info-container{
+    border-left-color: rgb(var(--color), .8); 
+    border-left-width: 5px;
+    border-radius: 0;
+    border-left-style: solid;
+}
+
+.quiz-question-info-container b {
+    color: rgb(var(--color), .8); 
+}
+
 .quiz-question-story-container b{
     color: rgb(116, 116, 228); 
 }
@@ -410,7 +421,7 @@ div[contenteditable] {
     width: 75%;
     position: relative;
     top: 0px;
-    max-width: 50%;
+    max-width: 45%;
     padding: 24px;
     margin-bottom: 1%;
 }
