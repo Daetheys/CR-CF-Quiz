@@ -235,6 +235,11 @@ div[contenteditable] {
     /* box-shadow: #4FB9A6 0px 0px 0px 1px inset; */
 }
 
+.unselected-answer:focus {
+    /* box-shadow: #4FB9A6 0px 0px 0px 1px inset; */
+    background-color: #FAFAFA;
+}
+
 .radian-answer-border {
     border-radius: 50%;
 }

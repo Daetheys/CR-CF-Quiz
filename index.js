@@ -443,6 +443,7 @@ const loadBinaryChoiceQuestion = (question) => {
         let quizQuestionDIV = document.createElement(`div`)
         quizQuestionDIV.className = `quiz-answer-text-container-single unselected-answer`
         quizQuestionDIV.style.width = '45%'
+        quizQuestionDIV.setAttribute('tabindex', (i).toString())
 
         // Assigns ID as ASCII values (A = 65, B = 66, etc.)
         quizQuestionDIV.id = String.fromCharCode(i + 65);
