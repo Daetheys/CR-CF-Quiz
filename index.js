@@ -5,14 +5,15 @@ $(document).ready(main);
 /* ------------------------------------------------------------------------------------------ */
 /* Main
 /* ------------------------------------------------------------------------------------------ */
-//global parameters 
-const timeBetweenQuestions = 0;
+// Constant parameters 
+const TIME_BETWEEN_QUESTIONS = 0;
+const MAX_REQUESTS = 5;
+const DEBUG = 1;
 
 // global variables
 let currentQuestionIndex = 0;
 let currentInstructionIndex = 0;
 let continueClickable = true;
-let debug = 1;
 let savedState = 0;
 let state = 'instructions';
 let reset = new URLSearchParams(window.location.search).get('reset')
@@ -27,8 +28,9 @@ const init = async () => {
         saveState();
         window.location = window.location.href.split("?")[0];
     }
-    toggleProgressBar()
+    //toggleProgressBar()
     loadState()
+    updateProgessBarStatus()
 
     if (state == 'end') {
         loadEndPanel()
@@ -671,7 +673,7 @@ const cr_ContinueButton = () => {
         if (state == 'end')
             await loadEndPanel();
 
-        setTimeout(() => { continueClickable = true }, timeBetweenQuestions);
+        setTimeout(() => { continueClickable = true }, TIME_BETWEEN_QUESTIONS);
     }
 
     continueSPAN.innerHTML = `press ENTER`
@@ -819,4 +821,33 @@ window.addURLParameters = (name, value) => {
     var searchParams = new URLSearchParams(window.location.search)
     searchParams.set(name, value)
     window.location.search = searchParams.toString()
+}
+
+
+const sendToDB =  async (call, data, url) => {
+    $.ajax({
+        type: 'POST',
+        data: data,
+        async: true,
+        url: url,
+        success: function (r) {
+
+            if (r.error > 0 && (call + 1) < MAX_REQUESTS) {
+                sendToDB(call + 1);
+            }
+        },
+
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            if ((call + 1) < MAX_REQUESTS) {
+                sendToDB(call + 1);
+            } else {
+                GUI.displayModalWindow('Network error',
+                    `Please check your internet connection.\n\n
+                     If you are not online, the data is lost and we can\'t pay you. :(`, 'error');
+            }
+
+        }
+
+    });
 }
