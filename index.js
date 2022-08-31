@@ -41,7 +41,7 @@ const saveWrittenAnswers = () => {
 
 const saveAnswer = (txt, question) => {
     // question.entered = question.entered.join(",")
-    question.entered.push(txt)
+    question.entered = txt;
 }
 
 // Assigns answered question attributes to elements that have been entered by user previously
@@ -301,7 +301,8 @@ const appendTextFormQuestion = (question, additional) => {
     //questionTextarea.className = `form-control question-text-form answer-typed-input-form`;
     //questionTextarea.setAttribute(`id`, `questionTextarea`);
     //questionTextarea.setAttribute(`data-text`, `Enter answer here...`)
-    //questionTextarea.onkeydown = saveWrittenAnswers;
+    //questionTextarea.onkeydown = aveWrittenAnswers;
+    //debugger;
     // questionTextarea.innerHTML = ``
     document.getElementById('quiz-question-container').appendChild(firstdiv)
 }
