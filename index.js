@@ -669,6 +669,7 @@ const cr_ContinueButton = () => {
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
     continueBUTTON.onclick = async function () {
+        debugger;
         if (!continueClickable()) {
             checkInputValidity()
             return;
