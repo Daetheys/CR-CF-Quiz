@@ -348,7 +348,6 @@ const loadQuestion = async (question, init, additional = false) => {
     }
     appendDilemma(question.dilemma, additional + 1)
     if (question.type == `multiple` || question.type == `single`) {
-        alert('')
         if (question.answers.length <= 2) {
             loadBinaryChoiceQuestion(question)
         } else {
