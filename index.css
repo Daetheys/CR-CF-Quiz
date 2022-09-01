@@ -66,6 +66,30 @@ input:focus + .placeholder-text .text{
     border-color:  orange;
     color:  orange;
 }
+
+input:focus:invalid {
+    background: url("images/warning.png") no-repeat 95% 50% transparent;
+    background-size: 4%;
+}
+
+input:valid {
+    border-color: #4FB9A6;
+    background: url("images/check.png") no-repeat 95% 50% transparent;
+
+    background-size: 25px;
+}
+
+input:valid {
+    border-color: #4FB9A6;
+    background: url("https://emoji-uc.akamaized.net/orig/24/2b7d83dec6b27ae5aceaca178bae29.png") no-repeat 95% 50% transparent;
+
+    background-size: 25px;
+}
+
+input:valid + .placeholder-text .text {
+    color: #4FB9A6;
+}
+
 .placeholder-text{
     position: absolute;
     top: 0;

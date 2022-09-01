@@ -646,7 +646,7 @@ const moveQuestionContainerMiddle = () => {
 /*----------------------------------------------------------------------------------------------- */
 const continueClickable = () => {
     return Array.from(document.getElementsByTagName('input'))
-        .every((element, i)  => (element.value.length > INPUT_MIN_LENGTH[i]))
+        .every((element, i)  => (element.value.length >= INPUT_MIN_LENGTH[i]))
 }
 
 const checkInputValidity = () => {
