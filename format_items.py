@@ -14,8 +14,8 @@ def main():
             dilemma = dilemma.replace(idea, '<b>'+idea+'</b>')
 
             new_keys = {
-                "type": "single",
-                "answers": ["Yes", "No"],
+                "type": "long",
+                # "answers": ["Yes", "No"],
                 "additional": {
                     "dilemma": "Why?",
                     "entered": [],

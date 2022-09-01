@@ -41,7 +41,9 @@ Google like
 */
 .input-contain {
     position: relative;
+    margin-bottom: 5%;
 }
+
 input {
     height: 5rem;
     width: 100%;

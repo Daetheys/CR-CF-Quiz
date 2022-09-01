@@ -6,28 +6,24 @@ $(document).ready(main);
 /* Main
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
-const TIME_BETWEEN_QUESTIONS = 0;
+const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
+const INPUT_MIN_LENGTH = 2;
 
 // global variables
 let currentQuestionIndex = 0;
 let currentInstructionIndex = 0;
-let continueClickable = true;
 let savedState = 0;
 let state = 'instructions';
-let reset = new URLSearchParams(window.location.search).get('reset')
+let wait = false;
 
 function main() {
     init();
-}
+};
 
 // Initialization functions go here
 const init = async () => {
-    if (reset) {
-        saveState();
-        window.location = window.location.href.split("?")[0];
-    }
     //toggleProgressBar()
     loadState()
     updateProgessBarStatus()
@@ -107,6 +103,14 @@ const saveState = () => {
     localStorage['currentQuestionIndex'] = currentQuestionIndex
     localStorage['currentInstructionIndex'] = currentInstructionIndex
     localStorage['answers'] = JSON.stringify(dataset.questions)
+}
+
+window.resetState = () => {
+    localStorage['state'] = 'instructions'
+    localStorage['currentQuestionIndex'] = 0
+    localStorage['currentInstructionIndex'] = 0
+    localStorage['answers'] = ""
+    window.location = window.location;
 }
 
 const loadState = () => {
@@ -199,7 +203,7 @@ const appendInfo = (title, text, variables, asHTML = false, asbox = true) => {
         quizQuestionIconSPAN.style.position = 'relative';
         quizQuestionIconSPAN.style.top = '4';
         // quizQuestionIconSPAN.style.lineHeight = '-5px';
-        quizQuestionIconSPAN.innerHTML = '&#128712'    
+        quizQuestionIconSPAN.innerHTML = '&#128712'
         quizQuestionTextDIV.appendChild(quizQuestionIconSPAN)
 
     }
@@ -280,6 +284,7 @@ const appendTextFormQuestion = (question, additional) => {
     //</div>
     let firstdiv = document.createElement(`div`);
     firstdiv.className = "input-contain"
+    firstdiv.id = "form"
     let seconddiv = document.createElement(`div`);
     seconddiv.className = "text"
     seconddiv.innerText = 'Answer here...'
@@ -288,8 +293,10 @@ const appendTextFormQuestion = (question, additional) => {
     input.id = 'fname'
     input.name = 'fname'
     input.autocomplete = 'off'
+    input.minLength = INPUT_MIN_LENGTH;
     input.type = 'text'
     input.setAttribute('value', "")
+    input.setAttribute('required', 'required')
     // i
     input.setAttribute('aria-labelledby', 'placeholder-fname')
 
@@ -305,6 +312,9 @@ const appendTextFormQuestion = (question, additional) => {
     input.addEventListener("keyup", () => {
         input.setAttribute("value", input.value);
         saveAnswer(input.value, question)
+        if (input.value.length > 1) {
+            removeOpacityBlur();
+        }
     })
 
     if (additional) {
@@ -338,6 +348,7 @@ const loadQuestion = async (question, init, additional = false) => {
     }
     appendDilemma(question.dilemma, additional + 1)
     if (question.type == `multiple` || question.type == `single`) {
+        alert('')
         if (question.answers.length <= 2) {
             loadBinaryChoiceQuestion(question)
         } else {
@@ -526,7 +537,6 @@ const ed_QuizQuestionElements = (type, press, numerator, container, text, n, col
 // key indicates the id of the given answer, invoking previous will prevent the function from editing the local answered questions object
 const selectAnswer = (key, previous, color, question) => {
     let answer = document.getElementById(key)
-    debugger;
     if (answer) {
         // If only one answer can be given, unselect all answers before reselecting new answer
         if (answer.classList.contains(`question-type-single`)) {
@@ -635,6 +645,15 @@ const moveQuestionContainerMiddle = () => {
 /*----------------------------------------------------------------------------------------------- */
 /* Continue management
 /*----------------------------------------------------------------------------------------------- */
+const continueClickable = () => {
+    return (Array.from(document.getElementsByTagName('input'))
+        .every(element => element.value.length > 1))
+}
+
+const checkInputValidity = () => {
+    document.querySelectorAll('input').forEach(element => element.reportValidity())
+}
+
 // Creates continue button
 const cr_ContinueButton = () => {
     let continueDIV = document.createElement(`div`)
@@ -643,13 +662,19 @@ const cr_ContinueButton = () => {
     continueDIV.id = `quiz-continue-button-container`
     continueDIV.className = `quiz-continue-button-container`
     continueBUTTON.className = `quiz-continue-button`
+    // continueBUTTON.setAttribute("type", "submit")
+    // continueBUTTON.setAttribute("form", "form")
+
     continueSPAN.className = `quiz-continue-text`
     continueSPAN.id = `quiz-continue-text`
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
     continueBUTTON.onclick = async function () {
-        if (!continueClickable)
+        if (!continueClickable()) {
+            checkInputValidity()
             return;
+        }
+
 
         if (state == 'instructions')
             currentInstructionIndex++
@@ -657,11 +682,10 @@ const cr_ContinueButton = () => {
         if (state == 'questions')
             currentQuestionIndex++
 
-        continueClickable = false;
+        wait = true;
         let startQuestions = await loadNewInstruction();
 
         if (startQuestions) {
-            debugger;
             state = 'questions'
             let end = await loadNewQuestion(`next-question-load`)
             if (end) {
@@ -673,7 +697,11 @@ const cr_ContinueButton = () => {
         if (state == 'end')
             await loadEndPanel();
 
-        setTimeout(() => { continueClickable = true }, TIME_BETWEEN_QUESTIONS);
+        setTimeout(() => {
+            wait = false;
+            $('#quiz-continue-button-container').fadeIn(500)
+            $('#quiz-continue-text').fadeIn(500)
+        }, TIME_BETWEEN_QUESTIONS);
     }
 
     continueSPAN.innerHTML = `press ENTER`
@@ -686,9 +714,15 @@ const cr_ContinueButton = () => {
 
 // Only shows a continue button if a question is selected
 const showHideContinueButton = (question) => {
-    if (question.type == 'short' || question.type == `long`) {
-        document.getElementById(`quiz-continue-button-container`).style.display = `initial`
+    if ((question.type == 'short' || question.type == `long`)) {
+        if (continueClickable()) {
+            document.getElementById(`quiz-continue-button-container`).style.display = `initial`
+            document.getElementById(`quiz-continue-text`).style.display = `initial`
+            return
+        }
+        document.getElementById(`quiz-continue-button-container`).style.display = `none`
         document.getElementById(`quiz-continue-text`).style.display = `none`
+
     } else {
         try {
             let show = document.getElementById(`quiz-answer-list`).children
@@ -762,15 +796,20 @@ document.onkeydown = function (evt) {
     let keyCode = evt.keyCode;
     let selected = document.getElementsByClassName('selected-answer-button').length > 0;
     // Registers key selectors for A to J on multiple choice questions.
-    if ((keyCode >= 48 && keyCode <= 57)) {
-        selectAnswer(keyCode.toString() - 49)
-    }
+    // if ((keyCode >= 48 && keyCode <= 57)) {
+    // selectAnswer(keyCode.toString() - 49)
+    // }
     // if (evt.keyCode == 38) {
     // loadNewQuestion('previous-question-load')
     // }
     // Moves to next question  using enter key for open ended questions
     let type = dataset.questions[currentQuestionIndex].type
     if (((type == `single` || type == `multiple`) && keyCode == 13 && selected)) {
+        // loadNewQuestion('next-question-load')
+        $('.quiz-continue-button')[0].click()
+    }
+
+    if ((type == 'long' || type == 'short') && (keyCode == 13)) {
         // loadNewQuestion('next-question-load')
         $('.quiz-continue-button')[0].click()
     }
@@ -824,7 +863,7 @@ window.addURLParameters = (name, value) => {
 }
 
 
-const sendToDB =  async (call, data, url) => {
+const sendToDB = async (call, data, url) => {
     $.ajax({
         type: 'POST',
         data: data,
