@@ -9,7 +9,7 @@ $(document).ready(main);
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
-const INPUT_MIN_LENGTH = [2, 40];
+const INPUT_MIN_LENGTH = [2, 30];
 
 // global variables
 let currentQuestionIndex = 0;
