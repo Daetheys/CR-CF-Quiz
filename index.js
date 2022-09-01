@@ -9,7 +9,7 @@ $(document).ready(main);
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
-const INPUT_MIN_LENGTH = [2, 50];
+const INPUT_MIN_LENGTH = [2, 40];
 
 // global variables
 let currentQuestionIndex = 0;
@@ -669,7 +669,6 @@ const cr_ContinueButton = () => {
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
     continueBUTTON.onclick = async function () {
-        debugger;
         if (!continueClickable()) {
             checkInputValidity()
             return;
@@ -792,15 +791,12 @@ const ad_QuestionIteration = () => {
 // Listener for key presses for quiz interaction.
 document.onkeydown = function (evt) {
     evt = evt || window.event;
-    console.log(evt.keyCode)
     let keyCode = evt.keyCode;
     let selected = document.getElementsByClassName('selected-answer-button').length > 0;
+
     // Registers key selectors for A to J on multiple choice questions.
     // if ((keyCode >= 48 && keyCode <= 57)) {
     // selectAnswer(keyCode.toString() - 49)
-    // }
-    // if (evt.keyCode == 38) {
-    // loadNewQuestion('previous-question-load')
     // }
     // Moves to next question  using enter key for open ended questions
     let type = dataset.questions[currentQuestionIndex].type
