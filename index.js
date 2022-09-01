@@ -9,7 +9,7 @@ $(document).ready(main);
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
-const INPUT_MIN_LENGTH = 2;
+const INPUT_MIN_LENGTH = [2, 50];
 
 // global variables
 let currentQuestionIndex = 0;
@@ -293,7 +293,7 @@ const appendTextFormQuestion = (question, additional) => {
     input.id = 'fname'
     input.name = 'fname'
     input.autocomplete = 'off'
-    input.minLength = INPUT_MIN_LENGTH;
+    input.minLength = INPUT_MIN_LENGTH[+(additional)];
     input.type = 'text'
     input.setAttribute('value', "")
     input.setAttribute('required', 'required')
@@ -645,8 +645,8 @@ const moveQuestionContainerMiddle = () => {
 /* Continue management
 /*----------------------------------------------------------------------------------------------- */
 const continueClickable = () => {
-    return (Array.from(document.getElementsByTagName('input'))
-        .every(element => element.value.length > 1))
+    return Array.from(document.getElementsByTagName('input'))
+        .every((element, i)  => (element.value.length > INPUT_MIN_LENGTH[i]))
 }
 
 const checkInputValidity = () => {
