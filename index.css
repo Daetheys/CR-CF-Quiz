@@ -69,7 +69,7 @@ input:focus + .placeholder-text .text{
 
 input:focus:invalid {
     background: url("images/warning.png") no-repeat 95% 50% transparent;
-    background-size: 4%;
+    background-size: 3%;
 }
 
 input:valid {
