@@ -76,21 +76,21 @@ const loadPreviousEnteredText = () => {
 }
 
 
-// Indicate previous is true in order to skip storing answers in the local object
-const storeAnswers = (add, key) => {
-    // For adding user's answers to the local object
-    if (add) {
-        if (dataset.questions[currentQuestionIndex].type == `single`) {
-            dataset.questions[currentQuestionIndex].entered.length = 0
-        }
-        dataset.questions[currentQuestionIndex].entered.push(key)
-        // For removing user's answers from the local object
-    } else {
-        dataset.questions[currentQuestionIndex].entered = dataset.questions[currentQuestionIndex].entered.filter(item => item !== key)
-    }
-    // Ensures there are no duplicate answers in array
-    dataset.questions[currentQuestionIndex].entered = uniq(dataset.questions[currentQuestionIndex].entered)
-}
+//// Indicate previous is true in order to skip storing answers in the local object
+//const storeAnswers = (add, key) => {
+//    // For adding user's answers to the local object
+//    if (add) {
+//        if (dataset.questions[currentQuestionIndex].type == `single`) {
+//            dataset.questions[currentQuestionIndex].entered.length = 0
+//        }
+//        dataset.questions[currentQuestionIndex].entered.push(key)
+//        // For removing user's answers from the local object
+//    } else {
+//        dataset.questions[currentQuestionIndex].entered = dataset.questions[currentQuestionIndex].entered.filter(item => item !== key)
+//    }
+//    // Ensures there are no duplicate answers in array
+//    dataset.questions[currentQuestionIndex].entered = uniq(dataset.questions[currentQuestionIndex].entered)
+//}
 
 
 
