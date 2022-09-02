@@ -274,16 +274,8 @@ const appendDilemma = (question, i) => {
 }
 
 const appendTextFormQuestion = (question, additional) => {
-    // Generating answer elements
-    // let quizAnswersUL = document.getElementById(`quiz-answer-list`)
-    // <div class="input-contain">
-    //<input type="text" id="fname" name="fname" autocomplete="off" value="" aria-labelledby="placeholder-fname">
-    //<label class="placeholder-text" for="fname" id="placeholder-fname">
-    // <div class="text">First Name</div>
-    //label>
-    //</div>
     let firstdiv = document.createElement(`div`);
-    firstdiv.className = "input-contain"
+    firstdiv.className = "input-contain";
     firstdiv.id = "form"
     let seconddiv = document.createElement(`div`);
     seconddiv.className = "text"
@@ -322,14 +314,6 @@ const appendTextFormQuestion = (question, additional) => {
         firstdiv.classList.add('opacityblur')
 
     }
-    //let questionTextarea = document.createElement(`div`);
-    //questionTextarea.contentEditable = true
-    //questionTextarea.className = `form-control question-text-form answer-typed-input-form`;
-    //questionTextarea.setAttribute(`id`, `questionTextarea`);
-    //questionTextarea.setAttribute(`data-text`, `Enter answer here...`)
-    //questionTextarea.onkeydown = aveWrittenAnswers;
-    //debugger;
-    // questionTextarea.innerHTML = ``
     document.getElementById('quiz-question-container').appendChild(firstdiv)
 }
 
@@ -342,7 +326,7 @@ const loadQuestion = async (question, init, additional = false) => {
     }
     if (!additional) {
         saveState()
-        appendTitle(question.title)
+        appendTitle('Item ' + question.id)
         appendScenario(question.text)
         updateProgessBarStatus()
     }
@@ -646,7 +630,7 @@ const moveQuestionContainerMiddle = () => {
 /*----------------------------------------------------------------------------------------------- */
 const continueClickable = () => {
     return Array.from(document.getElementsByTagName('input'))
-        .every((element, i)  => (element.value.length >= INPUT_MIN_LENGTH[i]))
+        .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]))
 }
 
 const checkInputValidity = () => {
