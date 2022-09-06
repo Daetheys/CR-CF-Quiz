@@ -96,24 +96,24 @@ const loadPreviousEnteredText = () => {
 //    dataset.questions[currentQuestionIndex].entered = uniq(dataset.questions[currentQuestionIndex].entered)
 //}
 
-const sendItemData = async () => {
+const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
-        "title":dataset.questions[currentQuestionIndex].title,
-        "itemIndex": currentQuestionIndex,
-        "itemID": dataset.questions[currentQuestionIndex].id,
+        "title":dataset.questions[idx].title,
+        "itemIndex": idx,
+        "itemID": dataset.questions[idx].id,
         "questionID": 0,
-        "question": (dataset.questions[currentQuestionIndex].text + dataset.questions[currentQuestionIndex].dilemma),
+        "question": (dataset.questions[idx].text + dataset.questions[idx].dilemma),
         "answerID": 0,
-        "answer": dataset.questions[currentQuestionIndex].entered,
+        "answer": dataset.questions[idx].entered,
         "rt": 1.05,
     }
 
     sendToDB(0, {...data}, '/php/insert.php');
 
-    additional =  "additional" in dataset.questions[currentQuestionIndex]
-    if (additional) {answerID
-        add_data = dataset.questions[currentQuestionIndex].additional;
+    additional =  "additional" in dataset.questions[idx]
+    if (additional) {
+        add_data = dataset.questions[idx].additional;
         data['questionID'] = 1;
         data['answerID'] = 1;
         data['question'] = add_data.dilemma;
@@ -699,14 +699,7 @@ const cr_ContinueButton = () => {
             currentInstructionIndex++
 
         if (state == 'questions') {
-            sendToDB(
-                {
-                    'question': dataset.questions[currentQuestionIndex].question,
-                    'answer': dataset.questions[currentQuestionIndex].answer,
-                    'a_id': dataset.questions[currentQuestionIndex].a_id,
-
-                }
-            )
+            sendItemData(currentQuestionIndex);
             currentQuestionIndex++
 
         }
