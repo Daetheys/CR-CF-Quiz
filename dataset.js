@@ -475,7 +475,7 @@ export const dataset = {
 		},
 		{
 			"title": "Hired Rapist",
-			"text": "You have been dissatisfied with your marriage for several years. It is your  distinct impression that your wife no longer appreciates you. You remember how she appreciated you years ago when you took care of her after she was mugged. You devise the following plan to regain your wife\u2019s affection. You will hire a man to break into your house while you are away. This man will tie up your wife and rape her. You, upon hearing the horrible news, will return swiftly to her side, to take care of her and comfort her, and she will once again appreciate you.",
+			"text": "You have been dissatisfied with your marriage for several years. It is your distinct impression that your partner no longer appreciates you. You remember how they appreciated you years ago when you took care of her after they was mugged. You devise the following plan to regain your partner’s affection. You will hire a person to break into your house while you are away. This person will tie up and sexually assault your partner. You, upon hearing the horrible news, will return swiftly to their side, to take care of them and comfort them, and they will once again appreciate you. Is it appropriate for you to hire a person to sexually assault your partner so that they will appreciate you as you comfort them?",
 			"id": 27,
 			"type": "long",
 			"additional": {
