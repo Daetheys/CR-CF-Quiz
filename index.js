@@ -18,7 +18,7 @@ var savedState = 0;
 var state = 'instructions';
 var wait = false;
 var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
-if (!prolificID) prolificID = 'failedToFindProlificID';
+if (!prolificID) prolificID = 'notfound';
 
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
