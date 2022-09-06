@@ -17,8 +17,11 @@ var currentInstructionIndex = 0;
 var savedState = 0;
 var state = 'instructions';
 var wait = false;
-var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
+var prolificID = (new URLSearchParams(window.location.search).get('PROLIFIC_PID')).toString();
 if (!prolificID) prolificID = 'notfound';
+window.prolificID = prolificID
+
+console.log(prolificID)
 
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
@@ -140,22 +143,24 @@ window.resetState = () => {
     localStorage['currentQuestionIndex'] = 0
     localStorage['currentInstructionIndex'] = 0
     localStorage['answers'] = ""
-    localStorage['prolificID'] = undefined;
+    localStorage['prolificID'] = 'reset';
+    localStorage['savedState'] = 0
     window.location = window.location;
 }
 
 const setProlificID = () => {
+    debugger;
     let div = document.getElementById('prolific-id')
-    div.innerHTML = prolificID;
+    div.innerHTML = 'id: ' + prolificID;
 
 }
 const loadState = () => {
-    if (!localStorage['savedState'])
+    if (!parseInt(localStorage['savedState']))
         return
 
+    localStorage['savedState'] = 1;
 
     prolificID = localStorage['prolificID'];
-    localStorage['savedState'] = 1;
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
 

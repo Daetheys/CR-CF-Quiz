@@ -8,6 +8,12 @@ body {
     color: #4FB9A6
 }
 
+.prolific-id {
+    position: fixed;    
+    bottom: 1%;
+    left: 1%;
+}
+
 a {
     color: #4FB9A6;
 }
