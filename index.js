@@ -160,7 +160,9 @@ const loadState = () => {
 
     localStorage['savedState'] = 1;
 
-    prolificID = localStorage['prolificID'];
+    if (prolificID == 'notfound') {
+        prolificID = localStorage['prolificID'];
+    } 
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
 
