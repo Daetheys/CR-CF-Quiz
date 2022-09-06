@@ -3,7 +3,7 @@ import { dataset } from './dataset.js'
 $(document).ready(main);
 
 /* ------------------------------------------------------------------------------------------ */
-/* Main
+/* Main params
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 5000;
@@ -21,9 +21,6 @@ var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID')
 var startTime = undefined;
 var rt = undefined
 if (!prolificID) prolificID = 'notfound';
-window.prolificID = prolificID
-
-console.log(prolificID)
 
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
@@ -32,6 +29,9 @@ window.getGlobal = () => {
     }
 }
 
+/* ------------------------------------------------------------------------------------------ */
+/* start functions
+/* ------------------------------------------------------------------------------------------ */
 function main() {
     init();
 };
@@ -80,23 +80,6 @@ const loadPreviousEnteredText = () => {
     }
 }
 
-
-//// Indicate previous is true in order to skip storing answers in the local object
-//const storeAnswers = (add, key) => {
-//    // For adding user's answers to the local object
-//    if (add) {
-//        if (dataset.questions[currentQuestionIndex].type == `single`) {
-//            dataset.questions[currentQuestionIndex].entered.length = 0
-//        }
-//        dataset.questions[currentQuestionIndex].entered.push(key)
-//        // For removing user's answers from the local object
-//    } else {
-//        dataset.questions[currentQuestionIndex].entered = dataset.questions[currentQuestionIndex].entered.filter(item => item !== key)
-//    }
-//    // Ensures there are no duplicate answers in array
-//    dataset.questions[currentQuestionIndex].entered = uniq(dataset.questions[currentQuestionIndex].entered)
-//}
-
 const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
@@ -111,6 +94,7 @@ const sendItemData = async (idx) => {
     }
 
     if (DEBUG) {
+        // if debug notify with the content of sent data
         removeAllNotification()
         let text = '';
         Object.entries(data).forEach(([k, v]) => { text += `<b>${k}</b>: ${v} <br>` })
@@ -128,6 +112,7 @@ const sendItemData = async (idx) => {
         data['answer'] = add_data.entered;
 
         if (DEBUG) {
+            // if debug notify with the content of sent data
             let text = '';
             Object.entries(data).forEach(([k, v]) => { text += `<b>${k}</b>: ${v} <br>` })
             notify(text, 'Sent data', 2)
@@ -136,9 +121,6 @@ const sendItemData = async (idx) => {
         }
 
     }
-    // console.log(trial)
-    // await sendToServer(trial)
-    // await sendToServer(dataset.questions[currentQuestionIndex])
 }
 
 

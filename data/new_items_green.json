@@ -715,8 +715,8 @@
     },
     {
         "title": "Scheduling",
-        "text": "You are in charge of scheduling appointments in a dentist\u2019s office. Two people,  Mr. Morris and Mrs. Santiago have called to make appointments for next Monday. The only available times for next Monday are at 10:00 AM and at 3:00 PM. Mr. Morris\u2019s schedule is rather flexible. He can have his appointment either at 10:00 AM or at 3:00 PM. Mrs. Santiago\u2019s schedule is less flexible. She can only have her appointment at 10:00 AM. Would you schedule Mr. Morris for 3:00 PM so that both he and Mrs.",
-        "id": 43,
+        "text": "You are in charge of scheduling appointments in a dentist\u2019s office. Two people,  Mr. Morris and Mrs. Santiago have called to make appointments for next Monday. The only available times for next Monday are at 10:00 AM and at 3:00 PM. Mr. Morris\u2019s schedule is rather flexible. He can have his appointment either at 10:00 AM or at 3:00 PM. Mrs. Santiago\u2019s schedule is less flexible. She can only have her appointment at 10:00 AM.",
+                "id": 43,
         "type": "long",
         "additional": {
             "dilemma": "Why?",
@@ -728,7 +728,7 @@
         "correct": "",
         "oldId": 3,
         "cond": "non_moral",
-        "dilemma": " Santiago can have their appointments next Monday?"
+        "dilemma": "Would you schedule Mr. Morris for 3:00 PM so that both he and Mrs. Santiago can have their appointments next Monday?"
     },
     {
         "title": "Generic Brand",

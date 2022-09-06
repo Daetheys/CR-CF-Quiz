@@ -476,7 +476,7 @@ export const dataset = {
 		{
 			"title": "Hired Rapist",
 
-			"text": "You have been dissatisfied with your marriage for several years. It is your distinct impression that your partner no longer appreciates you. You remember how they appreciated you years ago when you took care of them after they was mugged. You devise the following plan to regain your partner’s affection. You will hire a person to break into your house while you are away. This person will tie up and sexually assault your partner. You, upon hearing the horrible news, will return swiftly to their side, to take care of them and comfort them, and they will once again appreciate you. Is it appropriate for you to hire a person to sexually assault your partner so that they will appreciate you as you comfort them?",
+			"text": "You have been dissatisfied with your marriage for several years. It is your distinct impression that your partner no longer appreciates you. You remember how they appreciated you years ago when you took care of them after they was mugged. You devise the following plan to regain your partner’s affection. You will hire a person to break into your house while you are away. This person will tie up and sexually assault your partner. You, upon hearing the horrible news, will return swiftly to their side, to take care of them and comfort them, and they will once again appreciate you. ",
 			"id": 27,
 			"type": "long",
 			"additional": {
@@ -489,7 +489,7 @@ export const dataset = {
 			"correct": "",
 			"oldId": 9,
 			"cond": "personal_moral",
-			"dilemma": " Is it appropriate for you to hire a man to rape your wife so that she will appreciate you as you comfort her?"
+			"dilemma": "Is it appropriate for you to hire a person to sexually assault your partner so that they will appreciate you as you comfort them?",
 		},
 		{
 			"title": "Grandson",
@@ -748,7 +748,7 @@ export const dataset = {
 		},
 		{
 			"title": "Scheduling",
-			"text": "You are in charge of scheduling appointments in a dentist\u2019s office. Two people,  Mr. Morris and Mrs. Santiago have called to make appointments for next Monday. The only available times for next Monday are at 10:00 AM and at 3:00 PM. Mr. Morris\u2019s schedule is rather flexible. He can have his appointment either at 10:00 AM or at 3:00 PM. Mrs. Santiago\u2019s schedule is less flexible. She can only have her appointment at 10:00 AM. Would you schedule Mr. Morris for 3:00 PM so that both he and Mrs.",
+			"text": "You are in charge of scheduling appointments in a dentist\u2019s office. Two people,  Mr. Morris and Mrs. Santiago have called to make appointments for next Monday. The only available times for next Monday are at 10:00 AM and at 3:00 PM. Mr. Morris\u2019s schedule is rather flexible. He can have his appointment either at 10:00 AM or at 3:00 PM. Mrs. Santiago\u2019s schedule is less flexible. She can only have her appointment at 10:00 AM.",
 			"id": 43,
 			"type": "long",
 			"additional": {
@@ -761,7 +761,7 @@ export const dataset = {
 			"correct": "",
 			"oldId": 3,
 			"cond": "non_moral",
-			"dilemma": " Santiago can have their appointments next Monday?"
+			"dilemma": "Would you schedule Mr. Morris for 3:00 PM so that both he and Mrs. Santiago can have their appointments next Monday?"
 		},
 		{
 			"title": "Generic Brand",
