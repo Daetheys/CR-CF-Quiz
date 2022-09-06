@@ -12,12 +12,17 @@ const DEBUG = 1;
 const INPUT_MIN_LENGTH = [2, 25];
 
 // global variables
-let currentQuestionIndex = 0;
-let currentInstructionIndex = 0;
-let savedState = 0;
-let state = 'instructions';
-let wait = false;
-let prolificID = "basile";
+var currentQuestionIndex = 0;
+var currentInstructionIndex = 0;
+var savedState = 0;
+var state = 'instructions';
+var wait = false;
+var prolificID = "basile";
+
+// get currentQuestionIndex from string with window["currentQuestionIndex"]()
+window.currentQuestionIndex = () => {
+    return currentQuestionIndex;
+}
 
 function main() {
     init();
@@ -28,8 +33,8 @@ const init = async () => {
     //toggleProgressBar()
     loadState()
     updateProgessBarStatus()
-    
-    if (currentQuestionIndex==0)
+
+    if (currentQuestionIndex == 0)
         dataset.questions = shuffle(dataset.questions);
 
     if (state == 'end') {
@@ -47,17 +52,12 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>!', [], true)
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>!', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
 /* Save data
 /*----------------------------------------------------------------------------------------------- */
-// Save
-const saveWrittenAnswers = () => {
-    dataset.questions[currentQuestionIndex].entered[0] = document.getElementById(`questionTextarea`).innerHTML
-}
-
 const saveAnswer = (txt, question) => {
     // question.entered = question.entered.join(",")
     question.entered = txt;
@@ -99,7 +99,7 @@ const loadPreviousEnteredText = () => {
 const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
-        "title":dataset.questions[idx].oldTitle,
+        "title": dataset.questions[idx].oldTitle,
         "itemIndex": idx,
         "itemID": dataset.questions[idx].id,
         "questionID": 0,
@@ -109,17 +109,17 @@ const sendItemData = async (idx) => {
         "rt": 1.05,
     }
 
-    sendToDB(0, {...data}, window.location + 'php/insert.php');
+    sendToDB(0, { ...data }, window.location + 'php/insert.php');
 
-    let additional =  "additional" in dataset.questions[idx]
+    let additional = "additional" in dataset.questions[idx]
     if (additional) {
         let add_data = dataset.questions[idx].additional;
         data['questionID'] = 1;
         data['answerID'] = 1;
         data['question'] = add_data.dilemma;
         data['answer'] = add_data.entered;
-        sendToDB(0, {...data}, window.location+ 'php/insert.php');
-        
+        sendToDB(0, { ...data }, window.location + 'php/insert.php');
+
     }
     // console.log(trial)
     // await sendToServer(trial)
@@ -168,9 +168,9 @@ const loadInstructions = async (inst, init) => {
     saveState()
     appendTitle(inst.title)
     let asHTML = true;
-    appendInfo('', inst.text[0], [], asHTML, false)
-    appendInfo('', inst.text[1], [currentQuestionIndex,], asHTML)
-
+    for (let i = 0; i < inst.items.length; i++) {
+        appendInfo("", inst.items[i].text, inst.items[i].variables, asHTML, inst.items[i].type)
+    }
 
     // appendScenario(`You've completed ${currentQuestionIndex} items so far.`, asHTML)
     showHideContinueButton(dataset.instructions[currentInstructionIndex])
@@ -201,42 +201,63 @@ const canLoadNewInstruction = () => {
 /*----------------------------------------------------------------------------------------------- */
 
 // Appends the scenario
-const appendInfo = (title, text, variables, asHTML = false, asbox = true) => {
+const appendInfo = (title, text, variables, asHTML = false, type = "regular") => {
     // Generating question text
     let quizQuestionTextDIV = document.createElement('div')
-    quizQuestionTextDIV.className = 'quiz-question-text-container quiz-question-info-container green'
+    quizQuestionTextDIV.className = 'quiz-question-text-container quiz-question-info-container'
     let quizQuestionTextSPAN = document.createElement(`span`)
     quizQuestionTextSPAN.className = `quiz-question-text-item`
+    let quizQuestionIconSPAN = document.createElement(`span`)
+    quizQuestionIconSPAN.className = `quiz-question-text-item-icon`
+    quizQuestionIconSPAN.classList.add("fa-solid")
+
+    if (type == "info") {
+        quizQuestionTextDIV.classList.add('green')
+        quizQuestionTextSPAN.classList.add('green')
+        quizQuestionIconSPAN.classList.add('green')
+        quizQuestionIconSPAN.classList.add("fa-circle-info")
+    } else if (type == "alert") {
+        quizQuestionTextDIV.classList.add('red')
+        quizQuestionTextSPAN.classList.add('red')
+        quizQuestionIconSPAN.classList.add('red')
+        quizQuestionIconSPAN.classList.add("fa-triangle-exclamation")
+    } else {
+        quizQuestionTextDIV.classList.add('green')
+        quizQuestionTextSPAN.classList.add('green')
+        quizQuestionIconSPAN.classList.add('green')
+    }
+
 
     let i = 1;
     if (variables.length > 0) {
         variables.forEach(element => {
-            text = text.replace('<variable' + i + '>', '<b>' + element + '</b>')
+            text = text.replace('<variable' + i + '>', '<b>' + window[element]() + '</b>')
             i++
 
         });
     }
 
+    if (!DEBUG) {
+        text = text.replace('<a onclick="resetState()"> Reset data?</a>','')
+        // text = text.replace('<a onclick=\"resetState()\"> Reset data?</a>','')
+    }
+
+
     if (asHTML && title) {
         text = '<b>' + title + '</b> <br>' + text;
     }
-    // if (asHTML) {
     quizQuestionTextSPAN.innerHTML = text;
-    // } else {
-    // quizQuestionTextSPAN.innerText = '<b>question
-    // }
-    if (!asbox) {
+    if (type == "regular") {
         quizQuestionTextDIV.style.border = 0;
+        quizQuestionTextDIV.style.padding = 0;
         quizQuestionTextDIV.style.backgroundColor = 'white';
     } else {
-        let quizQuestionIconSPAN = document.createElement(`span`)
         quizQuestionIconSPAN.style.alignSelf = 'right';
         quizQuestionIconSPAN.style.fontSize = '30px';
         quizQuestionIconSPAN.style.marginRight = '1.5%';
         quizQuestionIconSPAN.style.position = 'relative';
         quizQuestionIconSPAN.style.top = '4';
-        // quizQuestionIconSPAN.style.lineHeight = '-5px';
-        quizQuestionIconSPAN.innerHTML = '&#128712'
+
         quizQuestionTextDIV.appendChild(quizQuestionIconSPAN)
 
     }
@@ -359,7 +380,7 @@ const loadQuestion = async (question, init, additional = false) => {
     }
     if (!additional) {
         saveState()
-        appendTitle('Item ' + (currentQuestionIndex+1))
+        appendTitle('Item ' + (currentQuestionIndex + 1))
         appendScenario(question.text)
         updateProgessBarStatus()
     }
@@ -884,9 +905,9 @@ window.addURLParameters = (name, value) => {
 
 const shuffle = (arr) => {
     let shuffled = arr
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
     return shuffled
 }
 
@@ -910,8 +931,8 @@ const sendToDB = async (call, data, url) => {
                 sendToDB(call + 1, data, url);
             } else {
                 // GUI.displayModalWindow('Network error',
-                    // `Please check your internet connection.\n\n
-                    //  If you are not online, the data is lost and we can\'t pay you. :(`, 'error');
+                // `Please check your internet connection.\n\n
+                //  If you are not online, the data is lost and we can\'t pay you. :(`, 'error');
             }
 
         }

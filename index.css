@@ -394,6 +394,10 @@ div[contenteditable] {
     margin: 0px;
 }
 
+.quiz-question-text-item-icon {
+    color: rgba(var(--color), .8);
+}
+
 .quiz-answer-text-item {
     font-size: 25px;
     color: rgba(var(--color), 1) !important;
