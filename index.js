@@ -21,9 +21,11 @@ var prolificID = new URLSearchParams(window.location.search).get("PROLIFIC_PID")
 if (!prolificID)
     prolificID = 'failedToFindProlificID';
 
-// get currentQuestionIndex from string with window["currentQuestionIndex"]()
-window.currentQuestionIndex = () => {
-    return currentQuestionIndex;
+// get global from string with e.g. window["currentQuestionIndex"]()
+window.getGlobal = () => {
+    return {
+        "currentQuestionIndex": currentQuestionIndex
+    }
 }
 
 function main() {
@@ -237,7 +239,7 @@ const appendInfo = (title, text, variables, asHTML = false, type = "regular") =>
     let i = 1;
     if (variables.length > 0) {
         variables.forEach(element => {
-            text = text.replace('<variable' + i + '>', '<b>' + window[element]() + '</b>')
+            text = text.replace('<variable' + i + '>', '<b>' + window.getGlobal()[element] + '</b>')
             i++
 
         });
