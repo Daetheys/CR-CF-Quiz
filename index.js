@@ -9,7 +9,7 @@ $(document).ready(main);
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
-const INPUT_MIN_LENGTH = [2, 30];
+const INPUT_MIN_LENGTH = [2, 25];
 
 // global variables
 let currentQuestionIndex = 0;
@@ -17,6 +17,7 @@ let currentInstructionIndex = 0;
 let savedState = 0;
 let state = 'instructions';
 let wait = false;
+let prolificID = "basile";
 
 function main() {
     init();
@@ -27,6 +28,9 @@ const init = async () => {
     //toggleProgressBar()
     loadState()
     updateProgessBarStatus()
+    
+    if (currentQuestionIndex==0)
+        dataset.questions = shuffle(dataset.questions);
 
     if (state == 'end') {
         loadEndPanel()
@@ -92,6 +96,35 @@ const loadPreviousEnteredText = () => {
 //    dataset.questions[currentQuestionIndex].entered = uniq(dataset.questions[currentQuestionIndex].entered)
 //}
 
+const sendItemData = async () => {
+    let data = {
+        "prolificID": prolificID,
+        "title":dataset.questions[currentQuestionIndex].title,
+        "itemIndex": currentQuestionIndex,
+        "itemID": dataset.questions[currentQuestionIndex].id,
+        "questionID": 0,
+        "question": (dataset.questions[currentQuestionIndex].text + dataset.questions[currentQuestionIndex].dilemma),
+        "answerID": 0,
+        "answer": dataset.questions[currentQuestionIndex].entered,
+        "rt": 1.05,
+    }
+
+    sendToDB(0, {...data}, '/php/insert.php');
+
+    additional =  "additional" in dataset.questions[currentQuestionIndex]
+    if (additional) {answerID
+        add_data = dataset.questions[currentQuestionIndex].additional;
+        data['questionID'] = 1;
+        data['answerID'] = 1;
+        data['question'] = add_data.dilemma;
+        data['answer'] = add_data.entered;
+        sendToDB(0, {...data}, '/php/insert.php');
+        
+    }
+    // console.log(trial)
+    // await sendToServer(trial)
+    // await sendToServer(dataset.questions[currentQuestionIndex])
+}
 
 
 /* ------------------------------------------------------------------------------------------ */
@@ -326,7 +359,7 @@ const loadQuestion = async (question, init, additional = false) => {
     }
     if (!additional) {
         saveState()
-        appendTitle('Item ' + question.id)
+        appendTitle('Item ' + (currentQuestionIndex+1))
         appendScenario(question.text)
         updateProgessBarStatus()
     }
@@ -629,6 +662,9 @@ const moveQuestionContainerMiddle = () => {
 /* Continue management
 /*----------------------------------------------------------------------------------------------- */
 const continueClickable = () => {
+    if (DEBUG) {
+        return true;
+    }
     return Array.from(document.getElementsByTagName('input'))
         .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]))
 }
@@ -662,8 +698,19 @@ const cr_ContinueButton = () => {
         if (state == 'instructions')
             currentInstructionIndex++
 
-        if (state == 'questions')
+        if (state == 'questions') {
+            sendToDB(
+                {
+                    'question': dataset.questions[currentQuestionIndex].question,
+                    'answer': dataset.questions[currentQuestionIndex].answer,
+                    'a_id': dataset.questions[currentQuestionIndex].a_id,
+
+                }
+            )
             currentQuestionIndex++
+
+        }
+
 
         wait = true;
         let startQuestions = await loadNewInstruction();
@@ -840,6 +887,14 @@ window.addURLParameters = (name, value) => {
     var searchParams = new URLSearchParams(window.location.search)
     searchParams.set(name, value)
     window.location.search = searchParams.toString()
+}
+
+const shuffle = (arr) => {
+    let shuffled = arr
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+    return shuffled
 }
 
 
