@@ -13,17 +13,17 @@ $item_id                 = stripslashes(htmlspecialchars($_POST['itemID']));
 $rt                      = stripslashes(htmlspecialchars($_POST['rt']));
 
 
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+if ($db->connect_error) {
+  die("Connection failed: " . $db->connect_error);
 }
 # '$variable' if string, otherwise $variable
 $sql = "INSERT INTO moral_survey (prolific_id, item_idx, q_id, question, a_id, answer, title, ,item_id, ,rt) VALUES ('$prolific_id', $item_idx, $q_id, '$question', $a_id, '$answer', '$title', $item_id, $rt)";
 
-if ($conn->query($sql) === TRUE) {
+if ($db->query($sql) === TRUE) {
   echo "New record created successfully";
 } else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
+  echo "Error: " . $sql . "<br>" . $db->error;
 }
 
-$conn->close();
+$db->close();
  ?>
