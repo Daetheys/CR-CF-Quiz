@@ -8,7 +8,7 @@ $q_id                    = stripslashes(htmlspecialchars($_POST['questionID']));
 $question                = stripslashes(htmlspecialchars($_POST['question']));
 $a_id                    = stripslashes(htmlspecialchars($_POST['answerID']));
 $answer                  = stripslashes(htmlspecialchars($_POST['answer']));
-$title                   = stripslashes(htmlspecialchars($_POST['itemTitle']));
+$title                   = stripslashes(htmlspecialchars($_POST['title']));
 $item_id                 = stripslashes(htmlspecialchars($_POST['itemID']));
 $rt                      = stripslashes(htmlspecialchars($_POST['rt']));
 
