@@ -24,7 +24,8 @@ if (!prolificID)
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
     return {
-        "currentQuestionIndex": currentQuestionIndex
+        "currentQuestionIndex": currentQuestionIndex,
+        "prolificID": prolificID
     }
 }
 
@@ -49,14 +50,6 @@ const init = async () => {
 
     // debugger;
     loadInstructions(dataset.instructions[currentInstructionIndex], true);
-}
-
-const loadEndPanel = async () => {
-    await moveQuestionContainer('up', 'down')
-    await moveQuestionContainerMiddle()
-    removeAllChildren('quiz-question-container')
-    appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>!', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -167,6 +160,14 @@ const loadState = () => {
     // currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
 }
 
+const loadEndPanel = async () => {
+    await moveQuestionContainer('up', 'down')
+    await moveQuestionContainerMiddle()
+    removeAllChildren('quiz-question-container')
+    appendTitle('END')
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>!', [], true, "regular")
+}
+
 /*----------------------------------------------------------------------------------------------- */
 /* Instruction management
 /*----------------------------------------------------------------------------------------------- */
@@ -246,7 +247,7 @@ const appendInfo = (title, text, variables, asHTML = false, type = "regular") =>
     }
 
     if (!DEBUG) {
-        text = text.replace('<a onclick="resetState()"> Reset data?</a>','')
+        text = text.replace('<a onclick="resetState()"> Reset data?</a>', '')
         // text = text.replace('<a onclick=\"resetState()\"> Reset data?</a>','')
     }
 
