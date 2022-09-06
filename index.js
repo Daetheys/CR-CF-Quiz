@@ -17,7 +17,7 @@ var currentInstructionIndex = 0;
 var savedState = 0;
 var state = 'instructions';
 var wait = false;
-var prolificID = (new URLSearchParams(window.location.search).get('PROLIFIC_PID')).toString();
+var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
 if (!prolificID) prolificID = 'notfound';
 window.prolificID = prolificID
 
