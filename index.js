@@ -17,7 +17,9 @@ var currentInstructionIndex = 0;
 var savedState = 0;
 var state = 'instructions';
 var wait = false;
-var prolificID = "basile";
+var prolificID = URLSearchParams(window.location.search).get("PROLIFIC_PID");
+if (!prolificID)
+    prolificID = 'failedToFindProlificID';
 
 // get currentQuestionIndex from string with window["currentQuestionIndex"]()
 window.currentQuestionIndex = () => {
@@ -136,6 +138,7 @@ const saveState = () => {
     localStorage['currentQuestionIndex'] = currentQuestionIndex
     localStorage['currentInstructionIndex'] = currentInstructionIndex
     localStorage['answers'] = JSON.stringify(dataset.questions)
+    localStorage['prolificID'] = prolificID;
 }
 
 window.resetState = () => {
@@ -143,6 +146,7 @@ window.resetState = () => {
     localStorage['currentQuestionIndex'] = 0
     localStorage['currentInstructionIndex'] = 0
     localStorage['answers'] = ""
+    localStorage['prolificID'] = undefined;
     window.location = window.location;
 }
 
@@ -150,6 +154,8 @@ const loadState = () => {
     if (!localStorage['savedState'])
         return
 
+
+    prolificID = localStorage['prolificID'];
     localStorage['savedState'] = 1;
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
