@@ -99,7 +99,7 @@ const loadPreviousEnteredText = () => {
 const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
-        "title":dataset.questions[idx].title,
+        "title":dataset.questions[idx].oldTitle,
         "itemIndex": idx,
         "itemID": dataset.questions[idx].id,
         "questionID": 0,
