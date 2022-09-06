@@ -17,9 +17,8 @@ var currentInstructionIndex = 0;
 var savedState = 0;
 var state = 'instructions';
 var wait = false;
-var prolificID = new URLSearchParams(window.location.search).get("PROLIFIC_PID");
-if (!prolificID)
-    prolificID = 'failedToFindProlificID';
+var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
+if (!prolificID) prolificID = 'failedToFindProlificID';
 
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
@@ -38,6 +37,7 @@ const init = async () => {
     //toggleProgressBar()
     loadState()
     updateProgessBarStatus()
+    setProlificID()
 
     if (currentQuestionIndex == 0)
         dataset.questions = shuffle(dataset.questions);
@@ -106,7 +106,7 @@ const sendItemData = async (idx) => {
         "rt": 1.05,
     }
 
-    sendToDB(0, { ...data }, window.location + 'php/insert.php');
+    sendToDB(0, { ...data },  'php/insert.php');
 
     let additional = "additional" in dataset.questions[idx]
     if (additional) {
@@ -115,7 +115,7 @@ const sendItemData = async (idx) => {
         data['answerID'] = 1;
         data['question'] = add_data.dilemma;
         data['answer'] = add_data.entered;
-        sendToDB(0, { ...data }, window.location + 'php/insert.php');
+        sendToDB(0, { ...data }, 'php/insert.php');
 
     }
     // console.log(trial)
@@ -145,6 +145,11 @@ window.resetState = () => {
     window.location = window.location;
 }
 
+const setProlificID = () => {
+    let div = document.getElementById('prolific-id')
+    div.innerHTML = prolificID;
+
+}
 const loadState = () => {
     if (!localStorage['savedState'])
         return
