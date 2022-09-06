@@ -109,16 +109,16 @@ const sendItemData = async (idx) => {
         "rt": 1.05,
     }
 
-    sendToDB(0, {...data}, '/php/insert.php');
+    sendToDB(0, {...data}, window.location + 'php/insert.php');
 
-    additional =  "additional" in dataset.questions[idx]
+    let additional =  "additional" in dataset.questions[idx]
     if (additional) {
-        add_data = dataset.questions[idx].additional;
+        let add_data = dataset.questions[idx].additional;
         data['questionID'] = 1;
         data['answerID'] = 1;
         data['question'] = add_data.dilemma;
         data['answer'] = add_data.entered;
-        sendToDB(0, {...data}, '/php/insert.php');
+        sendToDB(0, {...data}, window.location+ 'php/insert.php');
         
     }
     // console.log(trial)
@@ -900,18 +900,18 @@ const sendToDB = async (call, data, url) => {
         success: function (r) {
 
             if (r.error > 0 && (call + 1) < MAX_REQUESTS) {
-                sendToDB(call + 1);
+                sendToDB(call + 1, data, url);
             }
         },
 
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
             if ((call + 1) < MAX_REQUESTS) {
-                sendToDB(call + 1);
+                sendToDB(call + 1, data, url);
             } else {
-                GUI.displayModalWindow('Network error',
-                    `Please check your internet connection.\n\n
-                     If you are not online, the data is lost and we can\'t pay you. :(`, 'error');
+                // GUI.displayModalWindow('Network error',
+                    // `Please check your internet connection.\n\n
+                    //  If you are not online, the data is lost and we can\'t pay you. :(`, 'error');
             }
 
         }
