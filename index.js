@@ -18,6 +18,8 @@ var savedState = 0;
 var state = 'instructions';
 var wait = false;
 var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
+var startTime = undefined;
+var rt = undefined
 if (!prolificID) prolificID = 'notfound';
 window.prolificID = prolificID
 
@@ -105,10 +107,17 @@ const sendItemData = async (idx) => {
         "question": (dataset.questions[idx].text + dataset.questions[idx].dilemma),
         "answerID": 0,
         "answer": dataset.questions[idx].entered,
-        "rt": 1.05,
+        "rt": rt,
     }
 
-    sendToDB(0, { ...data },  'php/insert.php');
+    if (DEBUG) {
+        removeAllNotification()
+        let text = '';
+        Object.entries(data).forEach(([k, v]) => { text += `<b>${k}</b>: ${v} <br>` })
+        notify(text, 'Sent data', 1)
+    }
+
+    sendToDB(0, { ...data }, 'php/insert.php');
 
     let additional = "additional" in dataset.questions[idx]
     if (additional) {
@@ -117,7 +126,14 @@ const sendItemData = async (idx) => {
         data['answerID'] = 1;
         data['question'] = add_data.dilemma;
         data['answer'] = add_data.entered;
-        sendToDB(0, { ...data }, 'php/insert.php');
+
+        if (DEBUG) {
+            let text = '';
+            Object.entries(data).forEach(([k, v]) => { text += `<b>${k}</b>: ${v} <br>` })
+            notify(text, 'Sent data', 2)
+
+            sendToDB(0, { ...data }, 'php/insert.php');
+        }
 
     }
     // console.log(trial)
@@ -154,6 +170,7 @@ const setProlificID = () => {
     div.innerHTML = 'id: ' + prolificID;
 
 }
+
 const loadState = () => {
     if (!parseInt(localStorage['savedState']))
         return
@@ -162,7 +179,7 @@ const loadState = () => {
 
     if (prolificID == 'notfound') {
         prolificID = localStorage['prolificID'];
-    } 
+    }
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
 
@@ -394,6 +411,7 @@ const appendTextFormQuestion = (question, additional) => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init, additional = false) => {
+    startTime = Date.now();
     if (!progressBarIsVisible()) {
         toggleProgressBar()
         updateProgessBarStatus()
@@ -730,6 +748,7 @@ const cr_ContinueButton = () => {
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
     continueBUTTON.onclick = async function () {
+        rt = Date.now() - startTime;
         if (!continueClickable()) {
             checkInputValidity()
             return;
@@ -929,6 +948,42 @@ const shuffle = (arr) => {
         .sort((a, b) => a.sort - b.sort)
         .map(({ value }) => value)
     return shuffled
+}
+
+const removeAllNotification = () => {
+    document.querySelectorAll('.notif').forEach((e) => {
+        e.remove();
+    })
+}
+
+const notify = (message, title, i) => {
+    let notif = document.createElement('div')
+    notif.id = 'notif' + i
+    notif.className = 'notif show'
+
+    let notifICON = document.createElement('span')
+    notifICON.className = 'fa-solid fa-exclamation-circle'
+    notifICON.innerHTML = '&nbsp;' + title;
+    notif.appendChild(notifICON)
+
+    let notifText = document.createElement('div');
+    notifText.innerHTML = '<br>' + message;
+    notif.appendChild(notifText)
+
+    let panel = document.getElementById('quiz-page-template-container')
+    panel.appendChild(notif)
+
+    $(`#notif${i}`).fadeIn(500);
+    if (i > 1) {
+        let prev = document.getElementById('notif' + (i - 1));
+        let h = prev.clientHeight + 30;
+        notif.style.bottom = h + 'px';
+    }
+
+    $('#notif' + i).click(() => {
+        notif.style.display = 'none';
+    });
+
 }
 
 
