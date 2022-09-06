@@ -8,7 +8,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
-const DEBUG = 1;
+const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 25];
 
 // global variables
@@ -815,7 +815,7 @@ const updateProgessBarStatus = () => {
     let progress = document.getElementById('quiz-progress-bar')
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
-    let value = Math.floor((currentQuestionIndex / dataset.questions.length) * 100)
+    let value = Math.floor((currentQuestionIndex+1 / dataset.questions.length) * 100)
 
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
