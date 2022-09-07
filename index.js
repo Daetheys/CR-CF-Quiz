@@ -42,7 +42,7 @@ function main() {
 // Initialization functions go here
 const init = async () => {
 
-    if(reset==1 && DEBUG) resetState();
+    if (reset == 1 && DEBUG) resetState();
 
     //toggleProgressBar()
     loadState()
@@ -124,8 +124,9 @@ const sendItemData = async (idx) => {
             Object.entries(data).forEach(([k, v]) => { text += `<b>${k}</b>: ${v} <br>` })
             notify(text, 'Sent data', 2)
 
-            sendToDB(0, { ...data }, 'php/insert.php');
         }
+
+        sendToDB(0, { ...data }, 'php/insert.php');
 
     }
 }
@@ -147,7 +148,7 @@ window.resetState = () => {
     localStorage['state'] = 'instructions'
     localStorage['currentQuestionIndex'] = 0
     localStorage['currentInstructionIndex'] = 0
-    localStorage['answers'] = "" 
+    localStorage['answers'] = ""
     localStorage['prolificID'] = 'reset';
     localStorage['savedState'] = 0
     window.location = window.location.href.split('?')[0] + '?PROLIFIC_PID=' + prolificID;
@@ -171,7 +172,7 @@ const loadState = () => {
 
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
     currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
-    
+
     currentInstructionIndex -= currentInstructionIndex == dataset.instructions.length;
 
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
@@ -185,7 +186,7 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a href="' + atob(KEY)+ '"> Validate your participation</a></b>', [], true, "regular")
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a href="' + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -235,14 +236,14 @@ const appendCheckbox = (text, id) => {
     let label = document.createElement('label');
     let span = document.createElement('span');
     let panel = document.getElementById('quiz-question-container');
-    
+
     label.id = 'label-' + id;
     label.classList.add('checkcontainer')
     label.innerHTML = text;
-    
+
 
     span.classList.add('checkmark');
-    
+
     input.type = 'checkbox';
     input.setAttribute('required', true);
     input.id = id;
@@ -858,7 +859,7 @@ const updateProgessBarStatus = () => {
     let progress = document.getElementById('quiz-progress-bar')
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
-    let value = Math.floor(((currentQuestionIndex+1) / dataset.questions.length) * 100)
+    let value = Math.floor(((currentQuestionIndex + 1) / dataset.questions.length) * 100)
 
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
