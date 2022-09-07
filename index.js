@@ -146,7 +146,7 @@ window.resetState = () => {
     localStorage['answers'] = ""
     localStorage['prolificID'] = 'reset';
     localStorage['savedState'] = 0
-    window.location = window.location;
+    window.location = window.location.href.split('?')[0] + '?PROLIFIC_PID=' + prolificID;
 }
 
 const setProlificID = () => {
