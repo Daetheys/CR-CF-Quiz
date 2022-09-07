@@ -8,7 +8,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 20000;
 const MAX_REQUESTS = 5;
-const DEBUG = 1;
+const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 25];
 const KEY = 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY28vc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Q1YzSkFQS1c='
 
@@ -194,11 +194,15 @@ const loadInstructions = async (inst, init) => {
     appendTitle(inst.title)
     let asHTML = true;
     for (let i = 0; i < inst.items.length; i++) {
-        appendInfo(inst.items[i].title, inst.items[i].text, inst.items[i].variables, asHTML, inst.items[i].type)
+        if (inst.items[i].type == 'checkbox') {
+            appendCheckbox(inst.items[i].text, inst.items[i].id);
+        } else {
+            appendInfo(inst.items[i].title, inst.items[i].text, inst.items[i].variables, asHTML, inst.items[i].type)
+        }
     }
 
     // appendScenario(`You've completed ${currentQuestionIndex} items so far.`, asHTML)
-    showHideContinueButton(dataset.instructions[currentInstructionIndex])
+    //showHideContinueButton(dataset.instructions[currentInstructionIndex])
 
     // Skips loading animation on initialization
     await moveQuestionContainerMiddle()
@@ -221,6 +225,31 @@ const loadNewInstruction = async () => {
 // Checks if we have reached the first or last instruction
 const canLoadNewInstruction = () => {
     return currentInstructionIndex < dataset.instructions.length
+}
+
+const appendCheckbox = (text, id) => {
+    let input = document.createElement('input');
+    let label = document.createElement('label');
+    let span = document.createElement('span');
+    let panel = document.getElementById('quiz-question-container');
+    
+    label.id = 'label-' + id;
+    label.classList.add('checkcontainer')
+    label.innerHTML = text;
+    
+
+    span.classList.add('checkmark');
+    
+    input.type = 'checkbox';
+    input.id = id;
+    // input.onclick(() => {
+
+    // })
+    // input.classList.addt('')
+    label.appendChild(input);
+    label.appendChild(span)
+
+    panel.appendChild(label)
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -429,7 +458,7 @@ const loadQuestion = async (question, init, additional = false) => {
     if (!init) {
         await moveQuestionContainerMiddle()
     }
-    showHideContinueButton(dataset.questions[currentQuestionIndex])
+    //showHideContinueButton(dataset.questions[currentQuestionIndex])
 }
 
 // Function to load next question & possible answers in object
@@ -631,7 +660,7 @@ const selectAnswer = (key, previous, color, question) => {
         }
     }
     // Triggers a check to see if we should display continue button
-    showHideContinueButton(dataset.questions[currentQuestionIndex])
+    //showHideContinueButton(dataset.questions[currentQuestionIndex])
 }
 
 // Changes answer button appearance to show as selected
@@ -714,6 +743,9 @@ const continueClickable = () => {
     if (DEBUG) {
         return true;
     }
+    if (state == 'instructions') {
+        return $('input:checkbox:not(:checked)').length === 0;
+    }
     return Array.from(document.getElementsByTagName('input'))
         .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]))
 }
@@ -738,6 +770,7 @@ const cr_ContinueButton = () => {
     continueBUTTON.innerHTML = `OK`
     // Moves to next question on click
     continueBUTTON.onclick = async function () {
+
         rt = Date.now() - startTime;
         if (!continueClickable()) {
             checkInputValidity()
@@ -749,13 +782,21 @@ const cr_ContinueButton = () => {
             currentInstructionIndex++
 
         if (state == 'questions') {
+            wait = true;
+            $('#quiz-continue-button-container').fadeOut(40)
+            $('#quiz-continue-text').fadeOut(40)
+
+            setTimeout(() => {
+                wait = false;
+                $('#quiz-continue-button-container').fadeIn(500)
+                $('#quiz-continue-text').fadeIn(500)
+            }, TIME_BETWEEN_QUESTIONS);
+
             sendItemData(currentQuestionIndex);
             currentQuestionIndex++
-
         }
 
 
-        wait = true;
         let startQuestions = await loadNewInstruction();
 
         if (startQuestions) {
@@ -770,49 +811,39 @@ const cr_ContinueButton = () => {
         if (state == 'end')
             await loadEndPanel();
 
-        setTimeout(() => {
-            wait = false;
-            $('#quiz-continue-button-container').fadeIn(500)
-            $('#quiz-continue-text').fadeIn(500)
-        }, TIME_BETWEEN_QUESTIONS);
-    }
 
+    }
     continueSPAN.innerHTML = `press ENTER`
     continueDIV.append(continueBUTTON, continueSPAN)
     let parent = document.getElementById('quiz-main-page');//`quiz-question-container`)
     parent.append(continueDIV)
     // Discerns whether or not to show continue button, based on whether or not an answer has been input/selected
-    showHideContinueButton(dataset.questions[currentQuestionIndex])
+    //showHideContinueButton(dataset.questions[currentQuestionIndex])
 }
 
 // Only shows a continue button if a question is selected
-const showHideContinueButton = (question) => {
-    if ((question.type == 'short' || question.type == `long`)) {
-        if (continueClickable()) {
-            document.getElementById(`quiz-continue-button-container`).style.display = `initial`
-            document.getElementById(`quiz-continue-text`).style.display = `initial`
-            return
-        }
-        document.getElementById(`quiz-continue-button-container`).style.display = `none`
-        document.getElementById(`quiz-continue-text`).style.display = `none`
-
-    } else {
-        try {
-            let show = document.getElementById(`quiz-answer-list`).children
-            let buttonContainer = document.getElementById(`quiz-continue-button-container`)
-            document.getElementById(`quiz-continue-text`).style.display = `initial`
-            // Checks if an answer has been selected. If so, shows continue button
-            for (let i = 0; i < show.length; i++) {
-                if (show[i].classList.contains(`selected-answer`)) {
-                    buttonContainer.style.display = `initial`
-                    return
-                }
-            }
-            // If no answer is selected, don't display button
-            buttonContainer.style.display = `none`
-        } catch { }
-    }
-}
+//const showHideContinueButton = (question) => {
+//    if ((question.type == 'short' || question.type == `long`)) {
+//            document.getElementById(`quiz-continue-button-container`).style.display = `initial`
+//            document.getElementById(`quiz-continue-text`).style.display = `initial`
+//
+//    } else {
+//        try {
+//            let show = document.getElementById(`quiz-answer-list`).children
+//            let buttonContainer = document.getElementById(`quiz-continue-button-container`)
+//            document.getElementById(`quiz-continue-text`).style.display = `initial`
+//            // Checks if an answer has been selected. If so, shows continue button
+//            for (let i = 0; i < show.length; i++) {
+//                if (show[i].classList.contains(`selected-answer`)) {
+//                    buttonContainer.style.display = `initial`
+//                    return
+//                }
+//            }
+//            // If no answer is selected, don't display button
+//            buttonContainer.style.display = `none`
+//        } catch { }
+//    }
+//}
 
 /*----------------------------------------------------------------------------------------------- */
 /* Progress bar
