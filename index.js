@@ -147,7 +147,7 @@ window.resetState = () => {
     localStorage['state'] = 'instructions'
     localStorage['currentQuestionIndex'] = 0
     localStorage['currentInstructionIndex'] = 0
-    localStorage['answers'] = ""
+    localStorage['answers'] = "" 
     localStorage['prolificID'] = 'reset';
     localStorage['savedState'] = 0
     window.location = window.location.href.split('?')[0] + '?PROLIFIC_PID=' + prolificID;
@@ -169,12 +169,14 @@ const loadState = () => {
     if (prolificID == 'notfound') {
         prolificID = localStorage['prolificID'];
     }
+
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
+    currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
+
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
 
     if (localStorage['answers'] != undefined && localStorage['answers'].length > 0)
         dataset.questions = JSON.parse(localStorage['answers']);
-    // currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
 }
 
 const loadEndPanel = async () => {
