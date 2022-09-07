@@ -154,7 +154,6 @@ window.resetState = () => {
 }
 
 const setProlificID = () => {
-    debugger;
     let div = document.getElementById('prolific-id')
     div.innerHTML = 'id: ' + prolificID;
 
@@ -194,7 +193,6 @@ const loadEndPanel = async () => {
 /*----------------------------------------------------------------------------------------------- */
 // Loads a multiple choice quiz question
 const loadInstructions = async (inst, init) => {
-    //debugger;
     saveState()
     appendTitle(inst.title)
     let asHTML = true;
@@ -956,7 +954,6 @@ const removeAllChildren = (parent) => {
 // Accepts a parent id to remove all children
 const removeOpacityBlur = () => {
     let node = document.getElementsByTagName('*')
-    // debugger
     Array.from(node).map(element => {
         element.disabled = false;
         element.classList.remove('opacityblur')
