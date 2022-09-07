@@ -172,6 +172,8 @@ const loadState = () => {
 
     currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
     currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
+    
+    currentInstructionIndex -= currentInstructionIndex == dataset.instructions.length;
 
     state = localStorage['state'] == 'end' ? 'end' : 'instructions';
 
@@ -783,7 +785,7 @@ const cr_ContinueButton = () => {
 
 
         if (state == 'instructions')
-            currentInstructionIndex += currentInstructionIndex < (dataset.instructions.length - 1);
+            currentInstructionIndex++
 
         if (state == 'questions') {
             wait = true;
@@ -797,7 +799,7 @@ const cr_ContinueButton = () => {
             }, TIME_BETWEEN_QUESTIONS);
 
             sendItemData(currentQuestionIndex);
-            currentQuestionIndex+= currentQuestionIndex < (dataset.questions.length - 1);
+            currentQuestionIndex++
         }
 
 
