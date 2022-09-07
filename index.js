@@ -783,7 +783,7 @@ const cr_ContinueButton = () => {
 
 
         if (state == 'instructions')
-            currentInstructionIndex++
+            currentInstructionIndex += currentInstructionIndex < (dataset.instructions.length - 1);
 
         if (state == 'questions') {
             wait = true;
@@ -797,7 +797,7 @@ const cr_ContinueButton = () => {
             }, TIME_BETWEEN_QUESTIONS);
 
             sendItemData(currentQuestionIndex);
-            currentQuestionIndex++
+            currentQuestionIndex+= currentQuestionIndex < (dataset.questions.length - 1);
         }
 
 
