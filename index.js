@@ -6,7 +6,7 @@ $(document).ready(main);
 /* Main params
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
-const TIME_BETWEEN_QUESTIONS = 5000;
+const TIME_BETWEEN_QUESTIONS = 20000;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
 const INPUT_MIN_LENGTH = [2, 25];
@@ -194,7 +194,7 @@ const loadInstructions = async (inst, init) => {
     appendTitle(inst.title)
     let asHTML = true;
     for (let i = 0; i < inst.items.length; i++) {
-        appendInfo("", inst.items[i].text, inst.items[i].variables, asHTML, inst.items[i].type)
+        appendInfo(inst.items[i].title, inst.items[i].text, inst.items[i].variables, asHTML, inst.items[i].type)
     }
 
     // appendScenario(`You've completed ${currentQuestionIndex} items so far.`, asHTML)
@@ -211,6 +211,8 @@ const loadNewInstruction = async () => {
     let canLoad = canLoadNewInstruction();
     // console.log('Proceed:' + proceed)
     if (canLoad) {
+        await questionContainerLoad('next')
+        removeAllChildren('quiz-question-container')
         loadInstructions(dataset.instructions[currentInstructionIndex], false)
     }
     return !canLoad
@@ -437,7 +439,7 @@ const loadNewQuestion = async (adjustment) => {
     if (canLoad) {
         await questionContainerLoad(adjustment)
         removeAllChildren(`quiz-question-container`)
-        if (adjustment == `next-question-load`) {
+        if (adjustment == `next`) {
             loadQuestion(dataset.questions[currentQuestionIndex])
             if ("additional" in dataset.questions[currentQuestionIndex])
                 loadQuestion(dataset.questions[currentQuestionIndex].additional, false, true)
@@ -465,7 +467,7 @@ const canLoadNewQuestion = () => {
 // Discerns which direction the question will fly on/off the page
 const questionContainerLoad = (adjustment) => {
     return new Promise(async (resolve, reject) => {
-        if (adjustment == 'next-question-load') {
+        if (adjustment == 'next') {
             // Moves container up off the screen
             await moveQuestionContainer(`up`, `down`)
         } else {
@@ -758,7 +760,7 @@ const cr_ContinueButton = () => {
 
         if (startQuestions) {
             state = 'questions'
-            let end = await loadNewQuestion(`next-question-load`)
+            let end = await loadNewQuestion(`next`)
             if (end) {
                 state = 'end';
                 saveState()

@@ -1,6 +1,26 @@
 export const dataset = {
 	name: "Cushman",
 	instructions: [
+
+		{
+			title: "Consent",
+			items: [
+				{
+					text: "You are going to be presented with different moral dilemmas. For each <b>scenario</b>, you'll have to answer a first question by emiting a <b>moral judgment</b>. Secondly, you'll have to explain the motivations (<b>Why?</b>) behind your first answer.",
+					type: "regular",
+					variables: [],
+					title: "test1"
+				},
+				{
+					text: `<b>TW:</b> This study may contain fictional content (violence, sexual assault) that may be triggering for some people. By continuing, you are acknowledging that you agree to proceed. If you choose to continue, but end up being disturbed during the study, don't hesitate to exit the study at any time.`,
+					type: 'regular',
+					variables: [],
+					title: "test2"
+				},
+			],
+			type: "short",
+		},
+
 		{
 			title: "Instructions",
 			items: [
