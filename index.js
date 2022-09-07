@@ -8,8 +8,9 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
-const DEBUG = 1;
+const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 25];
+const KEY = 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY28vc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Q1YzSkFQS1c='
 
 // global variables
 var currentQuestionIndex = 0;
@@ -20,7 +21,7 @@ var wait = false;
 var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
 var reset = new URLSearchParams(window.location.search).get('RESET');
 var startTime = undefined;
-var rt = undefined
+var rt = undefined;
 if (!prolificID) prolificID = 'notfound';
 
 // get global from string with e.g. window["currentQuestionIndex"]()
@@ -180,7 +181,7 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>!', [], true, "regular")
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a href="' + atob(KEY)+ '"> Validate your participation</a></b>', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
