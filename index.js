@@ -40,9 +40,10 @@ function main() {
 // Initialization functions go here
 const init = async () => {
 
+    if(reset==1 && DEBUG) resetState();
+
     //toggleProgressBar()
     loadState()
-    if(reset==1 && DEBUG) resetState();
     updateProgessBarStatus()
     setProlificID()
 
