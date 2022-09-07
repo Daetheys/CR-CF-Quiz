@@ -8,7 +8,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
-const DEBUG = 1;
+const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 25];
 
 // global variables
@@ -18,9 +18,11 @@ var savedState = 0;
 var state = 'instructions';
 var wait = false;
 var prolificID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
+var reset = new URLSearchParams(window.location.search).get('RESET');
 var startTime = undefined;
 var rt = undefined
 if (!prolificID) prolificID = 'notfound';
+if(reset==1 && DEBUG) resetState();
 
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
