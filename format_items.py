@@ -36,9 +36,15 @@ def main():
     files = 'impersonal_moral', 'personal_moral', 'non_moral'
     d = []
     count = 0
-    for fi in files:
+    for i, fi in enumerate(files):
         with open(f'data/{fi}.json', 'r') as f:
             questions = json.load(f)
+            if i == 0:
+                with open(f'data/control_items.json', 'r') as fp:
+                    control = json.load(fp)
+            
+                questions = control + questions;
+                
             for q in questions:
                 count+=1
                 dilemma = q['text'].split('.')[-1]

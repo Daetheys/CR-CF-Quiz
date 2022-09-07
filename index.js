@@ -94,6 +94,7 @@ const sendItemData = async (idx) => {
         "question": (dataset.questions[idx].text + dataset.questions[idx].dilemma),
         "answerID": 0,
         "answer": dataset.questions[idx].entered,
+        "cond": dataset.questions[idx].cond,
         "rt": rt,
     }
 
