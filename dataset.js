@@ -26,12 +26,6 @@ export const dataset = {
 					title: "Voluntary Participation And Confidentiality"
 				},
 				{
-					text: `This research has received a favorable opinion from the Inserm Ethical Review Committee / IRB0888 on November 13th, 2018.Your participation in this research confirms that you have read this information and wish to participate in the research study.`,
-					type: "regular",
-					variables: [],
-					title: "Contact And Additional Information"
-				},
-				{
 					text: `This study contains fictional content (violence, sexual assault) that may be triggering for some people. By continuing, you are acknowledging that you agree to proceed. If you choose to continue, but end up being disturbed during the study, don't hesitate to exit the study at any time.`,
 					type: 'alert',
 					variables: [],
