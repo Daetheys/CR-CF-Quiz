@@ -8,7 +8,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 5;
-const DEBUG = 0;
+const DEBUG = 1;
 const INPUT_MIN_LENGTH = [2, 25];
 const KEY = 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY28vc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Q1YzSkFQS1c='
 
