@@ -62,11 +62,6 @@ export const dataset = {
 					variables: [],
 				},
 				{
-					text: `<b>TW:</b> This study may contain fictional content (violence, sexual assault) that may be triggering for some people. By continuing, you are acknowledging that you agree to proceed. If you choose to continue, but end up being disturbed during the study, don't hesitate to exit the study at any time.`,
-					type: 'alert',
-					variables: [],
-				},
-				{
 					text: `You've completed <variable1> item(s) so far. <a onclick="resetState()"> Reset data?</a>`,
 					type: 'info',
 					variables: ['currentQuestionIndex'],
