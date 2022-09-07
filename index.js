@@ -28,7 +28,7 @@ if (!prolificID) prolificID = 'notfound';
 window.getGlobal = () => {
     return {
         "currentQuestionIndex": currentQuestionIndex,
-        "currentInstructionIndex": currentQuestionIndex,
+        "currentInstructionIndex": currentInstructionIndex,
     }
 }
 
