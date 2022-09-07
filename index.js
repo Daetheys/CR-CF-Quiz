@@ -917,7 +917,9 @@ document.onkeydown = function (evt) {
 
     if ((type == 'long' || type == 'short') && (keyCode == 13)) {
         // loadNewQuestion('next-question-load')
-        $('.quiz-continue-button')[0].click()
+        if ($('.quiz-continue-button')[0].css('display') != 'none') {
+            $('.quiz-continue-button')[0].click()
+        }
     }
 };
 
