@@ -22,7 +22,6 @@ var reset = new URLSearchParams(window.location.search).get('RESET');
 var startTime = undefined;
 var rt = undefined
 if (!prolificID) prolificID = 'notfound';
-if(reset==1 && DEBUG) window.resetState();
 
 // get global from string with e.g. window["currentQuestionIndex"]()
 window.getGlobal = () => {
@@ -40,8 +39,10 @@ function main() {
 
 // Initialization functions go here
 const init = async () => {
+
     //toggleProgressBar()
     loadState()
+    if(reset==1 && DEBUG) resetState();
     updateProgessBarStatus()
     setProlificID()
 
