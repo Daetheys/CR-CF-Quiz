@@ -1,4 +1,5 @@
 import { exampleDataset } from './dataset_example.js'
+import { KEY } from './key.js';
 import { dataset } from './dataset.js'
 $(document).ready(main);
 
@@ -10,7 +11,6 @@ const TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 5;
 const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 25];
-const KEY = 'aHR0cHM6Ly9hcHAucHJvbGlmaWMuY28vc3VibWlzc2lvbnMvY29tcGxldGU/Y2M9Q1YzSkFQS1c='
 
 // global variables
 var currentQuestionIndex = 0;
