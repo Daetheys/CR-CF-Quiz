@@ -397,7 +397,7 @@ const appendTextFormQuestion = (question, additional) => {
     seconddiv.innerText = 'Answer here...'
 
     let input = document.createElement(`input`);
-    input.id = 'fname'
+    input.id = 'fname' + (+(additional))
     input.name = 'fname'
     input.autocomplete = 'off'
     input.minLength = INPUT_MIN_LENGTH[+(additional)];
