@@ -13,6 +13,13 @@ $title                   = stripslashes(htmlspecialchars($_POST['title']));
 $item_id                 = stripslashes(htmlspecialchars($_POST['itemID']));
 $rt                      = stripslashes(htmlspecialchars($_POST['rt']));
 
+try {
+  $answer = mysqli_real_escape_string($db, $answer);
+  $question = mysqli_real_escape_string($db, $question);
+  $title =  mysqli_real_escape_string($db, $title);
+} catch (Exception $e) {
+;
+}
 
 if ($db->connect_error) {
   die("Connection failed: " . $db->connect_error);
