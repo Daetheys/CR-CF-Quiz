@@ -7,7 +7,7 @@ $(document).ready(main);
 /* Main params
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
-const TIME_BETWEEN_QUESTIONS = 10000;
+const TIME_BETWEEN_QUESTIONS = 0;
 const MAX_REQUESTS = 5;
 const DEBUG = 1;
 const INPUT_MIN_LENGTH = [2, 25];
