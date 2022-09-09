@@ -56,7 +56,7 @@ export const dataset = {
 					variables: [],
 				},
 				{
-					text: 'Please note that (very) low quality answers, e.g. containing random characters (resulting in a nonsensical sentence) or consisting in a single repeated character  (to meet input length requirements) will potentially lead to a rejection of your submission.',
+					text: 'Please note that (very) poor quality answers, such as those composed of random characters (resulting in a nonsensical sentence) or consisting in a single repeated character  (to meet input length requirements) will potentially lead to a rejection of your submission.',
 					type: 'alert',
 					variables: [],
 					title: "Warning"
