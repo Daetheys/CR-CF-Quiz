@@ -199,7 +199,7 @@ const loadInstructions = async (inst, init) => {
     let asHTML = true;
     for (let i = 0; i < inst.items.length; i++) {
         if (inst.items[i].type == 'checkbox') {
-            appendCheckbox(inst.items[i].text, inst.items[i].id);
+            appendCheckbox(inst.items[i].text, 'c'+i);
         } else {
             appendInfo(inst.items[i].title, inst.items[i].text, inst.items[i].variables, asHTML, inst.items[i].type)
         }
