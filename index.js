@@ -90,7 +90,7 @@ const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
         "title": dataset.questions[idx].oldTitle,
-        "itemIndex": idx,
+        "itemIndex": 'aaaaaaaaaaaaaaaaaaaaaaaaa',
         "itemID": dataset.questions[idx].id,
         "questionID": 0,
         "question": (dataset.questions[idx].text + dataset.questions[idx].dilemma),
