@@ -25,9 +25,9 @@ if ($db->query($sql) === TRUE) {
 
 } else {
   echo "Error: " . $sql . "<br>" . $db->error;
-  header('HTTP/1.1 500 Internal Server Booboo');
-  header('Content-Type: application/json; charset=UTF-8');
-  die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+  // header('HTTP/1.1 500 Internal Server Booboo');
+  // header('Content-Type: application/json; charset=UTF-8');
+  // die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 }
 
 $db->close();
