@@ -9,7 +9,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 5;
-const DEBUG = 0;
+const DEBUG = 1;
 const INPUT_MIN_LENGTH = [2, 25];
 
 // global variables
