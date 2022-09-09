@@ -245,7 +245,7 @@ const appendCheckbox = (text, id) => {
     span.classList.add('checkmark');
 
     input.type = 'checkbox';
-    input.setAttribute('required', true);
+    input.setAttribute('required');
     input.setAttribute('title', 'Please check this box to continue');
     input.id = id;
     // input.onclick(() => {
