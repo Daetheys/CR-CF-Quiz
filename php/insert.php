@@ -22,12 +22,13 @@ $sql = "INSERT INTO moral_survey (prolific_id, item_idx, q_id, question, a_id, a
 
 if ($db->query($sql) === TRUE) {
   echo "New record created successfully";
+
 } else {
   echo "Error: " . $sql . "<br>" . $db->error;
   header('HTTP/1.1 500 Internal Server Booboo');
   header('Content-Type: application/json; charset=UTF-8');
   die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+  $db->close();
 }
 
-$db->close();
- ?>
+?>
