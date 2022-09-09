@@ -465,7 +465,7 @@ export const dataset = {
 		},
 		{
 			"title": "Architect",
-			"text": "You are a young architect visiting one of your construction sites with your  boss. Your boss is a despicable individual who makes everyone around him miserable including you. It occurs to you that if you were to push him off of the building you are inspecting he would fall to his death and everyone would think it was an accident.",
+			"text": "You are a young architect visiting one of your construction sites with your  boss. Your boss is a despicable individual who makes everyone around him miserable including you. It occurs to you that if you were to push him off of the building you are inspecting, he would fall to his death and everyone would think it was an accident.",
 			"id": 24,
 			"type": "long",
 			"additional": {
