@@ -186,7 +186,7 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a href="' + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="' + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -767,6 +767,7 @@ const cr_ContinueButton = () => {
     continueDIV.id = `quiz-continue-button-container`
     continueDIV.className = `quiz-continue-button-container`
     continueBUTTON.className = `quiz-continue-button`
+    continueBUTTON.id = `next`
     // continueBUTTON.setAttribute("type", "submit")
     // continueBUTTON.setAttribute("form", "form")
 
