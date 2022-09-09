@@ -56,6 +56,13 @@ export const dataset = {
 					variables: [],
 				},
 				{
+					text: 'Please note that (very) low quality answers, such as completing response fields with random characters (resulting in a nonsensical sentence) or filling fields with a repeated single character  (just to meet input length requirements) will potentially lead to a rejection of your submission.',
+					type: 'alert',
+					variables: [],
+					title: "Warning"
+				},
+
+				{
 					text: `You've completed <variable1> item(s) so far. <a onclick="resetState()"> Reset data?</a>`,
 					type: 'info',
 					variables: ['currentQuestionIndex'],
