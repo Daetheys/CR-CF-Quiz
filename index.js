@@ -751,6 +751,7 @@ const continueClickable = () => {
         return true;
     }
     if (state == 'instructions') {
+        checkInputValidity()
         return $('input:checkbox:not(:checked)').length === 0;
     }
     // return Array.from(document.getElementsByTagName('input'))
