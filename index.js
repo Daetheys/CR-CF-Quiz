@@ -9,7 +9,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 0;
 const MAX_REQUESTS = 5;
-const DEBUG = 1;
+const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 25];
 
 // global variables
@@ -400,10 +400,12 @@ const appendTextFormQuestion = (question, additional) => {
     input.id = 'fname' + (+(additional))
     input.name = 'fname'
     input.autocomplete = 'off'
-    input.minLength = INPUT_MIN_LENGTH[+(additional)];
+    // input.minLength = INPUT_MIN_LENGTH[+(additional)];
     input.type = 'text'
     input.setAttribute('value', "")
     input.setAttribute('required', 'required')
+    input.setAttribute('pattern', '(?=.*[a-zA-Z].*[a-zA-Z]).{' + INPUT_MIN_LENGTH[+(additional)] + ',}')
+    input.setAttribute('title', 'At least ' + INPUT_MIN_LENGTH[+(additional)] + ' characters, including at least 2 letters')
     // i
     input.setAttribute('aria-labelledby', 'placeholder-fname')
 
@@ -751,12 +753,14 @@ const continueClickable = () => {
     if (state == 'instructions') {
         return $('input:checkbox:not(:checked)').length === 0;
     }
-    return Array.from(document.getElementsByTagName('input'))
-        .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]))
+    // return Array.from(document.getElementsByTagName('input'))
+        // .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]));
+    return checkInputValidity();
 }
 
 const checkInputValidity = () => {
-    document.querySelectorAll('input').forEach(element => element.reportValidity())
+    return Array.from(document.querySelectorAll('input'))
+    .every(element => element.reportValidity())
 }
 
 // Creates continue button
@@ -779,7 +783,7 @@ const cr_ContinueButton = () => {
 
         rt = Date.now() - startTime;
         if (!continueClickable()) {
-            checkInputValidity()
+            // checkInputValidity()
             return;
         }
 
