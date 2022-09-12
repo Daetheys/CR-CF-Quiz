@@ -264,8 +264,8 @@ input, .placeholder-text{
     max-width: calc(900px - (30px * 2));
     margin-right: auto;
     margin-left: auto;
-    padding-right: 30px;
-    padding-left: 30px;
+    /* padding-right: 30px; */
+    /* padding-left: 30px; */
 }
 
 @media screen and (max-width: 1000px) {
