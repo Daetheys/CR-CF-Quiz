@@ -224,6 +224,46 @@ input:valid + .placeholder-text .text {
     color: #4FB9A6;
 }
 
+
+textarea {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 20;
+    color: rgb(77, 77, 77);
+    resize: vertical;
+    width: 100%;
+    height: 5rem;
+    border: 2px solid gray;
+    border-radius: .2rem;
+}
+
+textarea:focus{
+    outline: none;
+    border-color:  orange;
+}
+
+textarea:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
+    background-color: white;
+    font-size: 1.1rem;
+    color: gray;
+    transform: translate(0, -170%);
+}
+textarea:focus + .placeholder-text .text{
+    border-color:  orange;
+    color:  orange;
+}
+
+textarea:focus:invalid {
+    background: url("images/warning.png") no-repeat 95% 50% transparent;
+    background-size: 2.2%;
+}
+
+textarea:valid {
+    border-color: #4FB9A6;
+    background: url("images/check.png") no-repeat 95% 50% transparent;
+
+    background-size: 2%;
+}
+
 .placeholder-text{
     position: absolute;
     top: 0;

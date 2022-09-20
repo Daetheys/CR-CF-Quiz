@@ -7,10 +7,10 @@ $(document).ready(main);
 /* Main params
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
-const TIME_BETWEEN_QUESTIONS = 10000;
+const TIME_BETWEEN_QUESTIONS = 2000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
-const INPUT_MIN_LENGTH = [2, 25];
+const INPUT_MIN_LENGTH = [2, 500];
 
 // global variables
 var currentQuestionIndex = 0;
@@ -89,12 +89,8 @@ const loadPreviousEnteredText = () => {
 const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
-        "title": dataset.questions[idx].oldTitle,
-        "itemIndex": idx,
-        "itemID": dataset.questions[idx].id,
         "questionID": 0,
         "question": (dataset.questions[idx].text + dataset.questions[idx].dilemma),
-        "answerID": 0,
         "answer": dataset.questions[idx].entered,
         "cond": dataset.questions[idx].cond,
         "rt": rt,
@@ -340,7 +336,7 @@ const appendScenario = (question, asHTML = false) => {
     quizQuestionTextSPAN.className = `quiz-question-text-item`
     let text = question;
     if (!asHTML) {
-        text = '<b>Scenario</b> <br>' + question;
+        text = '<b>Question</b> <br>' + question;
     }
     // if (asHTML) {
     quizQuestionTextSPAN.innerHTML = text;
@@ -395,34 +391,43 @@ const appendTextFormQuestion = (question, additional) => {
     firstdiv.id = "form"
     let seconddiv = document.createElement(`div`);
     seconddiv.className = "text"
-    seconddiv.innerText = 'Answer here...'
+    //seconddiv.innerText = 'Answer here...'
 
-    let input = document.createElement(`input`);
+    let input = document.createElement(`textarea`);//(`input`);//
+    input.autocorrect = 'on'
+    input.placeholder = 'Answer here...'
     input.id = 'fname' + (+(additional))
+    //input.type = 'textarea'
     input.name = 'fname'
     input.autocomplete = 'off'
-    // input.minLength = INPUT_MIN_LENGTH[+(additional)];
-    input.type = 'text'
-    input.setAttribute('value', "")
-    input.setAttribute('required', 'required')
-    input.setAttribute('pattern', '(?=.*[a-zA-Z].*[a-zA-Z]).{' + INPUT_MIN_LENGTH[+(additional)] + ',}')
-    input.setAttribute('title', 'At least ' + INPUT_MIN_LENGTH[+(additional)] + ' characters, including at least 2 letters')
+    console.log(INPUT_MIN_LENGTH[0]);
+    input.minlength = INPUT_MIN_LENGTH[0];
+    input.maxlength = INPUT_MIN_LENGTH[1];
+    input.required = true;
+    //input.minLength = INPUT_MIN_LENGTH[+(additional)];
+    //input.type = 'text'
+    //input.setAttribute('value', "")
+    //input.setAttribute('required', 'required')
+    //input.setAttribute('pattern', '(?=.*[a-zA-Z0-9].*[a-zA-Z0-9]).{' + INPUT_MIN_LENGTH[+(additional)] + ',}')
+    //input.setAttribute('title', 'At least ' + INPUT_MIN_LENGTH[+(additional)] + ' characters.')
     // i
-    input.setAttribute('aria-labelledby', 'placeholder-fname')
+    //input.setAttribute('aria-labelledby', 'placeholder-fname')
 
-    let label = document.createElement('label')
+    /*let label = document.createElement('label')
     label.className = 'placeholder-text'
     label.setAttribute('for', 'fname')
     label.id = 'placeholder-fname'
 
-    label.appendChild(seconddiv)
+    label.appendChild(seconddiv)*/
     firstdiv.appendChild(input)
-    firstdiv.appendChild(label)
+    //firstdiv.appendChild(label)
 
     input.addEventListener("keyup", () => {
         input.setAttribute("value", input.value);
         saveAnswer(input.value, question)
-        if (input.value.length > 1) {
+        console.log(input.value);
+        if (input.value.length > 2) {
+            //input.valid()
             removeOpacityBlur();
         }
     })
@@ -449,7 +454,7 @@ const loadQuestion = async (question, init, additional = false) => {
         appendScenario(question.text)
         updateProgessBarStatus()
     }
-    appendDilemma(question.dilemma, additional + 1)
+    //appendDilemma(question.dilemma, additional + 1)
     if (question.type == `multiple` || question.type == `single`) {
         if (question.answers.length <= 2) {
             loadBinaryChoiceQuestion(question)
@@ -761,7 +766,7 @@ const continueClickable = () => {
 }
 
 const checkInputValidity = () => {
-    return Array.from(document.querySelectorAll('input'))
+    return Array.from(document.querySelectorAll('textarea'))
     .every(element => element.reportValidity())
 }
 
@@ -866,7 +871,7 @@ const updateProgessBarStatus = () => {
     let progress = document.getElementById('quiz-progress-bar')
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
-    let value = Math.floor(((currentQuestionIndex + 1) / dataset.questions.length) * 100)
+    let value = Math.floor(((currentQuestionIndex) / dataset.questions.length) * 100)
 
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
@@ -916,7 +921,7 @@ document.onkeydown = function (evt) {
     // selectAnswer(keyCode.toString() - 49)
     // }
     // Moves to next question  using enter key for open ended questions
-    let type = dataset.questions[currentQuestionIndex].type
+    /*let type = dataset.questions[currentQuestionIndex].type
     if (((type == `single` || type == `multiple`) && keyCode == 13 && selected)) {
         // loadNewQuestion('next-question-load')
         $('.quiz-continue-button')[0].click()
@@ -927,7 +932,7 @@ document.onkeydown = function (evt) {
         if ($('.quiz-continue-button-container').css('display') != 'none') {
             $('.quiz-continue-button')[0].click()
         }
-    }
+    }*/
 };
 
 /*----------------------------------------------------------------------------------------------- */
