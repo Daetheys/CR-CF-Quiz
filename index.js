@@ -89,8 +89,8 @@ const loadPreviousEnteredText = () => {
 const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
-        "questionID": 0,
-        "question": (dataset.questions[idx].text + dataset.questions[idx].dilemma),
+        "questionID": idx,
+        "question": (dataset.questions[idx].text),
         "answer": dataset.questions[idx].entered,
         "cond": dataset.questions[idx].cond,
         "rt": rt,
