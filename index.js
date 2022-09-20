@@ -9,7 +9,7 @@ $(document).ready(main);
 // Constant parameters 
 const TIME_BETWEEN_QUESTIONS = 2000;
 const MAX_REQUESTS = 7;
-const DEBUG = 0;
+const DEBUG = 1;
 const INPUT_MIN_LENGTH = [2, 500];
 
 // global variables
@@ -400,7 +400,7 @@ const appendTextFormQuestion = (question, additional) => {
     //input.type = 'textarea'
     input.name = 'fname'
     input.autocomplete = 'off'
-    console.log(INPUT_MIN_LENGTH[0]);
+    //console.log(INPUT_MIN_LENGTH[0]);
     input.minlength = INPUT_MIN_LENGTH[0];
     input.maxlength = INPUT_MIN_LENGTH[1];
     input.required = true;
@@ -425,7 +425,7 @@ const appendTextFormQuestion = (question, additional) => {
     input.addEventListener("keyup", () => {
         input.setAttribute("value", input.value);
         saveAnswer(input.value, question)
-        console.log(input.value);
+        //console.log(input.value);
         if (input.value.length > 2) {
             //input.valid()
             removeOpacityBlur();
@@ -871,7 +871,7 @@ const updateProgessBarStatus = () => {
     let progress = document.getElementById('quiz-progress-bar')
     let text = document.getElementById('progress-bar-text')
     // Value of progress is set in terms of 0 to 100
-    let value = Math.floor(((currentQuestionIndex) / dataset.questions.length) * 100)
+    let value = Math.floor(((currentQuestionIndex +1) / dataset.questions.length) * 100)
 
     // Changing width and aria value 
     progress.setAttribute('aria-valuenow', value)
