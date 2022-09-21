@@ -14,7 +14,7 @@ export const dataset = {
 					title: "Information for the participant"
 				},
 				{
-					text: `During your participation in this study, we will ask you to answer several simple questionnaires and tests, which do not require any particular competence.Your internet-based participation will require approximately 10 minutes or  possibly less.`,
+					text: `During your participation in this study, we will ask you to answer several simple questionnaires and tests, which do not require any particular competence.Your internet-based participation will require approximately 10 minutes or possibly less.`,
 					type: "regular",
 					variables: [],
 					title: "Procedure"
@@ -45,7 +45,7 @@ export const dataset = {
 			title: "Instructions",
 			items: [
 				{
-					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer. These questions can take different formats : you can have the question directly asked, with an example or an initial start to your answer to help you structure it. Feel free to take as much space as you need to answer the questions.",
+					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer. These questions can take different formats : you can have the question directly asked, with an example or an initial start to your answer to help you structure it. Feel free to take as much time and space as you need to answer the questions. If you do additional computations please write them in the form.",
 					type: "regular",
 					variables: [],
 				},

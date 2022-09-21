@@ -11,7 +11,7 @@ var TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
 const INPUT_MIN_LENGTH = [5, 500];
-const condition = 'vanilla';
+const condition = 'reasoning';
 
 if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
@@ -208,8 +208,7 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="'
-        + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="' + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -571,6 +570,7 @@ const questionContainerLoad = (adjustment) => {
 /*----------------------------------------------------------------------------------------------- */
 /* Answer management
 /*----------------------------------------------------------------------------------------------- */
+
 const appendAnswersList = () => {
     // Generating answer elements
     let quizAnswersDIV = document.createElement(`div`)
@@ -882,7 +882,9 @@ const cr_ContinueButton = () => {
     continueBUTTON.innerHTML = `OK`
 
     // Moves to next question on click
-    continueBUTTON.onclick = async function () {
+    continueBUTTON.onclick = continueFunction;
+    
+    /*async function () {
 
         rt = Date.now() - startTime;
         if (!continueClickable()) {
@@ -924,7 +926,7 @@ const cr_ContinueButton = () => {
             await loadEndPanel();
 
 
-    }
+    }*/
     //continueSPAN.innerHTML = `press ENTER`
     continueDIV.append(continueBUTTON, continueSPAN)
     let parent = document.getElementById('quiz-main-page');//`quiz-question-container`)
