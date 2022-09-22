@@ -7,10 +7,32 @@ $(document).ready(main);
 /* Main params
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
-const TIME_BETWEEN_QUESTIONS = 2000;
+var TIME_BETWEEN_QUESTIONS = 5000;
 const MAX_REQUESTS = 7;
-const DEBUG = 1;
+const DEBUG = 0;
 const INPUT_MIN_LENGTH = [2, 500];
+const condition = 'example';
+
+if (condition == 'reasoning'){
+    for (let k = 0; k < dataset.questions.length; k++){
+        dataset.questions[k]['append'] = "Let's think step by step";
+        dataset.questions[k]['additional'] = {
+            "append":"Therefore the answer is",
+            "text":null,
+        };
+    }
+} else if (condition == 'example'){
+    for (let k = 0; k < dataset.questions.length; k++){
+        //dataset.questions[k]['previous'] = {};
+        //Object.assign(dataset.questions[k]['previous'],dataset.old_questions[k]);
+        //dataset.questions[k]['previous']['blocked'] = true;
+        dataset.old_questions[k]['additional'] = {};
+        Object.assign(dataset.old_questions[k]['additional'],dataset.questions[k]);
+        dataset.old_questions[k]['blocked'] = true;
+    }
+    dataset.questions = dataset.old_questions;
+    TIME_BETWEEN_QUESTIONS *= 2;
+}
 
 // global variables
 var currentQuestionIndex = 0;
@@ -35,6 +57,7 @@ window.getGlobal = () => {
 /* ------------------------------------------------------------------------------------------ */
 /* start functions
 /* ------------------------------------------------------------------------------------------ */
+
 function main() {
     init();
 };
@@ -81,8 +104,8 @@ const loadPreviousEnteredChoice = (entered) => {
 const loadPreviousEnteredText = () => {
     let entered = dataset.questions[currentQuestionIndex].entered
     if (entered.length > 0) {
-        let answer = document.getElementById(`questionTextarea`)
-        answer.innerHTML = entered[0]
+        let answer = document.getElementById(`questionTextarea`);
+        answer.innerHTML = entered[0];
     }
 }
 
@@ -90,9 +113,10 @@ const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
         "questionID": idx,
+        "sequenceID": 0,
         "question": (dataset.questions[idx].text),
         "answer": dataset.questions[idx].entered,
-        "cond": dataset.questions[idx].cond,
+        "cond": condition,
         "rt": rt,
     }
 
@@ -109,9 +133,9 @@ const sendItemData = async (idx) => {
     let additional = "additional" in dataset.questions[idx]
     if (additional) {
         let add_data = dataset.questions[idx].additional;
-        data['questionID'] = 1;
-        data['answerID'] = 1;
-        data['question'] = add_data.dilemma;
+        data['questionID'] = idx;
+        data['sequenceID'] = 1;
+        //data['question'] = add_data.dilemma;
         data['answer'] = add_data.entered;
 
         if (DEBUG) {
@@ -326,7 +350,7 @@ const appendInfo = (title, text, variables, asHTML = false, type = "regular") =>
 }
 
 // Appends the scenario
-const appendScenario = (question, asHTML = false) => {
+const appendScenario = (question, asHTML = false, additional = false, example = false) => {
     // Generating question text
     let i = document.getElementById('quiz-question-container').childNodes.length
     let quizQuestionTextDIV = document.createElement('div')
@@ -335,8 +359,12 @@ const appendScenario = (question, asHTML = false) => {
     let quizQuestionTextSPAN = document.createElement(`span`)
     quizQuestionTextSPAN.className = `quiz-question-text-item`
     let text = question;
-    if (!asHTML) {
-        text = '<b>Question</b> <br>' + question;
+    if (asHTML) {
+        if (!example){
+            text = '<b>Example Question</b> <br>' + question;
+        } else {
+            text = '<b>Question</b> <br>' + question;
+        }
     }
     // if (asHTML) {
     quizQuestionTextSPAN.innerHTML = text;
@@ -347,6 +375,9 @@ const appendScenario = (question, asHTML = false) => {
 
     let panel = document.getElementById('quiz-question-container')
     panel.appendChild(quizQuestionTextDIV)
+
+    if (additional)
+        quizQuestionTextDIV.classList.add('opacityblur');
 }
 
 // Assigns the panel title
@@ -396,10 +427,18 @@ const appendTextFormQuestion = (question, additional) => {
     let input = document.createElement(`textarea`);//(`input`);//
     input.autocorrect = 'on'
     input.placeholder = 'Answer here...'
-    input.id = 'fname' + (+(additional))
+    if ('append' in question){
+        input.innerHTML = question['append'];
+    }
+    if (question.entered.length > 0){
+        input.innerHTML += question.entered[0];
+        input.style.borderColor = '#cccccc';
+    }
+    //input.innerHTML += question['entered'][0]
+    input.id = 'fname' + (+(additional));
     //input.type = 'textarea'
-    input.name = 'fname'
-    input.autocomplete = 'off'
+    input.name = 'fname';
+    input.autocomplete = 'off';
     //console.log(INPUT_MIN_LENGTH[0]);
     input.minlength = INPUT_MIN_LENGTH[0];
     input.maxlength = INPUT_MIN_LENGTH[1];
@@ -426,50 +465,61 @@ const appendTextFormQuestion = (question, additional) => {
         input.setAttribute("value", input.value);
         saveAnswer(input.value, question)
         //console.log(input.value);
-        if (input.value.length > 2) {
+        /*if (input.value.length > 2) {
             //input.valid()
             removeOpacityBlur();
-        }
+        }*/
     })
+
+    if (question.blocked){
+        input.disabled = true;
+    }
 
     if (additional) {
         input.disabled = true;
-        firstdiv.classList.add('opacityblur')
-
+        firstdiv.classList.add('opacityblur');
+        setTimeout(() => {
+            wait = false;
+            input.disabled = false;
+            input.classList.remove('opacityblur');
+            //removeOpacityBlur();
+        }, TIME_BETWEEN_QUESTIONS/2);
     }
     document.getElementById('quiz-question-container').appendChild(firstdiv)
 }
 
 
 // Loads a multiple choice quiz question
-const loadQuestion = async (question, init, additional = false) => {
+const loadQuestion = async (question, init, additional = false, show_title = true, example = false) => {
     startTime = Date.now();
     if (!progressBarIsVisible()) {
         toggleProgressBar()
         updateProgessBarStatus()
     }
-    if (!additional) {
-        saveState()
-        appendTitle('Item ' + (currentQuestionIndex + 1))
-        appendScenario(question.text)
-        updateProgessBarStatus()
+    if (show_title) {
+        saveState();
+        appendTitle('Item ' + (currentQuestionIndex + 1));
+    }
+    appendScenario(question.text, true, example, additional);
+    if (!additional){
+        updateProgessBarStatus();
     }
     //appendDilemma(question.dilemma, additional + 1)
     if (question.type == `multiple` || question.type == `single`) {
         if (question.answers.length <= 2) {
-            loadBinaryChoiceQuestion(question)
+            loadBinaryChoiceQuestion(question);
         } else {
-            loadMultipleChoiceQuestion(question)
+            loadMultipleChoiceQuestion(question);
         }
-        loadPreviousEnteredChoice(question.entered)
+        loadPreviousEnteredChoice(question.entered);
     } else if (question.type == `short` || question.type == `long`) {
-        appendTextFormQuestion(question, additional)
-        loadPreviousEnteredText(question.entered)
+        appendTextFormQuestion(question, additional);
+        //loadPreviousEnteredText(question.entered)
     }
 
     // Skips loading animation on initialization
     if (!init) {
-        await moveQuestionContainerMiddle()
+        await moveQuestionContainerMiddle();
     }
     //showHideContinueButton(dataset.questions[currentQuestionIndex])
 }
@@ -477,16 +527,19 @@ const loadQuestion = async (question, init, additional = false) => {
 // Function to load next question & possible answers in object
 const loadNewQuestion = async (adjustment) => {
     // Removes previous question & answers
-    let canLoad = canLoadNewQuestion()
+    let canLoad = canLoadNewQuestion();
     if (canLoad) {
-        await questionContainerLoad(adjustment)
-        removeAllChildren(`quiz-question-container`)
+        await questionContainerLoad(adjustment);
+        removeAllChildren(`quiz-question-container`);
         if (adjustment == `next`) {
-            loadQuestion(dataset.questions[currentQuestionIndex])
-            if ("additional" in dataset.questions[currentQuestionIndex])
-                loadQuestion(dataset.questions[currentQuestionIndex].additional, false, true)
-
+            if (dataset.questions[currentQuestionIndex].blocked){
+                loadQuestion(dataset.questions[currentQuestionIndex], true, false, true, true);
+            } else {
+                loadQuestion(dataset.questions[currentQuestionIndex]);
+            }
         }
+        if ("additional" in dataset.questions[currentQuestionIndex])
+            loadQuestion(dataset.questions[currentQuestionIndex].additional, false, true, false, false);
     }
     return !canLoad;
 }
@@ -785,6 +838,7 @@ const cr_ContinueButton = () => {
     continueSPAN.className = `quiz-continue-text`
     continueSPAN.id = `quiz-continue-text`
     continueBUTTON.innerHTML = `OK`
+
     // Moves to next question on click
     continueBUTTON.onclick = async function () {
 
@@ -797,7 +851,7 @@ const cr_ContinueButton = () => {
 
         if (state == 'instructions')
             currentInstructionIndex++
-
+        
         if (state == 'questions') {
             wait = true;
             $('#quiz-continue-button-container').fadeOut(40)
@@ -830,7 +884,7 @@ const cr_ContinueButton = () => {
 
 
     }
-    continueSPAN.innerHTML = `press ENTER`
+    //continueSPAN.innerHTML = `press ENTER`
     continueDIV.append(continueBUTTON, continueSPAN)
     let parent = document.getElementById('quiz-main-page');//`quiz-question-container`)
     parent.append(continueDIV)
@@ -970,8 +1024,10 @@ const removeAllChildren = (parent) => {
 const removeOpacityBlur = () => {
     let node = document.getElementsByTagName('*')
     Array.from(node).map(element => {
-        element.disabled = false;
-        element.classList.remove('opacityblur')
+        if (element.classList.contains('opacityblur')){
+            element.disabled = false;
+            element.classList.remove('opacityblur');
+        }
     });
 }
 

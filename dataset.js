@@ -7,14 +7,14 @@ export const dataset = {
 			items: [
 				{
 					text: `You are about to participate in a psychological research study.
-					This study aims to understand how people make moral decisions in a variety of situations.
+					This study aims to understand how people solve short questions.
 					The proposed experiments have no immediate application or clinical value, but they will allow us to improve our understanding of moral reasoning in humans. We are asking you to participate in this study because you have been recruited on the Prolific platform.`,
 					type: "regular",
 					variables: [],
 					title: "Information for the participant"
 				},
 				{
-					text: `During your participation in this study, we will ask you to answer several simple questionnaires and tests, which do not require any particular competence.Your internet-based participation will require approximately 1 hour or  possibly less.`,
+					text: `During your participation in this study, we will ask you to answer several simple questionnaires and tests, which do not require any particular competence.Your internet-based participation will require approximately 10 minutes or  possibly less.`,
 					type: "regular",
 					variables: [],
 					title: "Procedure"
@@ -24,12 +24,6 @@ export const dataset = {
 					type: "regular",
 					variables: [],
 					title: "Voluntary Participation And Confidentiality"
-				},
-				{
-					text: `This study contains fictional content (violence, sexual assault) that may be triggering for some people. By continuing, you are acknowledging that you agree to proceed. If you choose to continue, but end up being disturbed during the study, don't hesitate to exit the study at any time.`,
-					type: 'alert',
-					variables: [],
-					title: "Trigger Warning"
 				},
 				{
 					text: "I'm 18 years old or older",
@@ -51,7 +45,7 @@ export const dataset = {
 			title: "Instructions",
 			items: [
 				{
-					text: "You are going to be presented with different moral dilemmas. For each <b>scenario</b>, you'll have to answer a first question by emiting a <b>moral judgment</b>. Secondly, you'll have to explain the motivations (<b>Why?</b>) behind your first answer.",
+					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer. These questions can take different formats : you can have the question directly asked, with an example or an initial start to your answer to help structure it.",
 					type: "regular",
 					variables: [],
 				},
@@ -85,7 +79,7 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -97,7 +91,7 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -109,7 +103,7 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -121,7 +115,7 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -133,7 +127,7 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -145,7 +139,7 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -157,7 +151,93 @@ export const dataset = {
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": [],
+			"entered": [''],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+	],
+	old_questions: [
+		{
+			"title": "sControl",
+			"text": "A bat and a ball cost £1.10 in total. The bat costs £1.00 more than the ball. How much does the ball cost?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['The ball costs £0.05.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to makes 100 widgets ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['It would take 5 minutes for 100 machines to make 100 widgets.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['The patch would require 47 days to cover half of the lake.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "If John can drink one barrel of water in 6 days, and Mary can drink one barrel of water in 12 days, how long would it take them to drink one barrel of water together ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['They would take 4 days to drink a barrel together.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "Jerry received both the 15th highest and the 15th lowest mark in the class. How many students are in the class ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['There are 29 students in the class.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "A man buys a pig for £60, sells it for £70, buys it back for £80 and sells it finally for £90. How much has he made ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['He made £20 dollars.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "Simon decided to invest £8000 in the stock market one day early in 2008. Six months after he invested, on July 17, the stocks he had purchased went down 50%. Fortunately for Simon, from July 17 to October 17, the stocks he had purchased went up 75%. What is Simon's economic situation at this point ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['He has £7000 at this point.'],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
