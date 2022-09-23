@@ -18,6 +18,7 @@ if (condition == 'reasoning'){
         dataset.questions[k]['append'] = "Let's think step by step";
         dataset.questions[k]['additional'] = {
             "append":['Therefore the answer is'],
+            "entered":[''],
             "type":"long",
         };
     }
