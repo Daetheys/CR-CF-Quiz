@@ -11,14 +11,14 @@ var TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
 const INPUT_MIN_LENGTH = [5, 500];
-const condition = 'vanilla';
+const condition = 'reasoning';
 
 if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
         dataset.questions[k]['append'] = "Let's think step by step";
         dataset.questions[k]['additional'] = {
-            "append":['Therefore the answer is'],
-            "entered":[''],
+            "append":"Therefore the answer is",
+            "entered":[""],
             "type":"long",
         };
     }
@@ -469,8 +469,11 @@ const appendTextFormQuestion = (question, additional) => {
     //firstdiv.appendChild(label)
 
     input.addEventListener("keyup", () => {
-        if (question['append'] != undefined)
+        if (question['append'] != undefined){
+            console.log(question['append']);
+            console.log(input.value.slice(question['append'].length,input.value.length));
             input.value = question['append'] + input.value.slice(question['append'].length,input.value.length)
+        }
         input.setAttribute("value", input.value);
         saveAnswer(input.value, question);
         //console.log(input.value);
