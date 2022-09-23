@@ -45,7 +45,7 @@ export const dataset = {
 			title: "Instructions",
 			items: [
 				{
-					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer. These questions can take different formats : you can have the question directly asked, with an example or an initial start to your answer to help structure it.",
+					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer. These questions can take different formats : you can have the question directly asked, with an example or an initial start to your answer to help you structure it. Feel free to take as much space as you need to answer the questions.",
 					type: "regular",
 					variables: [],
 				},

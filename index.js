@@ -7,20 +7,21 @@ $(document).ready(main);
 /* Main params
 /* ------------------------------------------------------------------------------------------ */
 // Constant parameters 
-var TIME_BETWEEN_QUESTIONS = 5000;
+var TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
-const INPUT_MIN_LENGTH = [2, 500];
-const condition = 'example';
+const INPUT_MIN_LENGTH = [5, 500];
+const condition = 'vanilla';
 
 if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
         dataset.questions[k]['append'] = "Let's think step by step";
         dataset.questions[k]['additional'] = {
-            "append":"Therefore the answer is",
-            "text":null,
+            "entered":['Therefore the answer is'],
+            "type":"long",
         };
     }
+    TIME_BETWEEN_QUESTIONS *= 1;
 } else if (condition == 'example'){
     for (let k = 0; k < dataset.questions.length; k++){
         //dataset.questions[k]['previous'] = {};
@@ -31,7 +32,7 @@ if (condition == 'reasoning'){
         dataset.old_questions[k]['blocked'] = true;
     }
     dataset.questions = dataset.old_questions;
-    TIME_BETWEEN_QUESTIONS *= 2;
+    TIME_BETWEEN_QUESTIONS *= 1;
 }
 
 // global variables
@@ -360,7 +361,7 @@ const appendScenario = (question, asHTML = false, additional = false, example = 
     quizQuestionTextSPAN.className = `quiz-question-text-item`
     let text = question;
     if (asHTML) {
-        if (!example){
+        if (example){
             text = '<b>Example Question</b> <br>' + question;
         } else {
             text = '<b>Question</b> <br>' + question;
@@ -378,6 +379,10 @@ const appendScenario = (question, asHTML = false, additional = false, example = 
 
     if (additional)
         quizQuestionTextDIV.classList.add('opacityblur');
+
+        setTimeout(() => {
+            quizQuestionTextDIV.classList.remove('opacityblur');
+        }, TIME_BETWEEN_QUESTIONS/2);
 }
 
 // Assigns the panel title
@@ -427,12 +432,15 @@ const appendTextFormQuestion = (question, additional) => {
     let input = document.createElement(`textarea`);//(`input`);//
     input.autocorrect = 'on'
     input.placeholder = 'Answer here...'
+    input.minLength = (INPUT_MIN_LENGTH[0]).toString();
+    //input.maxlength = INPUT_MIN_LENGTH[1];
     if ('append' in question){
         input.innerHTML = question['append'];
+        input.minlength += question['append'].length;
     }
     if (question.entered.length > 0){
         input.innerHTML += question.entered[0];
-        input.style.borderColor = '#cccccc';
+        input.style.borderColor = '#999999';
     }
     //input.innerHTML += question['entered'][0]
     input.id = 'fname' + (+(additional));
@@ -440,8 +448,6 @@ const appendTextFormQuestion = (question, additional) => {
     input.name = 'fname';
     input.autocomplete = 'off';
     //console.log(INPUT_MIN_LENGTH[0]);
-    input.minlength = INPUT_MIN_LENGTH[0];
-    input.maxlength = INPUT_MIN_LENGTH[1];
     input.required = true;
     //input.minLength = INPUT_MIN_LENGTH[+(additional)];
     //input.type = 'text'
@@ -462,8 +468,10 @@ const appendTextFormQuestion = (question, additional) => {
     //firstdiv.appendChild(label)
 
     input.addEventListener("keyup", () => {
+        if (question['append'] != undefined)
+            input.value = question['append'] + input.value.slice(question['append'].length,input.value.length)
         input.setAttribute("value", input.value);
-        saveAnswer(input.value, question)
+        saveAnswer(input.value, question);
         //console.log(input.value);
         /*if (input.value.length > 2) {
             //input.valid()
@@ -476,12 +484,11 @@ const appendTextFormQuestion = (question, additional) => {
     }
 
     if (additional) {
-        input.disabled = true;
         firstdiv.classList.add('opacityblur');
+        input.disabled = true;
         setTimeout(() => {
-            wait = false;
             input.disabled = false;
-            input.classList.remove('opacityblur');
+            firstdiv.classList.remove('opacityblur');
             //removeOpacityBlur();
         }, TIME_BETWEEN_QUESTIONS/2);
     }
@@ -491,6 +498,8 @@ const appendTextFormQuestion = (question, additional) => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init, additional = false, show_title = true, example = false) => {
+    console.log(question);
+    console.log(additional);
     startTime = Date.now();
     if (!progressBarIsVisible()) {
         toggleProgressBar()
@@ -500,7 +509,8 @@ const loadQuestion = async (question, init, additional = false, show_title = tru
         saveState();
         appendTitle('Item ' + (currentQuestionIndex + 1));
     }
-    appendScenario(question.text, true, example, additional);
+    if (question.text != undefined)
+        appendScenario(question.text, true, additional, example);
     if (!additional){
         updateProgessBarStatus();
     }
