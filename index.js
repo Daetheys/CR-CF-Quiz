@@ -17,7 +17,7 @@ if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
         dataset.questions[k]['append'] = "Let's think step by step";
         dataset.questions[k]['additional'] = {
-            "entered":['Therefore the answer is'],
+            "append":['Therefore the answer is'],
             "type":"long",
         };
     }
