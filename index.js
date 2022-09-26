@@ -208,7 +208,8 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="' + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="'
+        + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
@@ -433,60 +434,36 @@ const appendTextFormQuestion = (question, additional) => {
     let input = document.createElement(`textarea`);//(`input`);//
     input.autocorrect = 'on'
     input.placeholder = 'Answer here...'
-    input.minLength = INPUT_MIN_LENGTH[0];
+    var minlength = INPUT_MIN_LENGTH[0];
     //input.maxlength = INPUT_MIN_LENGTH[1];
     if ('append' in question){
         input.value = question['append'];
         input.setCustomValidity("Answer is too short.");
-        input.minLength += question['append'].length;
+        minlength += question['append'].length;
     }
     if (question.entered.length > 0){
         input.value += question.entered[0];
         input.style.borderColor = '#999999';
     }
     //input.innerHTML += question['entered'][0]
+    input.minLength = minlength;
     input.id = 'fname' + (+(additional));
-    //input.type = 'textarea'
     input.name = 'fname';
     input.autocomplete = 'off';
-    //console.log(INPUT_MIN_LENGTH[0]);
     input.required = true;
-    //input.minLength = INPUT_MIN_LENGTH[+(additional)];
-    //input.type = 'text'
-    //input.setAttribute('value', "")
-    //input.setAttribute('required', 'required')
-    //input.setAttribute('pattern', '(?=.*[a-zA-Z0-9].*[a-zA-Z0-9]).{' + INPUT_MIN_LENGTH[+(additional)] + ',}')
-    //input.setAttribute('title', 'At least ' + INPUT_MIN_LENGTH[+(additional)] + ' characters.')
-    // i
-    //input.setAttribute('aria-labelledby', 'placeholder-fname')
-
-    /*let label = document.createElement('label')
-    label.className = 'placeholder-text'
-    label.setAttribute('for', 'fname')
-    label.id = 'placeholder-fname'
-
-    label.appendChild(seconddiv)*/
     firstdiv.appendChild(input)
     //firstdiv.appendChild(label)
 
     input.addEventListener("keyup", () => {
         if (question['append'] != undefined){
-            console.log(input.value.length,input.minLength);
             input.value = question['append'] + input.value.slice(question['append'].length,input.value.length);
-            console.log(input.value.length,input.minLength);
-            if (input.value.length < question['append'].length + INPUT_MIN_LENGTH[0]){
-                input.setCustomValidity("Answer is too short.");
-            } else {
-                input.setCustomValidity("");
-            }
         }
-        //input.setAttribute("value", input.value);
+        if (input.value.length < minlength){
+            input.setCustomValidity("Answer is too short.");
+        } else {
+            input.setCustomValidity("");
+        }
         saveAnswer(input.value, question);
-        //console.log(input.value);
-        /*if (input.value.length > 2) {
-            //input.valid()
-            removeOpacityBlur();
-        }*/
     })
 
     if (question.blocked){
@@ -508,8 +485,6 @@ const appendTextFormQuestion = (question, additional) => {
 
 // Loads a multiple choice quiz question
 const loadQuestion = async (question, init, additional = false, show_title = true, example = false) => {
-    console.log(question);
-    console.log(additional);
     startTime = Date.now();
     if (!progressBarIsVisible()) {
         toggleProgressBar()
@@ -596,7 +571,6 @@ const questionContainerLoad = (adjustment) => {
 /*----------------------------------------------------------------------------------------------- */
 /* Answer management
 /*----------------------------------------------------------------------------------------------- */
-
 const appendAnswersList = () => {
     // Generating answer elements
     let quizAnswersDIV = document.createElement(`div`)
@@ -834,13 +808,61 @@ const continueClickable = () => {
         return $('input:checkbox:not(:checked)').length === 0;
     }
     // return Array.from(document.getElementsByTagName('input'))
-        // .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]));
-    return checkInputValidity();
+    // .every((element, i) => (element.value.length >= INPUT_MIN_LENGTH[i]));
+    var validity = checkInputValidity();
+    console.log(validity);
+    return validity;
 }
 
 const checkInputValidity = () => {
     return Array.from(document.querySelectorAll('textarea'))
-    .every(element => element.reportValidity())
+        .every(element => element.reportValidity())
+}
+
+const hideAndShowContinue = () => {
+    wait = true;
+    $('#quiz-continue-button-container').fadeOut(40)
+    $('#quiz-continue-text').fadeOut(40)
+
+    setTimeout(() => {
+        wait = false;
+        $('#quiz-continue-button-container').fadeIn(500)
+        $('#quiz-continue-text').fadeIn(500)
+    }, DEBUG ? 0 : TIME_BETWEEN_QUESTIONS);
+}
+
+// what happens when the continue button is clicked
+const continueFunction = async () => {
+    rt = Date.now() - startTime;
+    if (!continueClickable()) {
+        // checkInputValidity()
+        return;
+    }
+
+
+    if (state == 'instructions')
+        currentInstructionIndex++
+
+    if (state == 'questions') {
+        hideAndShowContinue()
+        sendItemData(currentQuestionIndex);
+        currentQuestionIndex++
+    }
+
+    let startQuestions = await loadNewInstruction();
+
+    if (startQuestions) {
+        state = 'questions'
+        hideAndShowContinue()
+        let end = await loadNewQuestion(`next`)
+        if (end) {
+            state = 'end';
+            saveState()
+        }
+    }
+
+    if (state == 'end')
+        await loadEndPanel();
 }
 
 // Creates continue button
@@ -867,7 +889,6 @@ const cr_ContinueButton = () => {
             // checkInputValidity()
             return;
         }
-
 
         if (state == 'instructions')
             currentInstructionIndex++
