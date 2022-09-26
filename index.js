@@ -11,7 +11,7 @@ var TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
 const INPUT_MIN_LENGTH = [5, 500];
-const condition = 'reasoning';
+const condition = 'vanilla';
 
 if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
@@ -433,14 +433,15 @@ const appendTextFormQuestion = (question, additional) => {
     let input = document.createElement(`textarea`);//(`input`);//
     input.autocorrect = 'on'
     input.placeholder = 'Answer here...'
-    input.minLength = (INPUT_MIN_LENGTH[0]).toString();
+    input.minLength = INPUT_MIN_LENGTH[0];
     //input.maxlength = INPUT_MIN_LENGTH[1];
     if ('append' in question){
-        input.innerHTML = question['append'];
-        input.minlength += question['append'].length;
+        input.value = question['append'];
+        input.setCustomValidity("Answer is too short.");
+        input.minLength += question['append'].length;
     }
     if (question.entered.length > 0){
-        input.innerHTML += question.entered[0];
+        input.value += question.entered[0];
         input.style.borderColor = '#999999';
     }
     //input.innerHTML += question['entered'][0]
@@ -470,11 +471,16 @@ const appendTextFormQuestion = (question, additional) => {
 
     input.addEventListener("keyup", () => {
         if (question['append'] != undefined){
-            console.log(question['append']);
-            console.log(input.value.slice(question['append'].length,input.value.length));
-            input.value = question['append'] + input.value.slice(question['append'].length,input.value.length)
+            console.log(input.value.length,input.minLength);
+            input.value = question['append'] + input.value.slice(question['append'].length,input.value.length);
+            console.log(input.value.length,input.minLength);
+            if (input.value.length < question['append'].length + INPUT_MIN_LENGTH[0]){
+                input.setCustomValidity("Answer is too short.");
+            } else {
+                input.setCustomValidity("");
+            }
         }
-        input.setAttribute("value", input.value);
+        //input.setAttribute("value", input.value);
         saveAnswer(input.value, question);
         //console.log(input.value);
         /*if (input.value.length > 2) {
