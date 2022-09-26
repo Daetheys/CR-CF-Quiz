@@ -158,21 +158,21 @@ const sendItemData = async (idx) => {
 /* State Management
 /* ------------------------------------------------------------------------------------------ */
 const saveState = () => {
-    localStorage['savedState'] = 1
-    localStorage['state'] = state
-    localStorage['currentQuestionIndex'] = currentQuestionIndex
-    localStorage['currentInstructionIndex'] = currentInstructionIndex
-    localStorage['answers'] = JSON.stringify(dataset.questions)
-    localStorage['prolificID'] = prolificID;
+    localStorage['savedState'+condition] = 1
+    localStorage['state'+condition] = state
+    localStorage['currentQuestionIndex'+condition] = currentQuestionIndex
+    localStorage['currentInstructionIndex'+condition] = currentInstructionIndex
+    localStorage['answers'+condition] = JSON.stringify(dataset.questions)
+    localStorage['prolificID'+condition] = prolificID;
 }
 
 window.resetState = () => {
-    localStorage['state'] = 'instructions'
-    localStorage['currentQuestionIndex'] = 0
-    localStorage['currentInstructionIndex'] = 0
-    localStorage['answers'] = ""
-    localStorage['prolificID'] = 'reset';
-    localStorage['savedState'] = 0
+    localStorage['state'+condition] = 'instructions'
+    localStorage['currentQuestionIndex'+condition] = 0
+    localStorage['currentInstructionIndex'+condition] = 0
+    localStorage['answers'+condition] = ""
+    localStorage['prolificID'+condition] = 'reset';
+    localStorage['savedState'+condition] = 0
     window.location = window.location.href.split('?')[0] + '?PROLIFIC_PID=' + prolificID;
 }
 
@@ -183,24 +183,24 @@ const setProlificID = () => {
 }
 
 const loadState = () => {
-    if (!parseInt(localStorage['savedState']))
+    if (!parseInt(localStorage['savedState'+condition]))
         return
 
-    localStorage['savedState'] = 1;
+    localStorage['savedState'+condition] = 1;
 
     if (prolificID == 'notfound') {
-        prolificID = localStorage['prolificID'];
+        prolificID = localStorage['prolificID'+condition];
     }
 
-    currentQuestionIndex = parseInt(localStorage['currentQuestionIndex']);
-    currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'])
+    currentQuestionIndex = parseInt(localStorage['currentQuestionIndex'+condition]);
+    currentInstructionIndex = parseInt(localStorage['currentInstructionIndex'+condition])
 
     currentInstructionIndex -= currentInstructionIndex == dataset.instructions.length;
 
-    state = localStorage['state'] == 'end' ? 'end' : 'instructions';
+    state = localStorage['state'+condition] == 'end' ? 'end' : 'instructions';
 
-    if (localStorage['answers'] != undefined && localStorage['answers'].length > 0)
-        dataset.questions = JSON.parse(localStorage['answers']);
+    if (localStorage['answers'+condition] != undefined && localStorage['answers'+condition].length > 0)
+        dataset.questions = JSON.parse(localStorage['answers'+condition]);
 }
 
 const loadEndPanel = async () => {
