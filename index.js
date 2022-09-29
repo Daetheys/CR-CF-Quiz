@@ -10,8 +10,8 @@ $(document).ready(main);
 var TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
-const INPUT_MIN_LENGTH = [5, 500];
-const condition = 'reasoning';
+const INPUT_MIN_LENGTH = [1, 500];
+const condition = 'example';
 
 if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
@@ -35,6 +35,10 @@ if (condition == 'reasoning'){
     dataset.questions = dataset.old_questions;
     TIME_BETWEEN_QUESTIONS *= 1;
 }
+for (let k=0;k<dataset.questions.length;k++){
+    dataset.questions[k]['index'] = k;
+}
+dataset.questions = dataset.questions.sort((a,b) => 0.5 - Math.random());
 
 // global variables
 var currentQuestionIndex = 0;
@@ -114,7 +118,7 @@ const loadPreviousEnteredText = () => {
 const sendItemData = async (idx) => {
     let data = {
         "prolificID": prolificID,
-        "questionID": idx,
+        "questionID": dataset.questions[idx].index,
         "sequenceID": 0,
         "question": (dataset.questions[idx].text),
         "answer": dataset.questions[idx].entered,

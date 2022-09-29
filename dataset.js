@@ -99,6 +99,18 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
+			"text": "A boy has 6 balls either red or blue. Exactly two of these balls are blue. How many red balls does he have ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": [''],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
 			"text": "An entire forest was consumed by a wildfire in 40 hours, with its size doubling every hour. How long did it take to burn 50% of the forest?",
 			"id": 1,
 			"type": "long",
@@ -112,6 +124,18 @@ export const dataset = {
 		{
 			"title": "sControl",
 			"text": "If Andrea can clean a house in 3 hours, and Alex can clean a house in 6 hours, how many hours would it take for them to clean a house together?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": [''],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "A bird travels 100 miles per hour. The distance between Paris and London is 300 miles. How long would it take for the bird to go to Paris from London ?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -185,6 +209,18 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
+			"text": "In a park there are 8 trees either Oaks or Apple trees. Three of the trees are Oaks the others being apple trees. How many Apples trees are there ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['There are 5 Apples trees.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
 			"text": "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake ?",
 			"id": 1,
 			"type": "long",
@@ -202,6 +238,18 @@ export const dataset = {
 			"type": "long",
 			"oldTitle": "sControl",
 			"entered": ['They would take 4 days to drink a barrel together.'],
+			"correct": "",
+			"oldId": 1,
+			"cond": "control",
+			"dilemma": ""
+		},
+		{
+			"title": "sControl",
+			"text": "The distance between a city A and a city B is 120 miles. A car travels at 60 miles per hour. How long would it take for the car to go to city A from city B ?",
+			"id": 1,
+			"type": "long",
+			"oldTitle": "sControl",
+			"entered": ['The car would need 2 hours.'],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
