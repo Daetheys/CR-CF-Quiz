@@ -11,17 +11,19 @@ var TIME_BETWEEN_QUESTIONS = 10000;
 const MAX_REQUESTS = 7;
 const DEBUG = 0;
 const INPUT_MIN_LENGTH = [1, 500];
-const condition = 'example';
+const condition = 'reasoning';
 
 if (condition == 'reasoning'){
     for (let k = 0; k < dataset.questions.length; k++){
         dataset.questions[k]['append'] = "Let's think step by step";
-        dataset.questions[k]['additional'] = {
+        /*dataset.questions[k]['additional'] = {
             "append":"Therefore the answer is",
             "entered":[""],
             "type":"long",
-        };
+        };*/
     }
+    //Maybe let them write it themselves ?
+    dataset.instructions[1].items[1].text = "However there is a <b>constraint</b> in how you can answer each question : your answer needs to begin by the words <b>Let's think step by step</b>. To help you with this, these words will already be written and you only have to complete the answer from those words. Please try to <b>integrate them to your answer</b>.";
     TIME_BETWEEN_QUESTIONS *= 1;
 } else if (condition == 'example'){
     for (let k = 0; k < dataset.questions.length; k++){
@@ -33,6 +35,7 @@ if (condition == 'reasoning'){
         dataset.old_questions[k]['blocked'] = true;
     }
     dataset.questions = dataset.old_questions;
+    dataset.instructions[1].items[1].text = "The questions will be preceded by a similar question to which we provide the correct answer. To give time to read the <b>example</b> the actual question will be displayed after a short delay.";
     TIME_BETWEEN_QUESTIONS *= 1;
 }
 for (let k=0;k<dataset.questions.length;k++){

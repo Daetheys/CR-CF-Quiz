@@ -45,9 +45,19 @@ export const dataset = {
 			title: "Instructions",
 			items: [
 				{
-					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer. These questions can take different formats : you can have the question directly asked, with an example or an initial start to your answer to help you structure it. Feel free to take as much time and space as you need to answer the questions. If you do additional computations please write them in the form.",
+					text: "You are going to be presented with different questions. For each of these <b>questions</b>, you'll have to provide an answer.", 
 					type: "regular",
 					variables: [],
+				},
+				{
+					text: "",
+					type: "regular",
+					variables: [],
+				},
+				{
+					text: "Feel free to take as much time and space as you need to answer the questions. If you do additional computations please write them in the form.",
+					type: "regular",
+					variables :[],
 				},
 				{
 					text: 'Please note that (very) poor quality answers, such as those composed of random characters (resulting in a nonsensical sentence) or consisting in a single repeated character  (to meet input length requirements) will potentially lead to a rejection of your submission.',
