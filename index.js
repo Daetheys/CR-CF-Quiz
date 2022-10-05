@@ -215,7 +215,7 @@ const loadEndPanel = async () => {
     await moveQuestionContainerMiddle()
     removeAllChildren('quiz-question-container')
     appendTitle('END')
-    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="' + atob(KEY) + '"> Validate your participation</a></b>', [], true, "regular")
+    appendInfo('', 'This is the <b>end</b> of the questionnaire, <b>thanks for participating</b>! <br> <b><a id="end" href="' + KEY + '"> Validate your participation</a></b>', [], true, "regular")
 }
 
 /*----------------------------------------------------------------------------------------------- */
