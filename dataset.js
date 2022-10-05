@@ -109,7 +109,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "A boy has 6 balls either red or blue. Exactly two of these balls are blue. How many red balls does he have ?",
+			"text": "A girl has 6 balls which are either red or blue. Exactly two of these balls are blue. How many red balls does she have?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -145,7 +145,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "A bird travels 100 miles per hour. The distance between Paris and London is 300 miles. How long would it take for the bird to go to Paris from London ?",
+			"text": "A bird travels 100 miles per hour. The distance between Paris and London is 300 miles. How long would it take for the bird to go to Paris from London?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -207,7 +207,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to makes 100 widgets ?",
+			"text": "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -219,11 +219,11 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "In a park there are 8 trees either Oaks or Apple trees. Three of the trees are Oaks the others being apple trees. How many Apples trees are there ?",
+			"text": "In a park, there are 8 trees either oaks or apple trees. Three of the trees are Oaks the others being apple trees. How many apple trees are there?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
-			"entered": ['There are 5 Apple trees.'],
+			"entered": ['There are 5 apple trees.'],
 			"correct": "",
 			"oldId": 1,
 			"cond": "control",
@@ -231,7 +231,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake ?",
+			"text": "In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -243,7 +243,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "If John can drink one barrel of water in 6 days, and Mary can drink one barrel of water in 12 days, how long would it take them to drink one barrel of water together ?",
+			"text": "If John can drink one barrel of water in 6 days, and Mary can drink one barrel of water in 12 days, how long would it take them to drink one barrel of water together?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -255,7 +255,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "The distance between a city A and a city B is 120 miles. A car travels at 60 miles per hour. How long would it take for the car to go to city A from city B ?",
+			"text": "The distance between city A and city B is 120 miles. A car travels at 60 miles per hour. How long would it take for the car to go to city A from city B?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -267,7 +267,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "Jerry received both the 15th highest and the 15th lowest mark in the class. How many students are in the class ?",
+			"text": "Jerry received both the 15th highest and the 15th lowest mark in the class. How many students are in the class?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -279,7 +279,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "A man buys a pig for £60, sells it for £70, buys it back for £80 and sells it finally for £90. How much has he made ?",
+			"text": "A man buys a pig for £60, sells it for £70, buys it back for £80 and sells it finally for £90. How much has he made?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
@@ -291,7 +291,7 @@ export const dataset = {
 		},
 		{
 			"title": "sControl",
-			"text": "Simon decided to invest £8000 in the stock market one day early in 2008. Six months after he invested, on July 17, the stocks he had purchased went down 50%. Fortunately for Simon, from July 17 to October 17, the stocks he had purchased went up 75%. What is Simon's economic situation at this point ?",
+			"text": "Simon decided to invest £8000 in the stock market one day early in 2008. Six months after he invested, on July 17, the stocks he had purchased went down 50%. Fortunately for Simon, from July 17 to October 17, the stocks he had purchased went up 75%. What is Simon's economic situation at this point?",
 			"id": 1,
 			"type": "long",
 			"oldTitle": "sControl",
