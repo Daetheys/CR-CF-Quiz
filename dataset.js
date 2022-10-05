@@ -55,7 +55,7 @@ export const dataset = {
 					variables: [],
 				},
 				{
-					text: "Feel free to take as much time and space as you need to answer the questions. You can increase the size of the text box by dragging its bottom right hand corner down if you need more space.",
+					text: "Feel free to take as much time as you need to answer the questions. You can increase the size of the text box by dragging down its bottom right hand corner.",
 					type: "regular",
 					variables :[],
 				},
